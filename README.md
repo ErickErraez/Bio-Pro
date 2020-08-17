@@ -1,2 +1,1 @@
-# Bio-Pro
-# The Bio-Proyect resolve the problem og Yavirac Institute
+# The Bio-Proyect resolve the problem of Yavirac Institute
