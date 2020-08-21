@@ -5,8 +5,8 @@ import { HomeComponent } from '../home/home.component';
 export const AdminLayoutRoutes: Routes = [
     {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'principal',
         pathMatch: 'full',
     },
-    { path: 'home',      component: HomeComponent },
+    { path: 'principal',      component: HomeComponent },
 ];
