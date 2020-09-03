@@ -1,13 +1,13 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const server_1 = __importDefault(require("./classes/server"));
-const usuario_1 = __importDefault(require("./routes/usuario"));
-const server = new server_1.default();
-server.app.use('/user', usuario_1.default);
-//levantar express
-server.start(() => {
-    console.log(`Servidor corriendo en el puerto ${server.port}`);
+const app = require('./app/app');
+const bodyParser = require('body-parser');
+const http = require('http');
+const socketIo = require('socket.io');
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true, parameterLimit: 100000 }));
+const server = http.createServer(app);
+// @ts-ignore
+process.env.PORT = process.env.PORT || 3008;
+server.listen(process.env.PORT, () => {
+    console.log(`El servidor esta iniciado en el puerto: ${process.env.PORT}`);
 });

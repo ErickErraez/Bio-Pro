@@ -1,0 +1,9 @@
+Uno de los planteamientos a tomar es la automatizacion y reduccion del tiempo y esfuerzo que conlleva a una persona controlar 
+los diferentes datos dde horarios que cada uno de los docentes y del personal lleva a cabo diariamente. Es por eso que se realiza
+el sistema aplicando la metodologia SCRUM para dicho procedimiento, además de aplicar herramientas y métodos que sean amigables 
+para el usuario interactue con el sistema. Una de las partes que conlleva este software es tener dos roles que son administrador 
+y Docente , este ultimo podrá tener una forma visible de la hora de entrada , almuerzo , regreso de almuerzo y salida lo que 
+tambien conlleva a tener un módulo de justificacion la cual el docente podra llenarlo de acuerdo a la necesidad que este tenga
+Lo que es la parte de adminsitrador este puede subir el archivo que tenga los datos que arroja los biométricos de dicha institucion 
+la cual el sistema generará reportes mensualmente y a su vez enmarcará a cuyos docentes que tengan las horas trabajadas menores a lo 
+que dispone el ministerio de trabajo ,
