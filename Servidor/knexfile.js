@@ -6,15 +6,15 @@ const databaseData = {
         host: '127.0.0.1',
         port: '3306',
         user: 'root',
-        password: '123456789',
-        database: 'bio'
+        password: '12345678',
+        database: 'Bio_Pro'
     }
 };
 //configurar knex
 module.exports = {
     development: {
-        migrations: {tableName: 'knex_migrations', directory: './database/migrations'},
-        seeds: {directory: './database/seeds'},
+        migrations: {tableName: 'knex_migrations', directory: './bdd/migrations'},
+        seeds: {directory: './bdd/seeds'},
         client: databaseData.client,
         connection: databaseData.connection
 

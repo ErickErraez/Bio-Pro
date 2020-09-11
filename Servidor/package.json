@@ -2,7 +2,7 @@
   "name": "Server",
   "description": "Server",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "main": "index.js",
   "author": "Erick Erraez",
@@ -18,8 +18,7 @@
     "mysql": "^2.17.1",
     "node-blob": "^0.0.2",
     "nodemailer": "^6.4.1",
-    "bookshelf": "^1.0.1",
-    "socket.io": "^2.3.0"
+    "bookshelf": "^1.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
