@@ -7,7 +7,6 @@ var User,
 User = bookshelf.Model.extend({
     tableName: 'Bio-Usuarios',
     idAttribute: 'idUsuarios',
-    hidden: ['password'],
     rol: function () {
         return this.hasOne(Rol, 'idRoles');
     }
