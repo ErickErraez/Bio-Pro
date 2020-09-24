@@ -20,7 +20,7 @@ let login = (req, res) => {
     let {pass, email} = req.body;
     Usuario.query({
         where: {correo: email}
-    }).fetch({withRelated: ['rol']}).then(user => {
+    }).fetch({withRelated: ['foto','rol']}).then(user => {
         if (user) {
             bcrypt.compare(pass, user.attributes.password, (err, re) => {
                 if (re) {
@@ -61,7 +61,7 @@ let changePassword = (req, res) => {
     let id = req.params.id;
     Usuario.query({
         where: {idUsuarios: id}
-    }).fetch({withRelated: ['rol']})
+    }).fetch({withRelated: ['rol', 'foto']})
         .then(response => {
             return res.status(200).json({
                 ok: true,

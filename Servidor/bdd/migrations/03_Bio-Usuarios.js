@@ -6,6 +6,7 @@ exports.up = function (knex, Promise) {
         table.string('correo', 50).notNullable().unique();
         table.string('password');
         table.integer('rol').unsigned().references('idRoles').inTable('Bio-Roles');
+        table.integer('foto').unsigned().references('idAdjuntos').inTable('Bio-Adjuntos');
         table.timestamps();
     });
 };

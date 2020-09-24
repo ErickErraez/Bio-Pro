@@ -1,7 +1,7 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-12">
         <div class="card">
           <div class="header">
             <h4 class="title">Datos de Usuario</h4>
@@ -9,6 +9,14 @@
           <div class="content">
             <form>
               <div class="row">
+                <div class="col-md-2">
+
+                    <div class="author">
+                      <img (click)="fileInput.click()" class="avatar sizeImage" src="{{validarFoto()}}" width="100%" height="100px"
+                           alt="..."/>
+                      <input hidden=true type="file" style="display: none;" #fileInput (change)="CodificarArchivo($event)" accept="image/*">
+                    </div>
+                </div>
                 <div class="col-md-5">
                   <div class="form-group">
                     <label>NOMBRE</label>
@@ -53,19 +61,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2">
-        <div class="card card-user">
-          <br>
-          <br>
-          <br>
-          <br>
-          <div class="content">
-            <div class="author">
-              <img class="avatar sizeImage" src="assets/img/faces/face-3.jpg" width="100%" height="100px" alt="..."/>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
 
   </div>

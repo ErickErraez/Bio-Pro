@@ -1,5 +1,6 @@
 const bookshelf = require('../../bookshelf');
 const Rol = require('./Roles').Rol;
+const Adjunto = require('./Adjunto').Adjunto;
 
 var User,
     Users;
@@ -9,6 +10,9 @@ User = bookshelf.Model.extend({
     idAttribute: 'idUsuarios',
     rol: function () {
         return this.hasOne(Rol, 'idRoles');
+    },
+    foto: function () {
+        return this.hasOne(Adjunto, 'idAdjuntos');
     }
 });
 

@@ -7,6 +7,8 @@ const api = express.Router(),
 //GET METHODS
 api.get('/', userController.welcome);
 api.get('/getUser/:id', userController.getUserById);
+api.post('/foto', userController.userFoto);
+api.post('/userFoto', userController.updateUser);
 
 
 module.exports = api;
