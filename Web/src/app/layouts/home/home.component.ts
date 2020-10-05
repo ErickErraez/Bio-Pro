@@ -4,6 +4,8 @@ import {AuthService} from '../../services/auth.service';
 import {Adjuntos} from '../../Models/Adjuntos';
 import {UserService} from '../../services/user.service';
 import {AlertService} from '../../services/alert.service';
+import {Timbrada} from '../../Models/Timbrada';
+import * as Papa from 'papaparse';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +18,11 @@ export class HomeComponent implements OnInit {
   usuario: Usuario = new Usuario();
   images: Adjuntos = new Adjuntos();
   srcFoto: any = 'assets/img/default-avatar.png';
+  file = null;
+  users: any = [];
+  archivo: Timbrada = new Timbrada();
+  dataList: any[];
+
 
   constructor(private auth: AuthService, private userServices: UserService, private alert: AlertService) {
     this.usuario = auth.validarToken();
@@ -40,15 +47,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableData1 = {
-      headerRow: ['ID', 'Nombre', 'Entrada', 'Almuerzo', 'Regreso Almuerzo', 'Salida', 'Justificar'],
-      dataRows: [
-        ['1', 'Dakota Rice', 'Dakota Rice', 'Niger', 'Oud-Turnhout', '$36,738'],
-        ['2', 'Dakota Rice', 'Minerva Hooper', 'Curaçao', 'Sinaai-Waas', '$23,789'],
-        ['3', 'Dakota Rice', 'Sage Rodriguez', 'Netherlands', 'Baileux', '$56,142'],
-        ['4', 'Dakota Rice', 'Philip Chaney', 'Korea, South', 'Overland Park', '$38,735'],
-        ['5', 'Dakota Rice', 'Doris Greene', 'Malawi', 'Feldkirchen in Kärnten', '$63,542'],
-        ['6', 'Dakota Rice', 'Mason Porter', 'Chile', 'Gloucester', '$78,615']
-      ]
+      headerRow: ['Nombre'],
     };
   }
 
@@ -82,4 +81,36 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  onChange(files: File[]) {
+    this.users = [];
+    this.file = files;
+    this.archivo.idTimbradas = this.file[0].idTimbradas;
+    if (files[0]) {
+      Papa.parse(files[0], {
+        header: true,
+        skipEmptyLines: true,
+        complete: (result, file) => {
+          this.dataList = result.data;
+          let objetoArchivo: any = {};
+          for (let i = 0; i < this.dataList.length; i++) {
+            if (this.dataList[i + 1] != undefined && this.dataList[i] != undefined) {
+              if (this.dataList[i].idTimbradas == this.dataList[i + 1].idTimbradas) {
+                objetoArchivo.idTimbradas = this.dataList[i].idTimbradas;
+                objetoArchivo.entrada = this.dataList[i].entrada;
+                objetoArchivo.almuerzo = this.dataList[i].almuerzo;
+                objetoArchivo.regresoAlmuerzo = this.dataList[i].regresoAlmuerzo;
+                objetoArchivo.salida = this.dataList[i].salida;
+                console.log(objetoArchivo);
+                this.tableData1 = {
+                  dataRows: [
+                    [objetoArchivo.almuerzo]
+                  ]
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  }
 }
