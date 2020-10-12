@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   srcFoto: any = 'assets/img/default-avatar.png';
   file = null;
   users: any = [];
+  pageActual = 1;
   campus = 'Seleccione un campus';
   archivo: Timbrada = new Timbrada();
   dataList: any[];
@@ -122,18 +123,21 @@ export class HomeComponent implements OnInit {
           objetoArchivo.regresoAlmuerzo = this.dataList[i].hora;
           objetoArchivo.salida = this.dataList[i].hora;
           this.dataUser.push([i, objetoArchivo.idTimbradas, this.dataList[i].nombre, this.dataList[i].fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
-          this.tableData1.dataRows = this.dataUser.sort(function (a, b) {
-            console.log(a)
-            console.log(b.nombre)
-            if (a.nombre > b.nombre) {
-              return 1;
-            }
-            if (a.nombre < b.nombre) {
-              return -1;
-            }
-            // a must be equal to b
-            return 0;
-          });
+          this.tableData1.dataRows = this.dataUser.sort(
+            // function (a, b) {
+            //   console.log(a)
+            //   console.log(b.nombre)
+            //   if (a.nombre > b.nombre) {
+            //     return 1;
+            //   }
+            //   if (a.nombre < b.nombre) {
+            //     return -1;
+            //   }
+            //   // a must be equal to b
+            //   return 0;
+            // }
+            //
+          );
         }
       }
     }

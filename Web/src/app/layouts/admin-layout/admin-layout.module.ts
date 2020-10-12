@@ -9,14 +9,16 @@ import {AdminLayoutRoutes} from './admin-layout.routing';
 
 import {HomeComponent} from '../home/home.component';
 import {ConfigComponent} from '../config/config.component';
+import {NgxPaginationModule} from "ngx-pagination";
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AdminLayoutRoutes),
-    FormsModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        FormsModule,
+        NgxPaginationModule,
+    ],
   declarations: [
     HomeComponent,
     ConfigComponent,

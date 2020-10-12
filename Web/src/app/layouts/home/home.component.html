@@ -56,7 +56,7 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr *ngFor="let row of tableData1.dataRows">
+                      <tr *ngFor="let row of tableData1.dataRows | paginate:{itemsPerPage:10,currentPage:pageActual}">
                         <td *ngFor="let cell of row">{{cell}}</td>
                         <td *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'">
                           <button class="btn btn-info btn-fill ">Ver Archivo</button>
@@ -67,6 +67,7 @@
                       </tr>
                       </tbody>
                     </table>
+                    <pagination-controls *ngIf="dataUser" (pageChange)="pageActual = $event"></pagination-controls>
 
                   </div>
                 </div>
