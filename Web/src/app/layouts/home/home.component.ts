@@ -20,8 +20,10 @@ export class HomeComponent implements OnInit {
   srcFoto: any = 'assets/img/default-avatar.png';
   file = null;
   users: any = [];
+  campus = 'Seleccione un campus';
   archivo: Timbrada = new Timbrada();
   dataList: any[];
+  dataUser: any[] = [];
 
 
   constructor(private auth: AuthService, private userServices: UserService, private alert: AlertService) {
@@ -47,7 +49,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableData1 = {
-      headerRow: ['Nombre'],
+      headerRow: ['ID', 'valor', 'Nombre', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
     };
   }
 
@@ -56,7 +58,7 @@ export class HomeComponent implements OnInit {
       this.userServices.actualizarFoto(this.images).subscribe((res: any) => {
         this.usuario.foto = res.response;
         this.userServices.actualizarUsuarioFoto(this.usuario).subscribe((usuario: Usuario) => {
-          this.alert.showNotification('success', 'pe-7s-bell', res.message)
+          this.alert.showNotification('success', 'pe-7s-bell', res.message);
         });
       }, err => {
         console.log(err);
@@ -65,12 +67,16 @@ export class HomeComponent implements OnInit {
       this.images.idAdjuntos = this.usuario.foto.idAdjuntos;
       this.userServices.actualizarFoto(this.images).subscribe((res: any) => {
         this.usuario.foto = res.response;
-        this.alert.showNotification('success', 'pe-7s-bell', res.message)
+        this.alert.showNotification('success', 'pe-7s-bell', res.message);
       }, err => {
         console.log(err);
       });
     }
 
+  }
+
+  valor(value: string) {
+    this.campus = value;
   }
 
   validarFoto() {
@@ -82,6 +88,8 @@ export class HomeComponent implements OnInit {
   }
 
   onChange(files: File[]) {
+
+
     this.users = [];
     this.file = files;
     this.archivo.idTimbradas = this.file[0].idTimbradas;
@@ -90,27 +98,45 @@ export class HomeComponent implements OnInit {
         header: true,
         skipEmptyLines: true,
         complete: (result, file) => {
-          this.dataList = result.data;
-          let objetoArchivo: any = {};
-          for (let i = 0; i < this.dataList.length; i++) {
-            if (this.dataList[i + 1] != undefined && this.dataList[i] != undefined) {
-              if (this.dataList[i].idTimbradas == this.dataList[i + 1].idTimbradas) {
-                objetoArchivo.idTimbradas = this.dataList[i].idTimbradas;
-                objetoArchivo.entrada = this.dataList[i].entrada;
-                objetoArchivo.almuerzo = this.dataList[i].almuerzo;
-                objetoArchivo.regresoAlmuerzo = this.dataList[i].regresoAlmuerzo;
-                objetoArchivo.salida = this.dataList[i].salida;
-                console.log(objetoArchivo);
-                this.tableData1 = {
-                  dataRows: [
-                    [objetoArchivo.almuerzo]
-                  ]
-                }
-              }
-            }
+          if (this.campus === 'Yavirac') {
+            this.loadYaviracData(result.data);
+          }
+          if (this.campus === 'Cenepa') {
+
           }
         }
       });
     }
+
   }
+
+  loadYaviracData(data) {
+    this.dataList = data;
+    const objetoArchivo: any = {};
+    for (let i = 0; i < this.dataList.length; i++) {
+      if (this.dataList[i + 1] != undefined && this.dataList[i] != undefined) {
+        if (this.dataList[i].idTimbradas == this.dataList[i + 1].idTimbradas) {
+          objetoArchivo.idTimbradas = this.dataList[i].id;
+          objetoArchivo.entrada = this.dataList[i].hora;
+          objetoArchivo.almuerzo = this.dataList[i].hora;
+          objetoArchivo.regresoAlmuerzo = this.dataList[i].hora;
+          objetoArchivo.salida = this.dataList[i].hora;
+          this.dataUser.push([i, objetoArchivo.idTimbradas, this.dataList[i].nombre, this.dataList[i].fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
+          this.tableData1.dataRows = this.dataUser.sort(function (a, b) {
+            console.log(a)
+            console.log(b.nombre)
+            if (a.nombre > b.nombre) {
+              return 1;
+            }
+            if (a.nombre < b.nombre) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+        }
+      }
+    }
+  }
+
 }

@@ -69,8 +69,8 @@ export class NavbarComponent implements OnInit {
     return titlee;
   }
 
-
   logout() {
+    localStorage.clear();
     this.route.navigate(['/login']);
   }
 

@@ -20,19 +20,13 @@ let login = (req, res) => {
     let {pass, email} = req.body;
     Usuario.query({
         where: {correo: email}
-    }).fetch({withRelated: ['foto','rol']}).then(user => {
+    }).fetch({withRelated: ['foto', 'rol']}).then(user => {
         if (user) {
             bcrypt.compare(pass, user.attributes.password, (err, re) => {
                 if (re) {
                     let token;
-                    if (user.relations.rol.attributes.descripcion == 'ADMINISTRADOR') {
-                        delete user.attributes.password;
-                        token = jwt.sign({user}, 'adminToken');
-                    }
-                    if (user.relations.rol.attributes.descripcion == 'USUARIO') {
-                        delete user.attributes.password;
-                        token = jwt.sign({user}, 'userToken');
-                    }
+                    delete user.attributes.password;
+                    token = jwt.sign({user}, 'my-secret-token');
                     delete user.attributes.password;
                     return res.status(200).json({
                         message: 'LOGUEADO CON EXITO',
@@ -58,21 +52,39 @@ let login = (req, res) => {
 };
 
 let changePassword = (req, res) => {
-    let id = req.params.id;
-    Usuario.query({
-        where: {idUsuarios: id}
-    }).fetch({withRelated: ['rol', 'foto']})
-        .then(response => {
-            return res.status(200).json({
-                ok: true,
-                response
+    let {oldPassword, newPassword, idUsuarios} = req.body;
+    Usuario.where('idUsuarios', idUsuarios).fetch({withRelated: ['foto', 'rol']}).then(usuario => {
+        if (usuario) {
+            bcrypt.compare(oldPassword, usuario.attributes.password, (err, re) => {
+                if (re) {
+                    bcrypt.hash(newPassword, 10, function (err, hash) {
+                        usuario.attributes.password = hash;
+                        new Usuario(usuario.attributes).save().then(result => {
+                            return res.status(200).json({
+                                ok: true,
+                                mensaje: `CONTRASENA ACTUALIZADA CON EXITO`
+                            })
+                        }).catch(error => {
+                            return res.status(500).json({
+                                ok: false,
+                                mensaje: `USUARIO/CONTRASENA INCORRECTOS`
+                            })
+                        })
+                    });
+
+                } else {
+                    return res.status(500).json({
+                        ok: false,
+                        mensaje: `LAS CONTRASENAS NO COINCIDEN`
+                    })
+                }
+
             })
-        }).catch(err => {
-        return res.status(500).json({
-            ok: false,
-            mensaje: `Error del servidor: ${err}`
-        })
-    });
+        }
+    }).catch(err => {
+
+    })
+
 }
 
 module.exports = {
