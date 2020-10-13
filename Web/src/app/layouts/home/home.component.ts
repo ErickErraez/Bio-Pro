@@ -30,7 +30,6 @@ export class HomeComponent implements OnInit {
 
   constructor(private auth: AuthService, private userServices: UserService, private alert: AlertService) {
     this.usuario = auth.validarToken();
-    console.log(this.usuario);
   }
 
   CodificarArchivo(event) {
