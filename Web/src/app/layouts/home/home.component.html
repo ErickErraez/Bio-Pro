@@ -67,7 +67,8 @@
                       </tr>
                       </tbody>
                     </table>
-                    <pagination-controls *ngIf="dataUser" (pageChange)="pageActual = $event"></pagination-controls>
+                    <pagination-controls *ngIf="paginador ==='true'"
+                                         (pageChange)="pageActual = $event"></pagination-controls>
 
                   </div>
                 </div>

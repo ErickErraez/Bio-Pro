@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
   archivo: Timbrada = new Timbrada();
   dataList: any[];
   dataUser: any[] = [];
+  paginador = 'false';
 
 
   constructor(private auth: AuthService, private userServices: UserService, private alert: AlertService) {
@@ -112,6 +113,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadYaviracData(data) {
+    this.paginador = 'true';
     this.dataList = data;
     const objetoArchivo: any = {};
     for (let i = 0; i < this.dataList.length; i++) {

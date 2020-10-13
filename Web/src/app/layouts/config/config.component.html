@@ -13,13 +13,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Contraseña Actual</label>
-                    <input type="text" class="form-control" placeholder="Company">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Color de Sidebar</label>
-                    <input type="text" class="form-control" placeholder="Company">
+                    <input [(ngModel)]="changePass.oldPassword" type="password" name="actualPass" class="form-control" placeholder="Contraseña Actual">
                   </div>
                 </div>
               </div>
@@ -27,7 +21,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Nueva Contraseña </label>
-                    <input type="text" class="form-control" placeholder="Company">
+                    <input  [(ngModel)]="changePass.newPassword" type="password" name="newPass" class="form-control" placeholder="Nueva contraseña">
                   </div>
                 </div>
               </div>
@@ -35,11 +29,11 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Repetir Contraseña</label>
-                    <input type="text" class="form-control" placeholder="Company">
+                    <input [(ngModel)]="changePass.repPassword" type="password" name="repeatPass" class="form-control" placeholder="Repetir contraseña">
                   </div>
                 </div>
               </div>
-              <button type="submit" class="btn btn-info btn-fill pull-left">Update Profile</button>
+              <button type="submit" (click)="actualizarPassword()" class="btn btn-info btn-fill pull-left">ACTUALIZAR CONTRASEÑA</button>
               <div class="clearfix"></div>
             </form>
           </div>

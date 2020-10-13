@@ -53,6 +53,7 @@ let login = (req, res) => {
 
 let changePassword = (req, res) => {
     let {oldPassword, newPassword, idUsuarios} = req.body;
+    console.log(req.body);
     Usuario.where('idUsuarios', idUsuarios).fetch({withRelated: ['foto', 'rol']}).then(usuario => {
         if (usuario) {
             bcrypt.compare(oldPassword, usuario.attributes.password, (err, re) => {
