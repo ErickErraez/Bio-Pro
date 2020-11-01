@@ -19,10 +19,13 @@ import {NgxPaginationModule} from "ngx-pagination";
         FormsModule,
         NgxPaginationModule,
     ],
-  declarations: [
-    HomeComponent,
-    ConfigComponent,
-  ]
+    exports: [
+        HomeComponent
+    ],
+    declarations: [
+        HomeComponent,
+        ConfigComponent,
+    ]
 })
 
 export class AdminLayoutModule {

@@ -1,24 +1,29 @@
 <div class="sidebar-wrapper">
-    <div class="logo">
-        <a class="simple-text">
-            <div class="logo-img">
-            </div>
-            BIOMETRICO
-        </a>
-    </div>
-    <ul class="nav responsive-nav">
-      <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
-        <a  [routerLink]="[menuItem.path]">
-          <i class="{{menuItem.icon}}"></i>
-          <p>{{menuItem.title}}</p>
-        </a>
-      </li>
+  <div class="logo">
+    <a class="simple-text">
+      <div class="logo-img">
+      </div>
+      BIOMETRICO
+    </a>
+  </div>
+  <ul class="nav responsive-nav">
+    <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
+      <a *ngIf="menuItem.permiso === 'ALL'" [routerLink]="[menuItem.path]">
+        <i class="{{menuItem.icon}}"></i>
+        <p>{{menuItem.title}}</p>
+      </a>
 
-        <li class="separator hidden-lg hidden-md" *ngIf="isMobileMenu()"></li>
-        <li *ngIf="isMobileMenu()">
-            <a (click)="logout()">
-                <p>Cerrar Sesion</p>
-            </a>
-        </li>
-    </ul>
+      <a *ngIf="menuItem.permiso === usuario.rol.descripcion" [routerLink]="[menuItem.path]">
+        <i class="{{menuItem.icon}}"></i>
+        <p>{{menuItem.title}}</p>
+      </a>
+    </li>
+
+    <li class="separator hidden-lg hidden-md" *ngIf="isMobileMenu()"></li>
+    <li *ngIf="isMobileMenu()">
+      <a (click)="logout()">
+        <p>Cerrar Sesion</p>
+      </a>
+    </li>
+  </ul>
 </div>

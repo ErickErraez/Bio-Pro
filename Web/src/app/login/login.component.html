@@ -1,7 +1,7 @@
 <div class="limiter">
   <div class="container-login100" style="background-image: url('assets/img/yavirac.jpg');">
     <div class="wrap-login100">
-      <form class="login100-form validate-form">
+      <form *ngIf="showLogin" class="login100-form validate-form">
 					<span class="login100-form-logo">
 						<i class="fas fa-users"></i>
 					</span>
@@ -24,6 +24,35 @@
         <div class="container-login100-form-btn">
           <button class="login100-form-btn" (click)="login()">
             Ingresar
+          </button>
+        </div>
+
+      </form>
+      <form *ngIf="!showLogin" class="login100-form validate-form">
+					<span class="login100-form-logo">
+						<i class="fas fa-users"></i>
+					</span>
+        <br>
+        <span class="login100-form-title p-b-34 p-t-27">
+						Actualizar Nueva Contrasena
+					</span>
+        <br>
+        <div class="wrap-input100 validate-input">
+          <input [(ngModel)]="changePass.newPassword" name="pass" class="input100" type="text"
+                 placeholder="Ingrese su nueva contrasena">
+          <span class="focus-input100"></span>
+        </div>
+
+        <div class="wrap-input100 validate-input">
+          <input [(ngModel)]="repPass" class="input100" type="password" name="repPass"
+                 placeholder="Repita su nueva contrasena">
+          <span class="focus-input100"></span>
+        </div>
+
+
+        <div class="container-login100-form-btn">
+          <button class="login100-form-btn" (click)="updatePass()">
+            Actualizar Contrasena
           </button>
         </div>
 

@@ -8,8 +8,11 @@ var User,
 User = bookshelf.Model.extend({
     tableName: 'Bio-Usuarios',
     idAttribute: 'idUsuarios',
+    hasTimestamps: true,
+    hasTimestamps: ['created_at', 'updated_at'],
+
     rol: function () {
-        return this.hasOne(Rol, 'idRoles');
+        return this.hasOne(Rol,'idRoles');
     },
     foto: function () {
         return this.hasOne(Adjunto, 'idAdjuntos');

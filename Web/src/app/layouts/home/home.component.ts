@@ -89,8 +89,6 @@ export class HomeComponent implements OnInit {
   }
 
   onChange(files: File[]) {
-
-
     this.users = [];
     this.file = files;
     this.archivo.idTimbradas = this.file[0].idTimbradas;

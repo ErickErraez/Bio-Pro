@@ -9,6 +9,8 @@ middlewares = require('../../app/Http/Middelware/jwt_middleware');
 api.post('/login', authController.login);
 api.post('/changePassword', [middlewares.ensureToken], authController.changePassword);
 api.post('/encriptar', authController.encriptarPassword);
+api.post('/updateUser', [middlewares.ensureToken], authController.updateUser);
 
+api.get('/getUsers', [middlewares.ensureToken], authController.getUsers);
 
 module.exports = api;
