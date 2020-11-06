@@ -63,12 +63,12 @@ let changePassword = (req, res) => {
                         new Usuario(usuario.attributes).save().then(result => {
                             return res.status(200).json({
                                 ok: true,
-                                mensaje: `CONTRASENA ACTUALIZADA CON EXITO`
+                                mensaje: `CONTRASEÑA ACTUALIZADA CON EXITO`
                             })
                         }).catch(error => {
                             return res.status(500).json({
                                 ok: false,
-                                mensaje: `USUARIO/CONTRASENA INCORRECTOS`
+                                mensaje: `USUARIO/CONTRASEÑA INCORRECTOS`
                             })
                         })
                     });
@@ -76,7 +76,7 @@ let changePassword = (req, res) => {
                 } else {
                     return res.status(500).json({
                         ok: false,
-                        mensaje: `LAS CONTRASENAS NO COINCIDEN`
+                        mensaje: `LA CONTRASEÑA ACTUAL NO ES CORRECTA`
                     })
                 }
 

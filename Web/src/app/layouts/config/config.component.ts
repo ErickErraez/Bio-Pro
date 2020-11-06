@@ -26,14 +26,14 @@ export class ConfigComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  actualizarPassword() {
+   actualizarPassword() {
     if (this.changePass.oldPassword !== '' && this.changePass.newPassword !== '' && this.repPassword !== '') {
       if (this.changePass.newPassword === this.repPassword) {
         this.changePass.idUsuarios = this.usuario.idUsuarios;
         this.auth.actualizarPassword(this.changePass).subscribe((res: any) => {
-          console.log(this.changePass);
-          this.alert.showNotification('success', 'pe-7s-bell', res.mensaje);
-          localStorage.clear();
+         // console.log(this.changePass);
+         this.alert.showNotification('success', 'pe-7s-bell', res.mensaje);
+           localStorage.clear();
           this.route.navigate(['/login']);
         }, err => {
           if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
