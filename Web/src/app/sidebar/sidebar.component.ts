@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {AuthService} from '../services/auth.service';
+import {Usuario} from '../Models/Usuario';
 
 declare const $: any;
 
@@ -8,11 +10,13 @@ declare interface RouteInfo {
   title: string;
   icon: string;
   class: string;
+  permiso: string;
 }
 
 export const ROUTES: RouteInfo[] = [
-  {path: 'principal', title: 'Principal', icon: 'pe-7s-graph', class: ''},
-  {path: 'configuracion', title: 'Configuracion', icon: 'pe-7s-config', class: ''},
+  {path: 'principal', title: 'Principal', icon: 'pe-7s-graph', class: '', permiso: 'ALL'},
+  {path: 'configuracion', title: 'Configuracion', icon: 'pe-7s-config', class: '', permiso: 'ALL'},
+  {path: 'roles', title: 'Asignar Rol', icon: 'pe-7s-config', class: '', permiso: 'SUPERADMINISTRADOR'},
 ];
 
 @Component({
@@ -21,8 +25,10 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   menuItems: any[];
+  usuario: Usuario = new Usuario();
 
-  constructor(private route: Router) {
+  constructor(private auth: AuthService, private route: Router) {
+    this.usuario = auth.validarToken();
   }
 
   ngOnInit() {

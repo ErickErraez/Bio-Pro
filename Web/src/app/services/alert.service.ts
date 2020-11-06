@@ -19,7 +19,7 @@ export class AlertService {
       message: mensaje
     }, {
       type: tipo,
-      timer: 1000,
+      timer: 100,
       placement: {
         from: 'top',
         align: 'right'

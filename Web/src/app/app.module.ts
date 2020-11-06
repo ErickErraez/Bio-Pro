@@ -15,6 +15,8 @@ import {AppComponent} from './app.component';
 
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {TokenInterceptor} from './services/token.interceptor';
+import { RolesComponent } from './layouts/roles/roles.component';
+import { FilterPipe } from './services/filter.pipe';
 
 @NgModule({
   imports: [
@@ -31,6 +33,8 @@ import {TokenInterceptor} from './services/token.interceptor';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
+    RolesComponent,
+    FilterPipe,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},],
   bootstrap: [AppComponent]
