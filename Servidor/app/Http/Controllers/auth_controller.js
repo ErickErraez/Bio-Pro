@@ -30,6 +30,7 @@ let login = (req, res) => {
                         Rol.query({
                             where: {idRoles: user.attributes.rol}
                         }).fetch().then(rol => {
+
                             user.attributes.rol = rol.attributes;
                             if (user.attributes.foto != null) {
                                 Foto.query({

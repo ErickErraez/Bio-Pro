@@ -9,41 +9,42 @@
           </div>
           <div class="content">
             <form>
-                <div class="form-row">
-                  <div class="form-group col-md-4">
-                    <label >ID</label>
-                    <input [(ngModel)]="newUSer.idUsuarios" type="text" name="idUsuarios" class="form-control"  placeholder="ID">
-                  </div>
-                  <div class="form-group col-md-8">
-                    <label >NOMBRES COMPLETOS</label>
-                    <input [(ngModel)]="newUSer.nombre" type="text" name="nombre" class="form-control"  placeholder="SUAEREZ SANCHEZ JUAN AGUSTÏN">
-                  </div>
-                </div>
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label >CÉDULA</label>
-                  <input [(ngModel)]="newUSer.cedula" type="text" name="cedula" class="form-control"  placeholder="1751031442">
+                  <label>ID</label>
+                  <input [(ngModel)]="newUSer.idBio" type="text" name="idUsuarios" class="form-control"
+                         placeholder="ID">
                 </div>
                 <div class="form-group col-md-8">
-                  <label >EMAIL</label>
-                  <input [(ngModel)]="newUSer.correo" type="email" name="correo" class="form-control"  placeholder="adf.coronel@yavirac.edu.ec">
+                  <label>NOMBRES COMPLETOS</label>
+                  <input [(ngModel)]="newUSer.nombre" type="text" name="nombre" class="form-control"
+                         placeholder="SUAEREZ SANCHEZ JUAN AGUSTÏN">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>CÉDULA</label>
+                  <input [(ngModel)]="newUSer.cedula" type="text" name="cedula" class="form-control"
+                         placeholder="1751031442">
+                </div>
+                <div class="form-group col-md-8">
+                  <label>EMAIL</label>
+                  <input [(ngModel)]="newUSer.correo" type="email" name="correo" class="form-control"
+                         placeholder="adf.coronel@yavirac.edu.ec">
 
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-6">
-                  <label >CONTRASEÑA</label>
-                  <input [(ngModel)]="newUSer.newpassword" type="password" name="newPassword" class="form-control"  placeholder="Contraseña">
-                </div>
-                <div class="form-group col-md-6">
-                  <label >SELECCIONE EL ROL</label>
-                  <select class="form-control" [(ngModel)]="newUSer.rol">
+                  <label>SELECCIONE EL ROL</label>
+                  <select class="form-control" [(ngModel)]="newUSer.rol.idRoles" name="idRoles">
                     <option value="1">SUPERADMINISTRADOR</option>
                     <option value="2">ADMINISTRADOR</option>
                     <option value="3">USUARIO</option>
                   </select>
                 </div>
-                <button type="submit" (click)="addUser()" class="btn btn-info btn-fill pull-left">AGREGAR USUARIO</button>
+                <button type="submit" (click)="addUser()" class="btn btn-info btn-fill pull-left">AGREGAR USUARIO
+                </button>
                 <div class="clearfix"></div>
               </div>
             </form>

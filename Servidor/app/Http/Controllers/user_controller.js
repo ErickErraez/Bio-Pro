@@ -50,6 +50,17 @@ let userFoto = (req, res) => {
     })
 }
 let addUSer = (req, res) => {
+    //BUSQUEDA DEL ID QUE NO EXISTA
+
+    idFoto = req.body.foto.idAdjuntos;
+    idRol = req.body.rol.idRoles;
+    delete req.body.foto;
+    delete req.body.rol;
+    req.body.foto = idFoto;
+    req.body.rol = idRol;
+
+    //WHERE QUE MANDAS EL IDBIO LA CEDULA Y EL CORREO
+
     new Usuario(req.body).save().then(response => {
         return res.status(200).json({
             ok: true,
