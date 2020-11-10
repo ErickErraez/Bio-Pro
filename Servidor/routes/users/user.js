@@ -11,6 +11,7 @@ api.get('/getUser/:id', userController.getUserById);
 // api.post('/foto', [middlewares.ensureToken, middlewares.ensureTokenAdmin], userController.userFoto);
 api.post('/foto', [middlewares.ensureToken], userController.userFoto);
 api.post('/userFoto', [middlewares.ensureToken], userController.updateUser);
+api.post('/addUSer', [middlewares.ensureToken],userController.addUSer)
 
 
 module.exports = api;

@@ -17,6 +17,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 import {TokenInterceptor} from './services/token.interceptor';
 import { RolesComponent } from './layouts/roles/roles.component';
 import { FilterPipe } from './services/filter.pipe';
+import { AddUsersComponent } from './layouts/add-users/add-users.component';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { FilterPipe } from './services/filter.pipe';
     AdminLayoutComponent,
     RolesComponent,
     FilterPipe,
+    AddUsersComponent,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},],
   bootstrap: [AppComponent]

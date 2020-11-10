@@ -23,4 +23,8 @@ export class UserService {
     return this.http.post(this.url + 'userFoto', usuario);
   }
 
+  addUser(usuario: Usuario) {
+    return this.http.post(this.url + 'addUSer', usuario);
+  }
+
 }

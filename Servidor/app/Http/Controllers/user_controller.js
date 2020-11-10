@@ -37,14 +37,29 @@ let userFoto = (req, res) => {
     new Image(req.body).save().then(response => {
         return res.status(200).json({
             ok: true,
-            message:'FOTO ACTUALIZADA CON EXITO',
+            message: 'FOTO ACTUALIZADA CON EXITO',
             response
         })
 
     }).catch(err => {
         return res.status(500).json({
             ok: true,
-            message:'OCURRIO UN ERROR AL ACTUALIZAR LA FOTO',
+            message: 'OCURRIO UN ERROR AL ACTUALIZAR LA FOTO',
+            err
+        })
+    })
+}
+let addUSer = (req, res) => {
+    new Usuario(req.body).save().then(response => {
+        return res.status(200).json({
+            ok: true,
+            message: 'FOTO ACTUALIZADA CON EXITO',
+            response
+        })
+    }).catch(err => {
+        return res.status(500).json({
+            ok: true,
+            message: 'OCURRIO UN ERROR AL GUARDAR EL USUARIO',
             err
         })
     })
@@ -58,14 +73,14 @@ let updateUser = (req, res) => {
     new Usuario(req.body).save().then(response => {
         return res.status(200).json({
             ok: true,
-            message:'FOTO CREADA CON EXITO',
+            message: 'FOTO CREADA CON EXITO',
             response
         })
     }).catch(err => {
         console.log(err)
         return res.status(500).json({
             ok: false,
-            message:'OCURRIO UN ERROR AL ACTUALIZAR LA FOTO',
+            message: 'OCURRIO UN ERROR AL ACTUALIZAR LA FOTO',
             err
         })
 
@@ -77,5 +92,6 @@ module.exports = {
     welcome,
     getUserById,
     userFoto,
+    addUSer,
     updateUser
 };
