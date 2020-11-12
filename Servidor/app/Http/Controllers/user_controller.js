@@ -60,25 +60,36 @@ let addUSer = (req, res) => {
     req.body.rol = idRol;
 
     //WHERE QUE MANDAS EL IDBIO LA CEDULA Y EL CORREO
-    let {idBio,cedula, email} = req.body;
-    where: {idBio: idBio}
-    where: {correo: email}
-    where: {cedula: cedula}
+    db('Bio-Usuarios').where('idBio', '=', req.body.idBio)
+        .orWhere('correo', '=', req.body.correo)
+        .orWhere('cedula', '=', req.body.cedula)
+        .then(response => {
+            if (response.length == 0) {
+                new Usuario(req.body).save().then(response => {
+                    return res.status(200).json({
+                        ok: true,
+                        message: 'USUARIO CREADO CON ÉXITO',
+                        response
+                    })
+                }).catch(err => {
+                    return res.status(500).json({
+                        ok: true,
+                        message: 'OCURRIO UN ERROR AL GUARDAR EL USUARIO',
+                        err
+                    })
+                })
+            } else {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'EL USUARIO YA EXISTE'
+                })
+            }
 
 
-    new Usuario(req.body).save().then(response => {
-        return res.status(200).json({
-            ok: true,
-            message: 'USUARIO CREADO CON ÉXITO',
-            response
-        })
-    }).catch(err => {
-        return res.status(500).json({
-            ok: true,
-            message: 'OCURRIO UN ERROR AL GUARDAR EL USUARIO',
-            err
-        })
-    })
+        }).catch(err => {
+
+    });
+
 }
 
 let updateUser = (req, res) => {
