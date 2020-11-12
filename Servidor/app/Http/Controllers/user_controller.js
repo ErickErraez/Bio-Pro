@@ -60,11 +60,16 @@ let addUSer = (req, res) => {
     req.body.rol = idRol;
 
     //WHERE QUE MANDAS EL IDBIO LA CEDULA Y EL CORREO
+    let {idBio,cedula, email} = req.body;
+    where: {idBio: idBio}
+    where: {correo: email}
+    where: {cedula: cedula}
+
 
     new Usuario(req.body).save().then(response => {
         return res.status(200).json({
             ok: true,
-            message: 'FOTO ACTUALIZADA CON EXITO',
+            message: 'USUARIO CREADO CON ÉXITO',
             response
         })
     }).catch(err => {
