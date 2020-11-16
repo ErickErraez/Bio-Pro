@@ -2,12 +2,12 @@
 exports.up = function(knex, Promise) {
     return knex.schema.createTable('Bio-Timbradas', function (table) {
         table.increments('idTimbradas').unsigned().primary();
-        table.string('fecha', 50).notNullable();
-        table.string('entrada', 50).notNullable();
-        table.string('almuerzo', 50).notNullable().unique();
-        table.string('regresoAlmuerzo', 50).notNullable().unique();
-        table.string('salida', 50).notNullable().unique();
-        table.integer('usuario').unsigned().references('idUsuarios').inTable('Bio-Usuarios');
+        table.date('fecha').notNullable();
+        table.time('entrada');
+        table.time('almuerzo');
+        table.time('regresoAlmuerzo');
+        table.time('salida');
+        table.integer('usuario').unsigned().references('idBio').inTable('Bio-Usuarios');
         table.integer('justificacion').unsigned().references('idAdjuntos').inTable('Bio-Adjuntos');
         table.timestamps();
     });

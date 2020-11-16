@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {environment} from '../../environments/environment';
 import {Usuario} from '../Models/Usuario';
+import {Timbrada} from '../Models/Timbrada';
 
 
 @Injectable({
@@ -33,12 +34,17 @@ export class AuthService {
 
   validarToken() {
     const token = this.getToken();
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    return JSON.parse(jsonPayload).user;
+    if (token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload).user;
+    } else {
+      return false;
+    }
+
   }
 
   actualizarUsuarioFoto(usuario: Usuario) {
@@ -48,6 +54,14 @@ export class AuthService {
 
   getUser() {
     return this.http.get(this.url + 'getUsers');
+  }
+
+  getData(timbrada: Timbrada) {
+    return this.http.post(this.url + 'getData', timbrada);
+  }
+
+  saveFile(timbrada: Timbrada) {
+    return this.http.post(this.url + 'saveFile', timbrada);
   }
 
 }

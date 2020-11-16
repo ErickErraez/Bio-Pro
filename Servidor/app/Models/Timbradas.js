@@ -24,6 +24,6 @@ Timbradas = bookshelf.Collection.extend({
 });
 
 module.exports = {
-    Timbradas: bookshelf.model('Timbrada', Timbrada),
-    Timbradas: bookshelf.collection('Timbradas', UsTimbradasers)
+    Timbrada: bookshelf.model('Timbrada', Timbrada),
+    Timbradas: bookshelf.collection('Timbradas', Timbradas)
 };

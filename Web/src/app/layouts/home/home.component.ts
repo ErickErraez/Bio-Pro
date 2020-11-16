@@ -6,6 +6,7 @@ import {UserService} from '../../services/user.service';
 import {AlertService} from '../../services/alert.service';
 import {Timbrada} from '../../Models/Timbrada';
 import * as Papa from 'papaparse';
+import {split} from 'ts-node';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableData1 = {
-      headerRow: ['ID', 'valor', 'Nombre', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
+      headerRow: ['ID', 'Nombre', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
     };
   }
 
@@ -97,49 +98,142 @@ export class HomeComponent implements OnInit {
         header: true,
         skipEmptyLines: true,
         complete: (result, file) => {
-          if (this.campus === 'Yavirac') {
-            this.loadYaviracData(result.data);
-          }
-          if (this.campus === 'Cenepa') {
+          this.dataList = result.data;
 
-          }
         }
       });
     }
 
   }
 
-  loadYaviracData(data) {
-    this.paginador = 'true';
-    this.dataList = data;
-    const objetoArchivo: any = {};
-    for (let i = 0; i < this.dataList.length; i++) {
-      if (this.dataList[i + 1] != undefined && this.dataList[i] != undefined) {
-        if (this.dataList[i].idTimbradas == this.dataList[i + 1].idTimbradas) {
-          objetoArchivo.idTimbradas = this.dataList[i].id;
-          objetoArchivo.entrada = this.dataList[i].hora;
-          objetoArchivo.almuerzo = this.dataList[i].hora;
-          objetoArchivo.regresoAlmuerzo = this.dataList[i].hora;
-          objetoArchivo.salida = this.dataList[i].hora;
-          this.dataUser.push([i, objetoArchivo.idTimbradas, this.dataList[i].nombre, this.dataList[i].fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
-          this.tableData1.dataRows = this.dataUser.sort(
-            // function (a, b) {
-            //   console.log(a)
-            //   console.log(b.nombre)
-            //   if (a.nombre > b.nombre) {
-            //     return 1;
-            //   }
-            //   if (a.nombre < b.nombre) {
-            //     return -1;
-            //   }
-            //   // a must be equal to b
-            //   return 0;
-            // }
-            //
-          );
-        }
-      }
+  saveChange() {
+    if (this.campus === 'Yavirac') {
+      this.loadYaviracData();
+    }
+    if (this.campus === 'Cenepa') {
+
     }
   }
 
+  loadYaviracData() {
+    this.paginador = 'true';
+    this.dataList.sort(
+      function(a, b) {
+        if (a.nombre > b.nombre) {
+          return 1;
+        }
+        if (a.nombre < b.nombre) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      }
+    );
+    const datos = [];
+    let objetoArchivo: Timbrada = new Timbrada();
+    objetoArchivo.usuario = new Usuario();
+
+    for (let i = 0; i < this.dataList.length; i++) {
+      if (this.dataList[i] != undefined) {
+        objetoArchivo.usuario.idBio = this.dataList[i].id;
+        objetoArchivo.fecha = this.dataList[i].fecha;
+        objetoArchivo.usuario.nombre = this.dataList[i].nombre;
+        const x = this.validarHora(this.dataList[i].hora);
+        switch (x) {
+          case 'entrada':
+            objetoArchivo.entrada = this.dataList[i].hora;
+            break;
+          case 'almuerzo':
+            objetoArchivo.almuerzo = this.dataList[i].hora;
+            break;
+          case 'finalmuerzo':
+            objetoArchivo.regresoAlmuerzo = this.dataList[i].hora;
+            break;
+          case 'salida':
+            objetoArchivo.salida = this.dataList[i].hora;
+            break;
+        }
+
+        if (this.dataList[i + 1] != undefined) {
+          if (this.dataList[i].fecha == this.dataList[i + 1].fecha && this.dataList[i].id == this.dataList[i + 1].id) {
+            const y = this.validarHora(this.dataList[i + 1].hora);
+            switch (y) {
+              case 'entrada':
+                objetoArchivo.entrada = this.dataList[i + 1].hora;
+                break;
+              case 'almuerzo':
+                objetoArchivo.almuerzo = this.dataList[i + 1].hora;
+                break;
+              case 'finalmuerzo':
+                objetoArchivo.regresoAlmuerzo = this.dataList[i + 1].hora;
+                break;
+              case 'salida':
+                objetoArchivo.salida = this.dataList[i + 1].hora;
+                break;
+            }
+            delete this.dataList[i + 1];
+          }
+        } else {
+          const y = this.validarHora(this.dataList[i].hora);
+          switch (y) {
+            case 'entrada':
+              objetoArchivo.entrada = this.dataList[i].hora;
+              break;
+            case 'almuerzo':
+              objetoArchivo.almuerzo = this.dataList[i].hora;
+              break;
+            case 'finalmuerzo':
+              objetoArchivo.regresoAlmuerzo = this.dataList[i].hora;
+              break;
+            case 'salida':
+              objetoArchivo.salida = this.dataList[i].hora;
+              break;
+          }
+        }
+
+        datos.push([objetoArchivo.usuario.idBio, objetoArchivo.usuario.nombre, objetoArchivo.fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
+        this.dataUser.push(objetoArchivo);
+        objetoArchivo = new Timbrada();
+        objetoArchivo.usuario = new Usuario();
+      }
+    }
+    this.tableData1.dataRows = datos;
+  }
+
+  validarHora(hora) {
+
+    if (hora.split(':')[0] <= 10) {
+      return 'entrada';
+    }
+
+    if (hora.split(':')[0] >= 11 && hora.split(':')[0] <= 15) {
+      return 'almuerzo';
+    }
+
+    if (hora.split(':')[0] >= 13 && hora.split(':')[0] <= 16) {
+      return 'finalmuerzo';
+    }
+
+    if (hora.split(':')[0] >= 17) {
+      return 'salida';
+    }
+
+  }
+
+  guardar() {
+    for (let i = 0; i < this.dataUser.length; i++) {
+      this.auth.getData(this.dataUser[i]).subscribe((res: any) => {
+        console.log(res);
+      }, error => {
+        console.log(error);
+        if (error.error.err.message == 'EmptyResponse') {
+          this.auth.saveFile(this.dataUser[i]).subscribe(resp => {
+            console.log(resp);
+          }, err => {
+            console.log(err);
+          });
+        }
+      });
+    }
+  }
 }

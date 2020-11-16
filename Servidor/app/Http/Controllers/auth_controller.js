@@ -5,6 +5,7 @@ const config = require('../../../knexfile');
 const db = require('knex')(config['development']);
 const Usuario = require('../../Models/Usuarios').User;
 const Usuarios = require('../../Models/Usuarios').Users;
+const Timbrada = require('../../Models/Timbradas').Timbrada;
 const Rol = require('../../Models/Roles').Rol;
 const Foto = require('../../Models/Adjunto').Adjunto;
 
@@ -127,7 +128,7 @@ let updateUser = (req, res) => {
     delete req.body.rol;
 
     req.body.rol = idRol;
-    if (idFoto!==null) {
+    if (idFoto !== null) {
         req.body.foto = idFoto;
     }
 
@@ -152,16 +153,56 @@ let updateUser = (req, res) => {
 
 let getUsers = (req, res) => {
 
-
     new Usuarios().fetch().then(function (users) {
         return res.status(200).json({
             ok: true,
             users
         })
-    })
-        .catch(function (err) {
-            console.log(err);
-        });
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: true,
+            err
+        })
+    });
+
+
+}
+
+
+let getData = (req, res) => {
+    new Timbrada().query({
+        where: {fecha: req.body.fecha, usuario: req.body.usuario.idBio}
+    }).fetch().then(function (timbrada) {
+        return res.status(200).json({
+            ok: true,
+            timbrada
+        })
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        })
+    });
+
+
+}
+
+let saveFile = (req, res) => {
+    const idUsuario = req.body.usuario.idBio;
+    delete req.body.usuario;
+    req.body.usuario = idUsuario;
+
+    new Timbrada().save(req.body).then(function (users) {
+        return res.status(200).json({
+            ok: true,
+            users
+        })
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: true,
+            err
+        })
+    });
 
 
 }
@@ -171,5 +212,7 @@ module.exports = {
     changePassword,
     encriptarPassword,
     updateUser,
-    getUsers
+    getUsers,
+    getData,
+    saveFile
 };
