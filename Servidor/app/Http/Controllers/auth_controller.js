@@ -6,6 +6,7 @@ const db = require('knex')(config['development']);
 const Usuario = require('../../Models/Usuarios').User;
 const Usuarios = require('../../Models/Usuarios').Users;
 const Timbrada = require('../../Models/Timbradas').Timbrada;
+const Timbradas = require('../../Models/Timbradas').Timbradas;
 const Rol = require('../../Models/Roles').Rol;
 const Foto = require('../../Models/Adjunto').Adjunto;
 
@@ -150,6 +151,23 @@ let updateUser = (req, res) => {
     });
 
 }
+let getTimbradas = (req, res) => {
+    console.log(req.params.idBio);
+    new Timbradas().query({
+        where: {usuario: req.params.idBio}
+    }).fetch().then(function (timbrada) {
+        return res.status(200).json({
+            ok: true,
+            timbrada
+        })
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        })
+    });
+
+}
 
 let getUsers = (req, res) => {
 
@@ -214,5 +232,6 @@ module.exports = {
     updateUser,
     getUsers,
     getData,
-    saveFile
+    saveFile,
+    getTimbradas
 };

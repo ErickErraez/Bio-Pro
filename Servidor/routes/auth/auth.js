@@ -15,4 +15,6 @@ api.post('/saveFile', [middlewares.ensureToken], authController.saveFile);
 
 api.get('/getUsers', [middlewares.ensureToken], authController.getUsers);
 
+api.get('/getTimbrada/:idBio',  authController.getTimbradas);
+
 module.exports = api;
