@@ -15,12 +15,18 @@ import {split} from 'ts-node';
 })
 export class HomeComponent implements OnInit {
 
+  paginadora = 'true';
+  paginas = 5;
+  filtro = '';
   public tableData1;
+  public tableData2;
   usuario: Usuario = new Usuario();
+  user: Usuario = new Usuario();
   images: Adjuntos = new Adjuntos();
   srcFoto: any = 'assets/img/default-avatar.png';
   file = null;
   users: any = [];
+  timbradas: any = [];
   pageActual = 1;
   campus = 'Seleccione un campus';
   archivo: Timbrada = new Timbrada();
@@ -53,6 +59,13 @@ export class HomeComponent implements OnInit {
     this.tableData1 = {
       headerRow: ['ID', 'Nombre', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
     };
+    this.tableData2 = {
+      headerRow: ['Id', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
+    };
+    this.auth.getTimbradas(this.usuario.idBio).subscribe((res: any) => {
+      this.tableData2.dataRows = res.timbrada;
+      console.log(res.timbrada);
+    })
   }
 
   actualizarFoto() {
@@ -118,7 +131,7 @@ export class HomeComponent implements OnInit {
   loadYaviracData() {
     this.paginador = 'true';
     this.dataList.sort(
-      function(a, b) {
+      function (a, b) {
         if (a.nombre > b.nombre) {
           return 1;
         }
@@ -190,7 +203,6 @@ export class HomeComponent implements OnInit {
               break;
           }
         }
-
         datos.push([objetoArchivo.usuario.idBio, objetoArchivo.usuario.nombre, objetoArchivo.fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
         this.dataUser.push(objetoArchivo);
         objetoArchivo = new Timbrada();
