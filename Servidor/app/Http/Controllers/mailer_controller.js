@@ -14,7 +14,7 @@ let sendMail = (req, res) => {
         from: 'Biometrico <bio.notification@gmail.com>',
         to: datos.emails,
         subject: datos.asunto,
-        html: `<table style="border-top: 10px;border-bottom: 10px; border-color: black; "><tr><th style="color: black; font-size: 7; text-align: center;"> ${datos.mensaje} </th></tr>    </table>`
+        html: `<table style="border-top: 10px;border-bottom: 10px; border-color: black; "><tr><th style="color: black; font-size: 7; text-align: center;"> ${datos.body} </th></tr>    </table>`
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
