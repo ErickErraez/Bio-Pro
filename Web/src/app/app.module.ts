@@ -15,9 +15,10 @@ import {AppComponent} from './app.component';
 
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {TokenInterceptor} from './services/token.interceptor';
-import { RolesComponent } from './layouts/roles/roles.component';
-import { FilterPipe } from './services/filter.pipe';
-import { AddUsersComponent } from './layouts/add-users/add-users.component';
+import {RolesComponent} from './layouts/roles/roles.component';
+import {FilterPipe} from './services/filter.pipe';
+import {AddUsersComponent} from './layouts/add-users/add-users.component';
+import {ForgotpassComponent} from './forgotpass/forgotpass.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,7 @@ import { AddUsersComponent } from './layouts/add-users/add-users.component';
     FilterPipe,
     AddUsersComponent,
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -15,6 +15,7 @@ const routes: Routes = [
   },
 
   {path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginModule)},
+  {path: 'login/identity', loadChildren: () => import('./forgotpass/forgotpass.module').then(m => m.ForgotpassModule)},
   {
     path: 'web',
     component: AdminLayoutComponent,

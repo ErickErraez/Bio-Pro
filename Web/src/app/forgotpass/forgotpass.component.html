@@ -1,1 +1,35 @@
-<p>forgotpass works!</p>
+<div class="limiter">
+  <div class="container-login100" style="background-image: url('assets/img/yavirac.jpg');">
+    <div class="wrap-login100">
+      <form class="login100-form validate-form">
+					<span class="login100-form-logo">
+						<i class="fas fa-users"></i>
+					</span>
+        <br>
+        <span class="login100-form-title p-b-34 p-t-27">
+						Recupera tu contraseña
+					</span>
+        <br>
+        <div class="wrap-input100 validate-input">
+          <input [(ngModel)]="email.emails" name="emails" class="input100" type="email" placeholder="Ingrese su email">
+          <span class="focus-input100"></span>
+        </div>
+
+
+        <div class="container-login100-form-btn">
+          <button [routerLink]="['/login']" class="login100-form-btn-cancel">
+            Cancelar
+          </button>
+          &nbsp;
+          <button (click)="enviar()" class="login100-form-btn">
+            Enviar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
