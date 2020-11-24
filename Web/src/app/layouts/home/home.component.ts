@@ -7,6 +7,9 @@ import {AlertService} from '../../services/alert.service';
 import {Timbrada} from '../../Models/Timbrada';
 import * as Papa from 'papaparse';
 import {split} from 'ts-node';
+import {Email} from '../../Models/Email';
+import {MailerService} from "../../services/mailer.service";
+
 
 @Component({
   selector: 'app-home',
@@ -15,11 +18,14 @@ import {split} from 'ts-node';
 })
 export class HomeComponent implements OnInit {
 
+
   paginadora = 'true';
   paginas = 5;
   filtro = '';
+  alejo = 'adf.coronel@yavirac.edu.ec';
   public tableData1;
   public tableData2;
+  email: Email = new Email();
   usuario: Usuario = new Usuario();
   user: Usuario = new Usuario();
   images: Adjuntos = new Adjuntos();
@@ -35,7 +41,7 @@ export class HomeComponent implements OnInit {
   paginador = 'false';
 
 
-  constructor(private auth: AuthService, private userServices: UserService, private alert: AlertService) {
+  constructor(private mail: MailerService, private auth: AuthService, private userServices: UserService, private alert: AlertService) {
     this.usuario = auth.validarToken();
   }
 
@@ -56,6 +62,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.tableData1 = {
       headerRow: ['ID', 'Nombre', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
     };
@@ -66,6 +73,7 @@ export class HomeComponent implements OnInit {
       this.tableData2.dataRows = res.timbrada;
       console.log(res.timbrada);
     })
+
   }
 
   actualizarFoto() {
@@ -247,5 +255,26 @@ export class HomeComponent implements OnInit {
         }
       });
     }
+  }
+
+  enviarEmail() {
+
+    this.userServices.getUserAdmin(2).subscribe((res: any) => {
+      console.log(res.user);
+      this.email.asunto = 'Notificacion';
+      this.email.body = 'Se envio el email';
+      var correo = [];
+      for(let i = 0 ;i<res.user.length;i++){
+        correo.push(res.user[i].correo);
+      }
+      this.email.emails = correo.toString();
+
+    })
+    console.log(this.email)
+    this.email.body = this.mail.emailTemplate(this.email, 'Notificacion');
+    this.mail.notificacion(this.email).subscribe(res => {
+      this.email = new Email();
+    });
+
   }
 }

@@ -6,6 +6,7 @@ const db = require('knex')(config['development']);
 const Usuario = require('../../Models/Usuarios').User;
 const Image = require('../../Models/Adjunto').Adjunto;
 const Rol = require('../../Models/Roles').Rol;
+const Usuarios = require('../../Models/Usuarios').Users;
 
 
 //METODOS GET
@@ -114,11 +115,30 @@ let updateUser = (req, res) => {
     });
 
 }
+let getAdmin = (req, res) => {
+    console.log(req.params.idRoles);
+    new Usuarios().query({
+        where: {rol: req.params.idRoles = 2}
+    }).fetch().then(function (user) {
+        return res.status(200).json({
+            ok: true,
+            user
+        })
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        })
+    });
+
+}
+
 
 module.exports = {
     welcome,
     getUserById,
     userFoto,
     addUSer,
-    updateUser
+    updateUser,
+    getAdmin
 };

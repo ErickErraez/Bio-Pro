@@ -27,4 +27,8 @@ export class UserService {
     return this.http.post(this.url + 'addUSer', usuario);
   }
 
+  getUserAdmin(idRoles) {
+    return this.http.get(this.url + `getAdmin/${idRoles}`)
+  }
+
 }

@@ -17,6 +17,10 @@ export class MailerService {
     return this.http.post(this.url + 'recuperarPassword', mail);
   }
 
+  notificacion(mail: Email) {
+    return this.http.post(this.url + 'notificacion', mail);
+  }
+
 
   emailTemplate(mail: Email, titulo?: string) {
     return `<table width="100%" height="100%" style="min-width:348px; padding-left: 450px"  border="0" cellspacing="0" cellpadding="0" lang="en">
