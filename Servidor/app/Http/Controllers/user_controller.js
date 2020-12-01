@@ -94,10 +94,13 @@ let addUSer = (req, res) => {
 }
 
 let updateUser = (req, res) => {
-    idFoto = req.body.foto.idAdjuntos;
-    delete req.body.foto;
-    delete req.body.rol;
-    req.body.foto = idFoto;
+    if (req.body.foto) {
+        idFoto = req.body.foto.idAdjuntos;
+        delete req.body.foto;
+        delete req.body.rol;
+        req.body.foto = idFoto;
+    }
+
     new Usuario(req.body).save().then(response => {
         return res.status(200).json({
             ok: true,
@@ -134,9 +137,29 @@ let getAdmin = (req, res) => {
 }
 
 
+let getUserByEmail = (req, res) => {
+    let email = req.params.email;
+    Usuario.query({
+        where: {correo: email}
+    }).fetch()
+        .then(usuario => {
+            return res.status(200).json({
+                ok: true,
+                usuario
+            })
+        }).catch(err => {
+        return res.status(500).json({
+            ok: false,
+            mensaje: `Usuario no Encontrado`
+        })
+    });
+}
+
+
 module.exports = {
     welcome,
     getUserById,
+    getUserByEmail,
     userFoto,
     addUSer,
     updateUser,

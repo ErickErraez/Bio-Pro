@@ -19,7 +19,6 @@ let sendMail = (req, res) => {
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
-        console.log(error);
         if (error) {
             return res.status(500).json({
                 ok: false,

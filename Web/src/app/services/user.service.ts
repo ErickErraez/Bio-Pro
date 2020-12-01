@@ -31,4 +31,8 @@ export class UserService {
     return this.http.get(this.url + `getAdmin/${idRoles}`)
   }
 
+  getUserByEmail(email) {
+    return this.http.get(this.url + 'getUserEmail/' + email)
+  }
+
 }

@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {MailerService} from '../services/mailer.service';
 import {Email} from '../Models/Email';
+import {UserService} from '../services/user.service';
+import {Usuario} from '../Models/Usuario';
+import {AlertService} from '../services/alert.service';
 
 @Component({
   selector: 'app-forgotpass',
@@ -11,19 +14,31 @@ export class ForgotpassComponent implements OnInit {
 
   email: Email = new Email();
 
-  constructor(private mail: MailerService) {
+  constructor(private mail: MailerService, private user: UserService, private alert: AlertService) {
   }
 
   ngOnInit(): void {
-    this.email.asunto = 'Recuperacion de Contraseña';
-    this.email.body = 'SU NUEVA CLAVE ES: ' + 123;
+
   }
 
   enviar() {
-    this.email.body = this.mail.emailTemplate(this.email, 'Recuperacion de cuenta');
-    this.mail.forgotPassword(this.email).subscribe(res => {
-      this.email = new Email();
-    });
+    this.user.getUserByEmail(this.email.emails).subscribe((res: any) => {
+        res.usuario.password = '$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey';
+        this.user.actualizarUsuarioFoto(res.usuario).subscribe(resp => {
+          this.email.asunto = 'Recuperacion de Contraseña';
+          this.email.body = 'SU NUEVA CLAVE ES: yavirac2020';
+          this.email.body = this.mail.emailTemplate(this.email, 'Recuperacion de cuenta');
+          this.mail.forgotPassword(this.email).subscribe(email => {
+            this.email = new Email();
+            this.alert.showNotification('success', 'pe-7s-bell', 'Se ha enviado su clave al correo');
+          });
+        });
+      }, (error: any) => {
+        this.alert.showNotification('danger', 'pe-7s-bell', error.error.mensaje);
+      }
+    )
+
+
   }
 
 
