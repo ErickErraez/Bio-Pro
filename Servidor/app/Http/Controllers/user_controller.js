@@ -118,8 +118,32 @@ let updateUser = (req, res) => {
     });
 
 }
+let updateUserForgot = (req, res) => {
+    if (req.body.foto) {
+        idFoto = req.body.foto.idAdjuntos;
+        delete req.body.foto;
+        delete req.body.rol;
+        req.body.foto = idFoto;
+    }
+
+    new Usuario(req.body).save().then(response => {
+        return res.status(200).json({
+            ok: true,
+            message: 'FOTO CREADA CON EXITO',
+            response
+        })
+    }).catch(err => {
+        console.log(err)
+        return res.status(500).json({
+            ok: false,
+            message: 'OCURRIO UN ERROR AL ACTUALIZAR LA FOTO',
+            err
+        })
+
+    });
+
+}
 let getAdmin = (req, res) => {
-    console.log(req.params.idRoles);
     new Usuarios().query({
         where: {rol: req.params.idRoles = 2}
     }).fetch().then(function (user) {
@@ -163,5 +187,6 @@ module.exports = {
     userFoto,
     addUSer,
     updateUser,
-    getAdmin
+    getAdmin,
+    updateUserForgot
 };

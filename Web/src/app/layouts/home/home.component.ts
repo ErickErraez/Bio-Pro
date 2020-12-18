@@ -20,14 +20,16 @@ export class HomeComponent implements OnInit {
 
 
   paginadora = 'true';
+  horasTotales: 0;
   paginas = 5;
   filtro = '';
-  alejo = 'adf.coronel@yavirac.edu.ec';
   public tableData1;
   public tableData2;
+  public tableData3;
   email: Email = new Email();
   usuario: Usuario = new Usuario();
   user: Usuario = new Usuario();
+  timbrada: Timbrada = new Timbrada();
   images: Adjuntos = new Adjuntos();
   srcFoto: any = 'assets/img/default-avatar.png';
   file = null;
@@ -64,16 +66,22 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     this.tableData1 = {
-      headerRow: ['ID', 'Nombre', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
+      headerRow: ['ID', 'Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4']
     };
     this.tableData2 = {
-      headerRow: ['Id', 'Fecha', 'Entrada', 'Almuerzo', 'Regreso', 'Salida']
+      headerRow: ['Id', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria']
     };
     this.auth.getTimbradas(this.usuario.idBio).subscribe((res: any) => {
       this.tableData2.dataRows = res.timbrada;
-      console.log(res.timbrada);
     })
 
+    this.auth.getTodasTimbradas().subscribe((res: any) => {
+      this.tableData2.dataRows = res.timbrada;
+      console.log(res.timbrada)
+      for (let i = 0; i < res.timbrada[i].usuario.nombre.length; i++) {
+        console.log(res.timbrada[i].usuario.nombre);
+      }
+    })
   }
 
   actualizarFoto() {
@@ -264,17 +272,30 @@ export class HomeComponent implements OnInit {
       this.email.asunto = 'Notificacion';
       this.email.body = 'Se envio el email';
       var correo = [];
-      for(let i = 0 ;i<res.user.length;i++){
+      for (let i = 0; i < res.user.length; i++) {
         correo.push(res.user[i].correo);
       }
       this.email.emails = correo.toString();
 
     })
-    console.log(this.email)
     this.email.body = this.mail.emailTemplate(this.email, 'Notificacion');
     this.mail.notificacion(this.email).subscribe(res => {
       this.email = new Email();
     });
 
+  }
+
+  HorasTrabajadas(item, i) {
+    this.horasTotales = (item.entrada + item.almuerzo + item.regresoAlmuerzo + item.salida);
+    let valor1;
+    let valor2;
+    let valor3;
+    let valor4;
+    valor1 = this.horasTotales.toString().substr(0, 0);
+    valor2 = this.horasTotales.toString().substr(1, 1);
+    valor3 = this.horasTotales.toString().substr(2, 1);
+    valor4 = this.horasTotales.toString().substr(3, 2);
+    const total = valor1 + valor2 + valor3 + valor4;
+    this.horasTotales = total;
   }
 }

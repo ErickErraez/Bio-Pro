@@ -14,7 +14,7 @@ exports.seed = function(knex, Promise) {
           {idBio:8,cedula:'1717078818',nombre: 'GUAMAN CHANGO MAURICIO ALEJANDRO',correo: 'mguaman@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:3,},
           {idBio:11,cedula:'1707858492',nombre: 'PACHACAMA NIETO JORGE MAURICIO',correo: 'ppachacama@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:3,},
           {idBio:14,cedula:'1717065161',nombre: 'VILLAGRAN OLIVO MARIA EDELINA ',correo: 'mvillagran@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:3,},
-          {idBio:15,cedula:'1715798896',nombre: 'TAYUPANTA LOPEZ AMPARO DEL CONSUELO',correo: 'atayupanta@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:2,},
+          {idBio:15,cedula:'1715798896',nombre: 'TAYUPANTA LOPEZ AMPARO DEL CONSUELO',correo: 'atayupanta@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:3,},
           {idBio:17,cedula:'1716233265',nombre: 'PILLAJO TUFIÑO LUIS DIEGO',correo: 'lpillajo@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:3,},
           {idBio:19,cedula:'1720905304',nombre: 'CUPUERAN ANDRADE DANIELA ELIZABETH',correo: 'dcupueran@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:3,},
           {idBio:23,cedula:'1716430580',nombre: 'ESTEVEZ TERAN DANILO LENIN',correo: 'destevez@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0',rol:3,},

@@ -224,6 +224,20 @@ let saveFile = (req, res) => {
 
 
 }
+let getTodasTimbradas = (req, res) => {
+    new Timbradas().fetch({withRelated: ['usuario']}).then(function (timbrada) {
+        return res.status(200).json({
+            ok: true,
+            timbrada
+        })
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: true,
+            err
+        })
+    });
+}
+
 
 module.exports = {
     login,
@@ -233,5 +247,6 @@ module.exports = {
     getUsers,
     getData,
     saveFile,
-    getTimbradas
+    getTimbradas,
+    getTodasTimbradas
 };

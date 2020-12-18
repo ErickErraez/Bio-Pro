@@ -68,4 +68,8 @@ export class AuthService {
     return this.http.get(this.url + `getTimbrada/${idBio}`);
   }
 
+  getTodasTimbradas() {
+    return this.http.get(this.url + 'getTimbradas')
+  }
+
 }

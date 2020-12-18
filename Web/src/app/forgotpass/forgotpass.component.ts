@@ -23,8 +23,10 @@ export class ForgotpassComponent implements OnInit {
 
   enviar() {
     this.user.getUserByEmail(this.email.emails).subscribe((res: any) => {
+        res.usuario.newpassword = 0;
         res.usuario.password = '$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey';
-        this.user.actualizarUsuarioFoto(res.usuario).subscribe(resp => {
+        console.log(res.usuario);
+        this.user.actualizarPassword(res.usuario).subscribe(resp => {
           this.email.asunto = 'Recuperacion de Contraseña';
           this.email.body = 'SU NUEVA CLAVE ES: yavirac2020';
           this.email.body = this.mail.emailTemplate(this.email, 'Recuperacion de cuenta');

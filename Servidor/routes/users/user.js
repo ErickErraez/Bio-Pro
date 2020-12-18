@@ -13,6 +13,7 @@ api.get('/getAdmin/:idRoles',userController.getAdmin)
 // api.post('/foto', [middlewares.ensureToken, middlewares.ensureTokenAdmin], userController.userFoto);
 api.post('/foto', [middlewares.ensureToken], userController.userFoto);
 api.post('/userFoto', [middlewares.ensureToken], userController.updateUser);
+api.post('/userPassword', userController.updateUserForgot);
 api.post('/addUSer', [middlewares.ensureToken],userController.addUSer)
 
 

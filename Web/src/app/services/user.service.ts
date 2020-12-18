@@ -34,5 +34,7 @@ export class UserService {
   getUserByEmail(email) {
     return this.http.get(this.url + 'getUserEmail/' + email)
   }
-
+  actualizarPassword(usuario: Usuario) {
+    return this.http.post(this.url + 'userPassword', usuario);
+  }
 }
