@@ -152,7 +152,6 @@ let updateUser = (req, res) => {
 
 }
 let getTimbradas = (req, res) => {
-    console.log(req.params.idBio);
     new Timbradas().query({
         where: {usuario: req.params.idBio}
     }).fetch().then(function (timbrada) {
@@ -225,17 +224,25 @@ let saveFile = (req, res) => {
 
 }
 let getTodasTimbradas = (req, res) => {
-    new Timbradas().fetch({withRelated: ['usuario']}).then(function (timbrada) {
-        return res.status(200).json({
-            ok: true,
-            timbrada
+
+    db('Bio-Timbradas').select()
+        .innerJoin('Bio-Usuarios', 'Bio-Timbradas.usuario', 'Bio-Usuarios.idBio')
+        .then(timbrada => {
+            return res.status(200).json({
+                ok: true,
+                timbrada
+            })
         })
-    }).catch(function (err) {
-        return res.status(500).json({
-            ok: true,
-            err
+        .catch((error) => {
+            return res.status(500).json({
+                ok: true,
+                err
+            })
         })
-    });
+
+
+
+
 }
 
 
