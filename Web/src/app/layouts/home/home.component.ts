@@ -69,17 +69,16 @@ export class HomeComponent implements OnInit {
       headerRow: ['ID', 'Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4']
     };
     this.tableData2 = {
-      headerRow: ['Id', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria']
+      headerRow: ['Id',  'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria']
     };
     this.auth.getTimbradas(this.usuario.idBio).subscribe((res: any) => {
       this.tableData2.dataRows = res.timbrada;
     })
 
     this.auth.getTodasTimbradas().subscribe((res: any) => {
-      this.tableData2.dataRows = res.timbrada;
+      this.tableData1.dataRows = res.timbrada;
       console.log(res.timbrada)
-      for (let i = 0; i < res.timbrada[i].usuario.nombre.length; i++) {
-        console.log(res.timbrada[i].usuario.nombre);
+      for (let i = 0; i < res.timbrada.length; i++) {
       }
     })
   }
