@@ -154,17 +154,21 @@ export class AddUsersComponent implements OnInit {
         // Validamos que el digito validador sea igual al de la cedula
         if (digitoValidador === ultimoDigito) {
           console.log('cedula correcta');
+          return true;
         } else {
           console.log('cedula incorrecta');
+          return false;
         }
 
       } else {
         // imprimimos en consola si la region no pertenece
         console.log('la region no pertenece');
+        return false;
       }
     } else {
       // Imprimimos en consola si la cedula tiene mas o menos de 10 digitos
       console.log('la cedula tiene mas o menos de 10 digitos');
+      return false;
     }
 
   }
