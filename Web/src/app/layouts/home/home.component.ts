@@ -35,12 +35,13 @@ export class HomeComponent implements OnInit {
   file = null;
   users: any = [];
   timbradas: any = [];
+  newFile = false;
   pageActual = 1;
   campus = 'Seleccione un campus';
   archivo: Timbrada = new Timbrada();
   dataList: any[];
   dataUser: any[] = [];
-  paginador = 'false';
+  paginador = 'true';
 
 
   constructor(private mail: MailerService, private auth: AuthService, private userServices: UserService, private alert: AlertService) {
@@ -77,9 +78,7 @@ export class HomeComponent implements OnInit {
 
     this.auth.getTodasTimbradas().subscribe((res: any) => {
       this.tableData1.dataRows = res.timbrada;
-      console.log(res.timbrada)
-      for (let i = 0; i < res.timbrada.length; i++) {
-      }
+
     })
   }
 
@@ -127,6 +126,7 @@ export class HomeComponent implements OnInit {
         skipEmptyLines: true,
         complete: (result, file) => {
           this.dataList = result.data;
+          this.newFile = true;
 
         }
       });

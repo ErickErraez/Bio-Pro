@@ -39,9 +39,5 @@ export class ForgotpassComponent implements OnInit {
         this.alert.showNotification('danger', 'pe-7s-bell', error.error.mensaje);
       }
     )
-
-
   }
-
-
 }
