@@ -21,7 +21,8 @@ export class HomeComponent implements OnInit {
 
   paginadora = 'true';
   horasTotales: 0;
-  paginas = 5;
+  paginas = 10;
+  PageActual = 1;
   filtro = '';
   public tableData1;
   public tableData2;

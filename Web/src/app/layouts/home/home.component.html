@@ -115,53 +115,77 @@
                     </button>
                   </div>
                 </div>
+
+                <div class="row">
+                  <div class="col-md-2">
+                    Seleccione las paginas a mostrar
+                    <select class="form-control" [(ngModel)]="paginas" name="paginas">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                    </select>
+                  </div>
+                  <div class="col-md-8">
+
+                  </div>
+                  <div class="col-md-2">
+                    <input [(ngModel)]="filtro" name="filtro" type="search" class="form-control input-sm"
+                           placeholder="Buscar Registros"
+                           aria-controls="datatables">
+                  </div>
+                </div>
               </div>
               <div class="clearfix"></div>
 
-              <div *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'"
-                   class="row">
-                <div class="col-md-12">
 
-                  <div class="content table-responsive table-full-width">
-                    <table class="table table-hover table-striped">
-                      <thead>
-                      <tr>
-                        <th *ngFor="let cell of tableData1.headerRow">{{ cell }}</th>
-                      </tr>
-                      </thead>
-                      <tbody>
+              <div *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'">
 
-                      <ng-container *ngIf="!newFile">
-                        <tr
-                          *ngFor="let item of this.tableData1.dataRows | paginate:{itemsPerPage:10,currentPage:pageActual}">
-                          <td>{{item.idTimbradas}}</td>
-                          <td>{{item.nombre}}</td>
-                          <td>{{item.fecha}}</td>
-                          <td>{{item.entrada}}</td>
-                          <td>{{item.almuerzo}}</td>
-                          <td>{{item.regresoAlmuerzo}}</td>
-                          <td>{{item.salida}}</td>
-                          <td>
-                          </td>
+
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <div class="content table-responsive table-full-width">
+                      <table class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                          <th *ngFor="let cell of tableData1.headerRow">{{ cell }}</th>
                         </tr>
-                      </ng-container>
-                      <ng-container *ngIf="newFile">
-                        <tr *ngFor="let row of tableData1.dataRows | paginate:{itemsPerPage:10,currentPage:pageActual}">
-                          <td *ngFor="let cell of row">{{cell}}</td>
+                        </thead>
+                        <tbody>
 
-                          <td *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'">
-                            <button class="btn btn-info btn-fill ">Ver Archivo</button>
-                          </td>
+                        <ng-container *ngIf="!newFile">
+                          <tr
+                            *ngFor="let item of this.tableData1.dataRows| filter:filtro | paginate:{itemsPerPage:paginas,currentPage:pageActual} ">
+                            <td>{{item.idTimbradas}}</td>
+                            <td>{{item.nombre}}</td>
+                            <td>{{item.fecha}}</td>
+                            <td>{{item.entrada}}</td>
+                            <td>{{item.almuerzo}}</td>
+                            <td>{{item.regresoAlmuerzo}}</td>
+                            <td>{{item.salida}}</td>
+                            <td>
+                            </td>
+                          </tr>
+                        </ng-container>
+                        <ng-container *ngIf="newFile">
+                          <tr
+                            *ngFor="let row of tableData1.dataRows | paginate:{itemsPerPage:10,currentPage:pageActual}">
+                            <td *ngFor="let cell of row">{{cell}}</td>
 
-                        </tr>
-                      </ng-container>
-                      </tbody>
-                    </table>
-                    <pagination-controls *ngIf="paginador ==='true'"
-                                         (pageChange)="pageActual = $event"></pagination-controls>
+                            <td *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'">
+                              <button class="btn btn-info btn-fill ">Ver Archivo</button>
+                            </td>
+
+                          </tr>
+                        </ng-container>
+                        </tbody>
+                      </table>
+                      <pagination-controls *ngIf="paginador ==='true'"
+                                           (pageChange)="pageActual = $event"></pagination-controls>
+                    </div>
+                    <!-- AQUI VA TODAS LAS TIMBRADAS GUARDADES EN BASE DE DATOS -->
+
                   </div>
-                  <!-- AQUI VA TODAS LAS TIMBRADAS GUARDADES EN BASE DE DATOS -->
-
                 </div>
               </div>
             </form>

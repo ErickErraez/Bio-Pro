@@ -37,10 +37,10 @@ import {ForgotpassComponent} from './forgotpass/forgotpass.component';
     AppComponent,
     AdminLayoutComponent,
     RolesComponent,
-    FilterPipe,
     AddUsersComponent,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {

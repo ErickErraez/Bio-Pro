@@ -39,7 +39,7 @@
                     </thead>
                     <tbody>
                     <tr
-                      *ngFor="let item of this.tableData1.dataRows |filter:filtro | paginate:{itemsPerPage:paginas,currentPage:pageActual} ">
+                      *ngFor="let item of this.tableData1.dataRows| filter:filtro | paginate:{itemsPerPage:paginas,currentPage:pageActual} ">
                       <ng-container *ngIf="user.idUsuarios !== item.idUsuarios">
                         <td>{{item.idUsuarios}}</td>
                         <td>{{item.nombre}}</td>

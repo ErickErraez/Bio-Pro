@@ -9,23 +9,26 @@ import {AdminLayoutRoutes} from './admin-layout.routing';
 
 import {HomeComponent} from '../home/home.component';
 import {ConfigComponent} from '../config/config.component';
-import {NgxPaginationModule} from "ngx-pagination";
+import {NgxPaginationModule} from 'ngx-pagination';
+import {FilterPipe} from '../../services/filter.pipe';
 
 
 @NgModule({
-    imports: [
-        CommonModule,
-        RouterModule.forChild(AdminLayoutRoutes),
-        FormsModule,
-        NgxPaginationModule,
-    ],
-    exports: [
-        HomeComponent
-    ],
-    declarations: [
-        HomeComponent,
-        ConfigComponent,
-    ]
+  imports: [
+    CommonModule,
+    RouterModule.forChild(AdminLayoutRoutes),
+    FormsModule,
+    NgxPaginationModule,
+  ],
+  exports: [
+    HomeComponent,
+    FilterPipe
+  ],
+  declarations: [
+    HomeComponent,
+    ConfigComponent,
+    FilterPipe,
+  ]
 })
 
 export class AdminLayoutModule {
