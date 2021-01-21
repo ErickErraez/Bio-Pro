@@ -1,4 +1,12 @@
-.sizeImage{
+.sizeImage {
   width: 180px;
   height: auto;
+}
+
+.color1 {
+  background-color: rgba(255, 0, 0, 0.37);
+}
+
+.color2{
+  background-color: rgb(0, 4, 255);
 }

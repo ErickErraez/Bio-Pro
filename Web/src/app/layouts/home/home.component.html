@@ -14,7 +14,8 @@
                     <img (click)="fileInput.click()" class="avatar sizeImage" src="{{validarFoto()}}" width="100%"
                          height="100px"
                          alt="..."/>
-                    <input hidden=true type="file" style="display: none;" #fileInput (change)="CodificarArchivo($event)"
+                    <input hidden=true type="file" style="display: none;" #fileInput
+                           (change)="CodificarArchivo($event,'foto')"
                            accept="image/*">
                   </div>
                 </div>
@@ -61,32 +62,36 @@
                             <div class="col-md-12">
                               <div class="content table-responsive table-full-width">
 
-                                <table class="table table-hover table-striped">
+                                <table class="table table-hover">
                                   <thead>
                                   <tr>
                                     <th *ngFor="let cell of tableData2.headerRow">{{ cell }}</th>
                                   </tr>
                                   </thead>
                                   <tbody>
-                                  <tr
-                                    *ngFor="let item of this.tableData2.dataRows;let i = index">
-                                    <ng-container>
-                                      <td>{{item.idTimbradas}}</td>
-                                      <td>{{item.fecha}}</td>
-                                      <td>{{item.entrada}}</td>
-                                      <td>{{item.almuerzo}}</td>
-                                      <td>{{item.regresoAlmuerzo}}</td>
-                                      <td>{{item.salida}}</td>
-                                      <td>{{horasTotales}}</td>
-                                      <td *ngIf="HorasTrabajadas(item,i)"></td>
-                                      <td *ngIf="usuario.rol.descripcion ==='USUARIO'">
-                                        <button (click)="enviarEmail()" class="btn btn-info btn-fill ">JUSTIFICAR
-                                        </button>
-                                      </td>
-                                      <td>
-                                      </td>
-                                    </ng-container>
-                                  </tr>
+
+                                  <ng-container>
+                                    <tr
+                                      *ngFor="let item of this.tableData2.dataRows | paginate:{itemsPerPage:paginas,currentPage:pageActual} let i =index;"
+                                      [ngClass]="HorasTrabajadas(item,i,'clase')?'color1':''">
+                                      <ng-container *ngIf="HorasTrabajadas(item,i,'hora')">
+                                        <td>{{item.idTimbradas}}</td>
+                                        <td>{{item.fecha | date:'dd/MM/yyyy'}}</td>
+                                        <td>{{item.entrada}}</td>
+                                        <td>{{item.almuerzo}}</td>
+                                        <td>{{item.regresoAlmuerzo}}</td>
+                                        <td>{{item.salida}}</td>
+                                        <td>{{item.total | date:'h:mm'}}</td>
+                                        <td *ngIf="HorasTrabajadas(item,i,'clase')">
+                                          <button type="button" class="btn btn-info btn-fill" data-toggle="modal"
+                                                  data-backdrop="false"
+                                                  data-target="#upload">
+                                            Justificar
+                                          </button>
+                                        </td>
+                                      </ng-container>
+                                    </tr>
+                                  </ng-container>
                                   </tbody>
                                 </table>
                                 <pagination-controls *ngIf="paginador ==='true'"
@@ -148,7 +153,7 @@
                   <div class="col-md-12">
 
                     <div class="content table-responsive table-full-width">
-                      <table class="table table-hover table-striped">
+                      <table class="table table-hover">
                         <thead>
                         <tr>
                           <th *ngFor="let cell of tableData1.headerRow">{{ cell }}</th>
@@ -158,16 +163,18 @@
 
                         <ng-container *ngIf="!newFile">
                           <tr
-                            *ngFor="let item of this.tableData1.dataRows| filter:filtro | paginate:{itemsPerPage:paginas,currentPage:pageActual} ">
-                            <td>{{item.idTimbradas}}</td>
-                            <td>{{item.nombre}}</td>
-                            <td>{{item.fecha}}</td>
-                            <td>{{item.entrada}}</td>
-                            <td>{{item.almuerzo}}</td>
-                            <td>{{item.regresoAlmuerzo}}</td>
-                            <td>{{item.salida}}</td>
-                            <td>
-                            </td>
+                            *ngFor="let item of this.tableData1.dataRows | filter:filtro | paginate:{itemsPerPage:paginas,currentPage:pageActual} let i =index;"
+                            [ngClass]="HorasTrabajadas(item,i,'clase')?'color1':''">
+                            <ng-container *ngIf="HorasTrabajadas(item,i,'hora')">
+                              <td>{{item.idTimbradas}}</td>
+                              <td>{{item.nombre}}</td>
+                              <td>{{item.fecha | date:'dd/MM/yyyy'}}</td>
+                              <td>{{item.entrada}}</td>
+                              <td>{{item.almuerzo}}</td>
+                              <td>{{item.regresoAlmuerzo}}</td>
+                              <td>{{item.salida}}</td>
+                              <td>{{item.total | date:'h:mm'}}</td>
+                            </ng-container>
                           </tr>
                         </ng-container>
                         <ng-container *ngIf="newFile">
@@ -267,6 +274,37 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary btn-fill">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" style="background-color: rgba(0,0,0,0.7);" id="upload" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Agregar Justificacion</h4>
+      </div>
+      <div class="modal-body">
+        <input hidden type="file" name="files" class="form-control"
+               #uploads (change)="CodificarArchivo(uploads.files,'archivo')"
+               multiplec xclkvsdlk
+               value="process"/>
+
+        <br>
+        <div class="form-group"><label>Descripcion</label>
+        <textarea  class="form-control" placeholder="Descripcion" rows="5"
+                  value="Mike"></textarea>
+        </div>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-fill">Enviar</button>
       </div>
     </div>
   </div>

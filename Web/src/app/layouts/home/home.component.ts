@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit {
     this.usuario = auth.validarToken();
   }
 
-  CodificarArchivo(event) {
+  CodificarArchivo(event, tipo) {
     const reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -64,8 +64,13 @@ export class HomeComponent implements OnInit {
         this.images.descripcion = 'FOTO PERFIL';
         this.images.tipo = file.type;
         this.images.contenido = reader.result.toString().split(',')[1];
-        this.actualizarFoto();
-        this.srcFoto = 'data:' + this.images.tipo + ';base64,' + this.images.contenido;
+        if (tipo === 'foto') {
+          this.actualizarFoto();
+          this.srcFoto = 'data:' + this.images.tipo + ';base64,' + this.images.contenido;
+        } else {
+          alert('subido');
+        }
+
       };
     }
   }
@@ -262,7 +267,6 @@ export class HomeComponent implements OnInit {
   guardar() {
     for (let i = 0; i < this.dataUser.length; i++) {
       this.auth.getData(this.dataUser[i]).subscribe((res: any) => {
-        console.log(res);
       }, error => {
         console.log(error);
         if (error.error.err.message == 'EmptyResponse') {
@@ -276,44 +280,134 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  enviarEmail() {
+  sendJustification() {
 
-    this.userServices.getUserAdmin(2).subscribe((res: any) => {
-      console.log(res.user);
-      this.email.asunto = 'Notificacion';
-      this.email.body = 'Se envio el email';
-      var correo = [];
-      for (let i = 0; i < res.user.length; i++) {
-        correo.push(res.user[i].correo);
-      }
-      this.email.emails = correo.toString();
 
-    })
-    this.email.body = this.mail.emailTemplate(this.email, 'Notificacion');
-    this.mail.notificacion(this.email).subscribe(res => {
-      this.email = new Email();
-    });
+    // this.userServices.getUserAdmin(2).subscribe((res: any) => {
+    //   this.email.asunto = 'Notificacion';
+    //   this.email.body = 'Se envio el email';
+    //   const correo = [];
+    //   for (let i = 0; i < res.user.length; i++) {
+    //     correo.push(res.user[i].correo);
+    //   }
+    //   this.email.emails = correo.toString();
+    //
+    // })
+    // this.email.body = this.mail.emailTemplate(this.email, 'Notificacion');
+    // this.mail.notificacion(this.email).subscribe(res => {
+    //   this.email = new Email();
+    // });
 
   }
 
-  HorasTrabajadas(item, i) {
-    this.horasTotales = (item.entrada + item.almuerzo + item.regresoAlmuerzo + item.salida);
-    let valor1;
-    let valor2;
-    let valor3;
-    let valor4;
-    valor1 = this.horasTotales.toString().substr(0, 0);
-    valor2 = this.horasTotales.toString().substr(1, 1);
-    valor3 = this.horasTotales.toString().substr(2, 1);
-    valor4 = this.horasTotales.toString().substr(3, 2);
-    const total = valor1 + valor2 + valor3 + valor4;
-    this.horasTotales = total;
+  HorasTrabajadas(item, i, tipo) {
+
+    let valor1 = 0;
+    let valor2 = 0;
+    let valor3 = 0;
+    let valor4 = 0;
+
+    const t1 = new Date();
+    const t2 = new Date();
+    const t3 = new Date();
+    const t4 = new Date();
+    const total = new Date();
+
+    if (item.entrada != null && item.salida != null) {
+      valor1 = item.entrada.split(':');
+      valor4 = item.salida.split(':');
+      t1.setHours(valor1[0], valor1[1], valor1[2]);
+      t4.setHours(valor4[0], valor4[1], valor4[2]);
+      if (t4.getHours() > t1.getHours()) {
+        const hora = t4.getHours() - t1.getHours();
+        const minutos = t4.getMinutes() - t1.getMinutes()
+        total.setHours(hora, minutos, 0);
+      } else {
+        const hora = t1.getHours() - t4.getHours();
+        const minutos = t1.getMinutes() - t4.getMinutes()
+        total.setHours(hora, minutos, 0);
+      }
+    }
+
+    if (item.almuerzo != null && item.salida != null) {
+      valor1 = item.almuerzo.split(':');
+      valor4 = item.salida.split(':');
+      t1.setHours(valor1[0], valor1[1], valor1[2]);
+      t4.setHours(valor4[0], valor4[1], valor4[2]);
+      if (t4.getHours() > t1.getHours()) {
+        const hora = t4.getHours() - t1.getHours();
+        const minutos = t4.getMinutes() - t1.getMinutes()
+        total.setHours(hora, minutos, 0);
+      } else {
+        const hora = t1.getHours() - t4.getHours();
+        const minutos = t1.getMinutes() - t4.getMinutes()
+        total.setHours(hora, minutos, 0);
+      }
+    }
+
+    if (item.entrada != null && item.almuerzo != null) {
+      valor1 = item.entrada.split(':');
+      valor4 = item.almuerzo.split(':');
+      t1.setHours(valor1[0], valor1[1], valor1[2]);
+      t4.setHours(valor4[0], valor4[1], valor4[2]);
+      if (t4.getHours() > t1.getHours()) {
+        const hora = t4.getHours() - t1.getHours();
+        const minutos = t4.getMinutes() - t1.getMinutes()
+        total.setHours(hora, minutos, 0);
+      } else {
+        const hora = t1.getHours() - t4.getHours();
+        const minutos = t1.getMinutes() - t4.getMinutes()
+        total.setHours(hora, minutos, 0);
+      }
+    }
+
+    if (item.entrada != null && item.regresoAlmuerzo != null) {
+      valor1 = item.entrada.split(':');
+      valor4 = item.regresoAlmuerzo.split(':');
+      t1.setHours(valor1[0], valor1[1], valor1[2]);
+      t4.setHours(valor4[0], valor4[1], valor4[2]);
+      if (t4.getHours() > t1.getHours()) {
+        const hora = t4.getHours() - t1.getHours();
+        const minutos = t4.getMinutes() - t1.getMinutes()
+        total.setHours(hora, minutos, 0);
+      } else {
+        const hora = t1.getHours() - t4.getHours();
+        const minutos = t1.getMinutes() - t4.getMinutes()
+        total.setHours(hora, minutos, 0);
+      }
+    }
+
+    if (item.entrada != null && item.almuerzo == null && item.regresoAlmuerzo == null && item.salida == null) {
+      total.setHours(1, 0, 0);
+    }
+    if (item.almuerzo != null && item.entrada == null && item.regresoAlmuerzo == null && item.salida == null) {
+      total.setHours(1, 0, 0);
+    }
+    if (item.regresoAlmuerzo != null && item.almuerzo == null && item.entrada == null && item.salida == null) {
+      total.setHours(1, 0, 0);
+    }
+    if (item.salida != null && item.almuerzo == null && item.regresoAlmuerzo == null && item.entrada == null) {
+      total.setHours(1, 0, 0);
+    }
+
+    item.total = total;
+
+    if (tipo === 'clase') {
+      if (total.getHours() < 8) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   generarPdf() {
     const data = [];
-data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4'])
+    data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4'])
     for (let i = 0; i < this.tableData1.dataRows.length; i++) {
+      // tslint:disable-next-line:max-line-length
       data.push([this.tableData1.dataRows[i].nombre, this.tableData1.dataRows[i].fecha.split('T')[0], this.tableData1.dataRows[i].entrada, this.tableData1.dataRows[i].almuerzo, this.tableData1.dataRows[i].regresoAlmuerzo, this.tableData1.dataRows[i].salida])
     }
     PdfMakeWrapper.setFonts(pdfFonts);
@@ -338,7 +432,5 @@ data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrad
     );
     pdf.pageSize('A4');
     pdf.create().open()
-
-
   }
 }
