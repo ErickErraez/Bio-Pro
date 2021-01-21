@@ -20,6 +20,7 @@ import {FilterPipe} from './services/filter.pipe';
 import {AddUsersComponent} from './layouts/add-users/add-users.component';
 import {ForgotpassComponent} from './forgotpass/forgotpass.component';
 
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,

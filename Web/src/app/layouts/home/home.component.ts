@@ -8,7 +8,11 @@ import {Timbrada} from '../../Models/Timbrada';
 import * as Papa from 'papaparse';
 import {split} from 'ts-node';
 import {Email} from '../../Models/Email';
-import {MailerService} from "../../services/mailer.service";
+import {MailerService} from '../../services/mailer.service';
+import {PdfMakeWrapper, Txt, Img, Table, Cell, Columns} from 'pdfmake-wrapper';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts'; // fonts provided for pdfmake
+
+// Set the fonts to use
 
 
 @Component({
@@ -39,6 +43,7 @@ export class HomeComponent implements OnInit {
   newFile = false;
   pageActual = 1;
   campus = 'Seleccione un campus';
+  opcion = 'Seleccione la opcion';
   archivo: Timbrada = new Timbrada();
   dataList: any[];
   dataUser: any[] = [];
@@ -71,7 +76,7 @@ export class HomeComponent implements OnInit {
       headerRow: ['ID', 'Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4']
     };
     this.tableData2 = {
-      headerRow: ['Id',  'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria']
+      headerRow: ['Id', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria']
     };
     this.auth.getTimbradas(this.usuario.idBio).subscribe((res: any) => {
       this.tableData2.dataRows = res.timbrada;
@@ -141,6 +146,12 @@ export class HomeComponent implements OnInit {
     }
     if (this.campus === 'Cenepa') {
 
+    }
+  }
+
+  cargarArchivos() {
+    if (this.opcion === 'PDF') {
+      this.generarPdf();
     }
   }
 
@@ -297,5 +308,37 @@ export class HomeComponent implements OnInit {
     valor4 = this.horasTotales.toString().substr(3, 2);
     const total = valor1 + valor2 + valor3 + valor4;
     this.horasTotales = total;
+  }
+
+  generarPdf() {
+    const data = [];
+data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4'])
+    for (let i = 0; i < this.tableData1.dataRows.length; i++) {
+      data.push([this.tableData1.dataRows[i].nombre, this.tableData1.dataRows[i].fecha.split('T')[0], this.tableData1.dataRows[i].entrada, this.tableData1.dataRows[i].almuerzo, this.tableData1.dataRows[i].regresoAlmuerzo, this.tableData1.dataRows[i].salida])
+    }
+    PdfMakeWrapper.setFonts(pdfFonts);
+    const pdf = new PdfMakeWrapper();
+
+    pdf.add(
+      new Txt('INSTITUTO TECNOLÓGICO SUPERIOR "YAVIRAC"').alignment('center').italics().color('red').end
+    );
+    pdf.add(
+      pdf.ln(1)
+    );
+    pdf.add(
+      new Txt('Listado de docentes del Instituto Tecnológico Superior "Yavirac" con sus respectivas timbradas.').alignment('left').color('blue').end
+    );
+    pdf.add(
+      pdf.ln(1)
+    );
+    pdf.add(
+      new Table(
+        data,
+      ).color('black').layout('lightHorizontalLines').end
+    );
+    pdf.pageSize('A4');
+    pdf.create().open()
+
+
   }
 }

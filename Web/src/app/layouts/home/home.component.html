@@ -115,8 +115,11 @@
                     </button>
                   </div>
                 </div>
-
                 <div class="row">
+                  <button type="button" class="btn btn-danger btn-fill" data-toggle="modal" data-backdrop="false"
+                          data-target="#archivos">
+                    Generar Archivo por:
+                  </button>
                   <div class="col-md-2">
                     Seleccione las paginas a mostrar
                     <select class="form-control" [(ngModel)]="paginas" name="paginas">
@@ -230,6 +233,40 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary btn-fill" (click)="saveChange()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" style="background-color: rgba(0,0,0,0.7);" id="archivos" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">GENERAR ARCHIVO POR :</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="dropdown">
+          <button type="button" class="btn dropdown-toggle bs-placeholder btn-default btn-block" data-toggle="dropdown"
+                  role="button" title="Single Select" aria-expanded="true"><span
+            class="filter-option pull-left">{{campus}}</span>&nbsp;<span
+            class="bs-caret pull-right"><span class="caret"></span></span></button>
+          <div class="dropdown-menu btn-block" role="combobox"
+               style="max-height: 870px; overflow-y: auto; min-height: 107px;">
+            <li><a (click)="valor('Seleccione la opcion')">Seleccione la opción</a></li>
+            <li><a (click)="valor('PDF')" (click)="generarPdf()">PDF</a></li>
+            <li><a (click)="valor('CSV')">CSV</a></li>
+
+          </div>
+        </div>
+        <br>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-fill">Save changes</button>
       </div>
     </div>
   </div>
