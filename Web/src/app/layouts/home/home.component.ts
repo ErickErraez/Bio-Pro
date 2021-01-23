@@ -24,22 +24,25 @@ export class HomeComponent implements OnInit {
 
 
   paginadora = 'true';
-  horasTotales: 0;
+  showBar = true;
+  showFile = true;
   paginas = 10;
   PageActual = 1;
   filtro = '';
+  test = 'width:0%'
   public tableData1;
   public tableData2;
-  public tableData3;
   email: Email = new Email();
   usuario: Usuario = new Usuario();
   user: Usuario = new Usuario();
   timbrada: Timbrada = new Timbrada();
   images: Adjuntos = new Adjuntos();
   srcFoto: any = 'assets/img/default-avatar.png';
+  idSelected: any;
   file = null;
   users: any = [];
   timbradas: any = [];
+  showFoto: any;
   newFile = false;
   pageActual = 1;
   campus = 'Seleccione un campus';
@@ -61,18 +64,57 @@ export class HomeComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.images.nombre = file.name;
-        this.images.descripcion = 'FOTO PERFIL';
         this.images.tipo = file.type;
         this.images.contenido = reader.result.toString().split(',')[1];
-        if (tipo === 'foto') {
+        if (tipo == 'foto') {
+          this.images.descripcion = 'FOTO PERFIL';
           this.actualizarFoto();
           this.srcFoto = 'data:' + this.images.tipo + ';base64,' + this.images.contenido;
         } else {
-          alert('subido');
+          this.showBar = false;
+          let valor = 1;
+          let x = setInterval(() => {
+            this.test = 'width:' + valor + '%';
+            valor++;
+            if (valor == 101) {
+              this.showBar = true;
+              this.showFoto = 'data:' + this.images.tipo + ';base64,' + this.images.contenido;
+              this.showFile = false;
+              this.test = 'width:' + 0 + '%';
+              clearInterval(x);
+            }
+          }, 40);
+
         }
 
       };
     }
+  }
+
+  uploadFile() {
+    if (this.images.descripcion) {
+      if (this.idSelected.justificacion) {
+        this.images.idAdjuntos = this.idSelected.justificacion.idAdjuntos;
+      }
+      this.userServices.uploadFile(this.images).subscribe((res: any) => {
+        this.idSelected.justificacion = res.image.idAdjuntos;
+        this.userServices.updateTimbrada(this.idSelected).subscribe((resp: any) => {
+          console.log(resp);
+          this.alert.showNotification('success', 'pe-7s-bell', resp.message);
+        }, err => {
+          console.log(err);
+        });
+
+
+      }, err => {
+        console.log(err);
+      });
+
+    } else {
+      this.alert.showNotification('danger', 'pe-7s-bell', 'DEBES ESCRIBIR UNA DESCRIPCION');
+    }
+
+
   }
 
   ngOnInit(): void {
@@ -125,6 +167,10 @@ export class HomeComponent implements OnInit {
     } else {
       return this.srcFoto = 'data:' + this.usuario.foto.tipo + ';base64,' + this.usuario.foto.contenido;
     }
+  }
+
+  loadFile() {
+    this.showFoto = 'data:' + this.idSelected.justificacion.tipo + ';base64,' + this.idSelected.justificacion.contenido;
   }
 
   onChange(files: File[]) {
@@ -401,6 +447,19 @@ export class HomeComponent implements OnInit {
     }
 
     return true;
+  }
+
+  uploadJustificacion(item) {
+    this.idSelected = item;
+    this.showFile = true;
+    this.images = new Adjuntos();
+  }
+
+  loadJustificacion(item) {
+    this.showFile = false;
+    this.idSelected = item;
+    this.images.descripcion = item.justificacion.descripcion;
+    this.loadFile();
   }
 
   generarPdf() {

@@ -154,7 +154,7 @@ let updateUser = (req, res) => {
 let getTimbradas = (req, res) => {
     new Timbradas().query({
         where: {usuario: req.params.idBio}
-    }).fetch().then(function (timbrada) {
+    }).fetch({withRelated: ['justificacion','usuario']}).then(function (timbrada) {
         return res.status(200).json({
             ok: true,
             timbrada
@@ -189,7 +189,7 @@ let getUsers = (req, res) => {
 let getData = (req, res) => {
     new Timbrada().query({
         where: {fecha: req.body.fecha, usuario: req.body.usuario.idBio}
-    }).fetch().then(function (timbrada) {
+    }).fetch({withRelated: ['justificacion']}).then(function (timbrada) {
         return res.status(200).json({
             ok: true,
             timbrada
@@ -227,6 +227,7 @@ let getTodasTimbradas = (req, res) => {
 
     db('Bio-Timbradas').select()
         .innerJoin('Bio-Usuarios', 'Bio-Timbradas.usuario', 'Bio-Usuarios.idBio')
+
         .then(timbrada => {
             return res.status(200).json({
                 ok: true,

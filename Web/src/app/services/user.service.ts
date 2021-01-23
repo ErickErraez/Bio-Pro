@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Adjuntos} from '../Models/Adjuntos';
 import {environment} from '../../environments/environment';
 import {Usuario} from '../Models/Usuario';
+import {Timbrada} from '../Models/Timbrada';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,14 @@ export class UserService {
 
   actualizarFoto(image: Adjuntos) {
     return this.http.post(this.url + 'foto', image);
+  }
+
+  uploadFile(image: Adjuntos) {
+    return this.http.post(this.url + 'justification', image);
+  }
+
+  updateTimbrada(timbrada: Timbrada) {
+    return this.http.post(this.url + 'justificationTimbrada', timbrada);
   }
 
   actualizarUsuarioFoto(usuario: Usuario) {
@@ -34,6 +43,7 @@ export class UserService {
   getUserByEmail(email) {
     return this.http.get(this.url + 'getUserEmail/' + email)
   }
+
   actualizarPassword(usuario: Usuario) {
     return this.http.post(this.url + 'userPassword', usuario);
   }

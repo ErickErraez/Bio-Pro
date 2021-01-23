@@ -10,11 +10,11 @@ Timbrada = bookshelf.Model.extend({
     idAttribute: 'idTimbradas',
 
     usuario: function () {
-        return this.hasOne(Usuario, 'idUsuarios');
+        return this.hasOne(Usuario, 'idUsuarios','usuario');
     },
 
     justificacion: function () {
-        return this.hasOne(Justificacion, 'idAdjuntos');
+        return this.hasOne(Justificacion, 'idAdjuntos','justificacion');
     }
 
 });

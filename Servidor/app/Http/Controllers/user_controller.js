@@ -5,6 +5,7 @@ const config = require('../../../knexfile');
 const db = require('knex')(config['development']);
 const Usuario = require('../../Models/Usuarios').User;
 const Image = require('../../Models/Adjunto').Adjunto;
+const Timbrada = require('../../Models/Timbradas').Timbrada;
 const Rol = require('../../Models/Roles').Rol;
 const Usuarios = require('../../Models/Usuarios').Users;
 
@@ -50,6 +51,46 @@ let userFoto = (req, res) => {
         })
     })
 }
+
+let userJustification = (req, res) => {
+    new Image(req.body).save().then(image => {
+        return res.status(200).json({
+            ok: true,
+            message: 'JUSTIFICACION ENVIADA CON EXITO',
+            image
+        })
+
+    }).catch(err => {
+        return res.status(500).json({
+            ok: true,
+            message: 'OCURRIO UN ERROR AL ENVIAR LA JUSTIFICACION',
+            err
+        })
+    })
+}
+
+let updateTimbrada = (req, res) => {
+
+    delete req.body.total;
+    req.body.fecha = req.body.fecha.split('T')[0]
+
+    new Timbrada(req.body).save().then(timbrada => {
+        return res.status(200).json({
+            ok: true,
+            message: 'JUSTIFICACION ENVIADA CON EXITO',
+            timbrada
+        })
+
+    }).catch(err => {
+        return res.status(500).json({
+            ok: true,
+            message: 'OCURRIO UN ERROR AL ENVIAR LA JUSTIFICACION',
+            err
+        })
+    })
+}
+
+
 let addUSer = (req, res) => {
     //BUSQUEDA DEL ID QUE NO EXISTA
 
@@ -188,5 +229,7 @@ module.exports = {
     addUSer,
     updateUser,
     getAdmin,
-    updateUserForgot
+    updateUserForgot,
+    userJustification,
+    updateTimbrada
 };
