@@ -183,6 +183,14 @@
                               <td>{{item.regresoAlmuerzo}}</td>
                               <td>{{item.salida}}</td>
                               <td>{{item.total | date:'h:mm'}}</td>
+                              <td *ngIf="HorasTrabajadas(item,i,'clase') && item.justificacion">
+                                <button (click)="loadJustificacion(item)" type="button"
+                                        class="btn btn-info btn-fill" data-toggle="modal"
+                                        data-backdrop="false"
+                                        data-target="#upload">
+                                  Ver Archivo
+                                </button>
+                              </td>
                             </ng-container>
                           </tr>
                         </ng-container>
@@ -299,7 +307,7 @@
         <h4 class="modal-title" id="myModalLabel">Agregar Justificacion</h4>
       </div>
       <div class="modal-body">
-        <input type="file" #fileInput
+        <input *ngIf="usuario.rol.descripcion ==='USUARIO'" type="file" #justInput
                (change)="CodificarArchivo($event,'archivo')"
                accept="image/*">
 
@@ -318,10 +326,15 @@
         </div>
         <br>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" *ngIf="usuario.rol.descripcion ==='USUARIO'">
         <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Cancelar</button>
         <button type="button" (click)="uploadFile()" data-dismiss="modal" class="btn btn-primary btn-fill">Enviar
         </button>
+      </div>
+      <div class="modal-footer" *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'">
+        <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Cancelar</button>
+        <a class="btn btn-primary btn-fill" *ngIf="idSelected" data-dismiss="modal" download="{{getDowloadName()}}"
+           href="{{showFoto}}">Download</a>
       </div>
     </div>
   </div>

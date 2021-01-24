@@ -154,7 +154,24 @@ let updateUser = (req, res) => {
 let getTimbradas = (req, res) => {
     new Timbradas().query({
         where: {usuario: req.params.idBio}
-    }).fetch({withRelated: ['justificacion','usuario']}).then(function (timbrada) {
+    }).fetch({withRelated: ['justificacion', 'usuario']}).then(function (timbrada) {
+        return res.status(200).json({
+            ok: true,
+            timbrada
+        })
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        })
+    });
+}
+
+let getTimbradaById = (req, res) => {
+    console.log(req.params);
+    new Timbrada().query({
+        where: {justificacion: req.params.idJus}
+    }).fetch({withRelated: ['justificacion']}).then(function (timbrada) {
         return res.status(200).json({
             ok: true,
             timbrada
@@ -225,9 +242,8 @@ let saveFile = (req, res) => {
 }
 let getTodasTimbradas = (req, res) => {
 
-    db('Bio-Timbradas').select()
+    db('Bio-Timbradas').select('Bio-Timbradas.*', 'Bio-Usuarios.*')
         .innerJoin('Bio-Usuarios', 'Bio-Timbradas.usuario', 'Bio-Usuarios.idBio')
-
         .then(timbrada => {
             return res.status(200).json({
                 ok: true,
@@ -240,10 +256,6 @@ let getTodasTimbradas = (req, res) => {
                 err
             })
         })
-
-
-
-
 }
 
 
@@ -256,5 +268,6 @@ module.exports = {
     getData,
     saveFile,
     getTimbradas,
-    getTodasTimbradas
+    getTodasTimbradas,
+    getTimbradaById
 };

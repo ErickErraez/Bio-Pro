@@ -99,8 +99,9 @@ export class HomeComponent implements OnInit {
       this.userServices.uploadFile(this.images).subscribe((res: any) => {
         this.idSelected.justificacion = res.image.idAdjuntos;
         this.userServices.updateTimbrada(this.idSelected).subscribe((resp: any) => {
-          console.log(resp);
+          this.idSelected.justificacion = res.image;
           this.alert.showNotification('success', 'pe-7s-bell', resp.message);
+          this.images = new Adjuntos();
         }, err => {
           console.log(err);
         });
@@ -120,7 +121,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     this.tableData1 = {
-      headerRow: ['ID', 'Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4']
+      headerRow: ['ID', 'Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria', '']
     };
     this.tableData2 = {
       headerRow: ['Id', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria']
@@ -130,9 +131,21 @@ export class HomeComponent implements OnInit {
     })
 
     this.auth.getTodasTimbradas().subscribe((res: any) => {
-      this.tableData1.dataRows = res.timbrada;
 
+      for (let i = 0; i < res.timbrada.length; i++) {
+        if (res.timbrada[i].justificacion) {
+          this.auth.getTimbradaById(res.timbrada[i].justificacion).subscribe((resp: any) => {
+            res.timbrada[i].justificacion = resp.timbrada.justificacion;
+          })
+        }
+      }
+      this.tableData1.dataRows = res.timbrada;
+      console.log(res.timbrada);
     })
+  }
+
+  getDowloadName() {
+    return `${this.idSelected.nombre}`
   }
 
   actualizarFoto() {
