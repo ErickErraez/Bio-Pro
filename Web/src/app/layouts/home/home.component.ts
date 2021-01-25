@@ -103,10 +103,7 @@ export class HomeComponent implements OnInit {
           this.alert.showNotification('success', 'pe-7s-bell', resp.message);
           this.images = new Adjuntos();
         }, err => {
-          console.log(err);
         });
-
-
       }, err => {
         console.log(err);
       });

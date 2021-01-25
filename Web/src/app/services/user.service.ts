@@ -13,7 +13,7 @@ export class UserService {
   url = environment.url + 'user/';
 
   constructor(private http: HttpClient) {
-
+    console.log('hola')
   }
 
   actualizarFoto(image: Adjuntos) {
