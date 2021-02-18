@@ -133,7 +133,6 @@ let updateUser = (req, res) => {
         req.body.foto = idFoto;
     }
 
-
     new Usuario(req.body).save().then(response => {
         return res.status(200).json({
             ok: true,
@@ -141,7 +140,6 @@ let updateUser = (req, res) => {
             response
         })
     }).catch(err => {
-        console.log(err)
         return res.status(500).json({
             ok: false,
             message: 'OCURRIO UN ERROR AL ACTUALIZAR LA FOTO',
@@ -168,7 +166,6 @@ let getTimbradas = (req, res) => {
 }
 
 let getTimbradaById = (req, res) => {
-    console.log(req.params);
     new Timbrada().query({
         where: {justificacion: req.params.idJus}
     }).fetch({withRelated: ['justificacion']}).then(function (timbrada) {
@@ -207,10 +204,19 @@ let getData = (req, res) => {
     new Timbrada().query({
         where: {fecha: req.body.fecha, usuario: req.body.usuario.idBio}
     }).fetch({withRelated: ['justificacion']}).then(function (timbrada) {
-        return res.status(200).json({
-            ok: true,
-            timbrada
-        })
+
+        if (timbrada) {
+            return res.status(200).json({
+                ok: true,
+                timbrada
+            })
+        } else {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No Existe el Registro'
+            })
+        }
+
     }).catch(function (err) {
         return res.status(500).json({
             ok: false,
@@ -226,7 +232,7 @@ let saveFile = (req, res) => {
     delete req.body.usuario;
     req.body.usuario = idUsuario;
 
-    new Timbrada().save(req.body).then(function (users) {
+    new Timbrada(req.body).save().then(function (users) {
         return res.status(200).json({
             ok: true,
             users

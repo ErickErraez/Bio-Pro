@@ -11,9 +11,7 @@ import {Email} from '../../Models/Email';
 import {MailerService} from '../../services/mailer.service';
 import {PdfMakeWrapper, Txt, Img, Table, Cell, Columns} from 'pdfmake-wrapper';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts'; // fonts provided for pdfmake
-
-// Set the fonts to use
-
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-home',
@@ -98,6 +96,8 @@ export class HomeComponent implements OnInit {
       }
       this.userServices.uploadFile(this.images).subscribe((res: any) => {
         this.idSelected.justificacion = res.image.idAdjuntos;
+        console.log(this.idSelected);
+        this.idSelected.usuario = this.usuario.idBio;
         this.userServices.updateTimbrada(this.idSelected).subscribe((resp: any) => {
           this.idSelected.justificacion = res.image;
           this.alert.showNotification('success', 'pe-7s-bell', resp.message);
@@ -123,12 +123,20 @@ export class HomeComponent implements OnInit {
     this.tableData2 = {
       headerRow: ['Id', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria']
     };
+
+    this.obtenerPorId();
+    this.obtenerTodasTimbradas();
+
+  }
+
+  obtenerPorId() {
     this.auth.getTimbradas(this.usuario.idBio).subscribe((res: any) => {
       this.tableData2.dataRows = res.timbrada;
     })
+  }
 
+  obtenerTodasTimbradas() {
     this.auth.getTodasTimbradas().subscribe((res: any) => {
-
       for (let i = 0; i < res.timbrada.length; i++) {
         if (res.timbrada[i].justificacion) {
           this.auth.getTimbradaById(res.timbrada[i].justificacion).subscribe((resp: any) => {
@@ -137,7 +145,6 @@ export class HomeComponent implements OnInit {
         }
       }
       this.tableData1.dataRows = res.timbrada;
-      console.log(res.timbrada);
     })
   }
 
@@ -187,16 +194,30 @@ export class HomeComponent implements OnInit {
     this.users = [];
     this.file = files;
     this.archivo.idTimbradas = this.file[0].idTimbradas;
-    if (files[0]) {
+    if (files[0] && this.campus === 'Yavirac') {
       Papa.parse(files[0], {
         header: true,
         skipEmptyLines: true,
         complete: (result, file) => {
           this.dataList = result.data;
-          this.newFile = true;
-
         }
       });
+    } else {
+      let workBook = null;
+      let jsonData = null;
+      const reader = new FileReader();
+      const file = files[0];
+      reader.onload = event => {
+        const data = reader.result;
+        workBook = XLSX.read(data, {type: 'binary'});
+        jsonData = workBook.SheetNames.reduce((initial, name) => {
+          const sheet = workBook.Sheets[name];
+          initial[name] = XLSX.utils.sheet_to_json(sheet);
+          return initial;
+        }, {});
+        this.dataList = jsonData.Hoja1;
+      };
+      reader.readAsBinaryString(file);
     }
 
   }
@@ -204,16 +225,49 @@ export class HomeComponent implements OnInit {
   saveChange() {
     if (this.campus === 'Yavirac') {
       this.loadYaviracData();
+    } else {
+      this.loadOtherFormat();
     }
-    if (this.campus === 'Cenepa') {
 
-    }
   }
 
   cargarArchivos() {
     if (this.opcion === 'PDF') {
       this.generarPdf();
     }
+  }
+
+  loadOtherFormat() {
+    const datos = [];
+    let objetoArchivo: Timbrada = new Timbrada();
+    objetoArchivo.usuario = new Usuario();
+
+    for (let i = 0; i < this.dataList.length; i++) {
+      objetoArchivo.usuario.idBio = this.dataList[i].ID;
+      objetoArchivo.fecha = this.dataList[i].Fecha.split(`'`)[0];
+      objetoArchivo.usuario.nombre = this.dataList[i].Nombre;
+
+      if (this.dataList[i].hasOwnProperty('Entrada')) {
+        objetoArchivo.entrada = this.dataList[i].Entrada;
+      }
+      if (this.dataList[i].hasOwnProperty('Salida')) {
+        objetoArchivo.almuerzo = this.dataList[i].Salida;
+      }
+      if (this.dataList[i].hasOwnProperty('Entrada_1')) {
+        objetoArchivo.regresoAlmuerzo = this.dataList[i].Entrada_1;
+
+      }
+      if (this.dataList[i].hasOwnProperty('Salida_1')) {
+        objetoArchivo.salida = this.dataList[i].Salida_1;
+      }
+      datos.push([objetoArchivo.usuario.idBio, objetoArchivo.usuario.nombre, objetoArchivo.fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
+
+      this.dataUser.push(objetoArchivo);
+      objetoArchivo = new Timbrada();
+      objetoArchivo.usuario = new Usuario();
+    }
+    this.tableData1.dataRows = datos;
+    this.newFile = true;
   }
 
   loadYaviracData() {
@@ -297,7 +351,9 @@ export class HomeComponent implements OnInit {
         objetoArchivo.usuario = new Usuario();
       }
     }
+
     this.tableData1.dataRows = datos;
+    this.newFile = true;
   }
 
   validarHora(hora) {
@@ -321,19 +377,50 @@ export class HomeComponent implements OnInit {
   }
 
   guardar() {
+
     for (let i = 0; i < this.dataUser.length; i++) {
       this.auth.getData(this.dataUser[i]).subscribe((res: any) => {
+        if (res.ok) {
+          if (res.timbrada.entrada == null && this.dataUser[i].entrada != null) {
+            res.timbrada.entrada = this.dataUser[i].entrada;
+          }
+          if (res.timbrada.almuerzo == null && this.dataUser[i].almuerzo != null) {
+            res.timbrada.almuerzo = this.dataUser[i].almuerzo;
+          }
+          if (res.timbrada.regresoAlmuerzo == null && this.dataUser[i].regresoAlmuerzo != null) {
+            res.timbrada.regresoAlmuerzo = this.dataUser[i].regresoAlmuerzo;
+          }
+          if (res.timbrada.salida == null && this.dataUser[i].salida != null) {
+            res.timbrada.salida = this.dataUser[i].salida;
+          }
+          res.timbrada.fecha = res.timbrada.fecha.split('T')[0];
+          this.guardarDatos(res.timbrada, i);
+        }
       }, error => {
-        console.log(error);
         if (error.error.err.message == 'EmptyResponse') {
-          this.auth.saveFile(this.dataUser[i]).subscribe(resp => {
-            console.log(resp);
-          }, err => {
-            console.log(err);
-          });
+          this.guardarDatos(this.dataUser[i], i);
         }
       });
+      // if (i < this.dataUser.length) {
+      //   this.alert.showNotification('success', 'pe-7s-bell', 'Se Terminado de cargar los Datos');
+      // }
     }
+
+  }
+
+  guardarDatos(data, i) {
+    this.auth.saveFile(data).subscribe(resp => {
+      // console.log(resp);
+      if (i == this.dataUser.length - 1) {
+        this.alert.showNotification('success', 'pe-7s-bell', 'Se Terminado de cargar los Datos');
+        this.obtenerTodasTimbradas();
+        this.newFile = false;
+      }
+    }, err => {
+      // console.log(err);
+    });
+
+
   }
 
   sendJustification() {
@@ -368,6 +455,7 @@ export class HomeComponent implements OnInit {
     const t3 = new Date();
     const t4 = new Date();
     const total = new Date();
+
 
     if (item.entrada != null && item.salida != null) {
       valor1 = item.entrada.split(':');
@@ -444,6 +532,51 @@ export class HomeComponent implements OnInit {
     }
     if (item.salida != null && item.almuerzo == null && item.regresoAlmuerzo == null && item.entrada == null) {
       total.setHours(1, 0, 0);
+    }
+
+    if (item.salida == null && item.almuerzo == null && item.regresoAlmuerzo == null && item.entrada == null) {
+      total.setHours(1, 0, 0);
+    }
+
+    if (item.idTimbradas == 728) {
+      console.log('hora valida');
+    }
+    if (item.salida != null && item.almuerzo != null && item.regresoAlmuerzo != null && item.entrada != null) {
+      const hora1 = new Date();
+      const hora2 = new Date();
+      total.setHours(1, 0, 0);
+      valor1 = item.entrada.split(':');
+      valor2 = item.almuerzo.split(':');
+      valor3 = item.regresoAlmuerzo.split(':');
+      valor4 = item.salida.split(':');
+      t1.setHours(valor1[0], valor1[1], valor1[2]);
+      t2.setHours(valor2[0], valor2[1], valor2[2]);
+      t3.setHours(valor3[0], valor3[1], valor3[2]);
+      t4.setHours(valor4[0], valor4[1], valor4[2]);
+
+      if (t2.getHours() > t1.getHours()) {
+        const hora = t2.getHours() - t1.getHours();
+        const minutos = t2.getMinutes() - t1.getMinutes()
+        hora1.setHours(hora, minutos, 0);
+      } else {
+        const hora = t1.getHours() - t2.getHours();
+        const minutos = t1.getMinutes() - t2.getMinutes()
+        hora1.setHours(hora, minutos, 0);
+      }
+
+      if (t4.getHours() > t3.getHours()) {
+        const hora = t4.getHours() - t3.getHours();
+        const minutos = t4.getMinutes() - t3.getMinutes()
+        hora2.setHours(hora, minutos, 0);
+      } else {
+        const hora = t3.getHours() - t4.getHours();
+        const minutos = t3.getMinutes() - t4.getMinutes()
+        hora2.setHours(hora, minutos, 0);
+      }
+
+      const horaTotal = hora2.getHours() + hora1.getHours();
+      const minutosTotal = hora2.getMinutes() + hora1.getMinutes();
+      total.setHours(horaTotal, minutosTotal, 0);
     }
 
     item.total = total;

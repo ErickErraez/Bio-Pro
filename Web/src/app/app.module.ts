@@ -19,6 +19,7 @@ import {RolesComponent} from './layouts/roles/roles.component';
 import {FilterPipe} from './services/filter.pipe';
 import {AddUsersComponent} from './layouts/add-users/add-users.component';
 import {ForgotpassComponent} from './forgotpass/forgotpass.component';
+// import {ExportAsModule} from 'ngx-export-as';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {ForgotpassComponent} from './forgotpass/forgotpass.component';
     SidebarModule,
     AppRoutingModule,
     NgxPaginationModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    // ExportAsModule
   ],
   declarations: [
     AppComponent,

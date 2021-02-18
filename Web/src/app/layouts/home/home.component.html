@@ -198,11 +198,6 @@
                           <tr
                             *ngFor="let row of tableData1.dataRows | paginate:{itemsPerPage:10,currentPage:pageActual}">
                             <td *ngFor="let cell of row">{{cell}}</td>
-
-                            <td *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'">
-                              <button class="btn btn-info btn-fill ">Ver Archivo</button>
-                            </td>
-
                           </tr>
                         </ng-container>
                         </tbody>

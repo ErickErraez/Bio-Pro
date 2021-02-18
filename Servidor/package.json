@@ -2,7 +2,7 @@
   "name": "Server",
   "description": "Server",
   "scripts": {
-    "start": "node ."
+    "start": "nodemon index.js"
   },
   "main": "index.js",
   "author": "Erick Erraez",
@@ -13,6 +13,7 @@
     "body-parser": "^1.19.0",
     "bookshelf": "^1.0.1",
     "connect-multiparty": "^2.2.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.17.6",
