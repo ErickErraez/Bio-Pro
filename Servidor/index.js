@@ -1,9 +1,11 @@
 ;
 const app = require('./app/app');
 const bodyParser = require('body-parser');
+var cors = require('cors')
 
 app.use(bodyParser.json({limit: '100mb'}));
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true, parameterLimit: 100000}));
+app.use(cors())
 
 // Configurar cabeceras y cors
 

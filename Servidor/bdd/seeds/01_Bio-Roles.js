@@ -4,9 +4,9 @@ exports.seed = function (knex, Promise) {
         .then(function () {
             // Inserts seed entries
             return knex('Bio-Roles').insert([
-                {descripcion: 'SUPERADMINISTRADOR'},
-                {descripcion: 'ADMINISTRADOR'},
-                {descripcion: 'USUARIO'},
+                {idRoles:1,descripcion: 'SUPERADMINISTRADOR'},
+                {idRoles:2,descripcion: 'ADMINISTRADOR'},
+                {idRoles:3,descripcion: 'USUARIO'},
             ]);
         });
 };
