@@ -18,6 +18,7 @@ export const ROUTES: RouteInfo[] = [
   {path: 'configuracion', title: 'Administración', icon: 'pe-7s-config', class: '', permiso: 'ALL'},
   {path: 'roles', title: 'Asignar Rol', icon: 'pe-7s-config', class: '', permiso: 'SUPERADMINISTRADOR'},
   {path: 'addUsers', title: 'Usuarios Nuevos', icon: 'pe-7s-user', class: '', permiso: 'ADMINISTRADOR'},
+  {path: 'informes', title: 'Informes', icon: 'pe-7s-folder', class: '', permiso: 'ADMINISTRADOR'}
 ];
 
 @Component({

@@ -198,8 +198,6 @@ let getUsers = (req, res) => {
             err
         })
     });
-
-
 }
 
 

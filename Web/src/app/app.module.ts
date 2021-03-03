@@ -19,6 +19,7 @@ import {RolesComponent} from './layouts/roles/roles.component';
 import {FilterPipe} from './services/filter.pipe';
 import {AddUsersComponent} from './layouts/add-users/add-users.component';
 import {ForgotpassComponent} from './forgotpass/forgotpass.component';
+import { InformesComponent } from './layouts/informes/informes.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import {ForgotpassComponent} from './forgotpass/forgotpass.component';
     AdminLayoutComponent,
     RolesComponent,
     AddUsersComponent,
+    InformesComponent,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
 

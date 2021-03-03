@@ -12,10 +12,10 @@ User = bookshelf.Model.extend({
     hasTimestamps: ['created_at', 'updated_at'],
 
     rol: function () {
-        return this.hasOne(Rol,'idRoles');
+        return this.hasOne(Rol, 'idRoles', 'rol');
     },
     foto: function () {
-        return this.hasOne(Adjunto, 'idAdjuntos');
+        return this.hasOne(Adjunto, 'idAdjuntos', 'foto');
     }
 });
 
