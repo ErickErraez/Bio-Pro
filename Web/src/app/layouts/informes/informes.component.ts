@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {PdfMakeWrapper, Txt, Img, Table, Cell, Columns} from 'pdfmake-wrapper';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts'; // fonts provided for pdfmake
@@ -13,9 +13,11 @@ export class InformesComponent implements OnInit {
   public tableData1;
   paginas = 10;
   pageActual = 1;
+  filtro = '';
   paginador = 'true';
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService) {
+  }
 
   ngOnInit(): void {
     this.tableData1 = {
@@ -23,6 +25,7 @@ export class InformesComponent implements OnInit {
     };
     this.obtenerTodasTimbradas();
   }
+
   obtenerTodasTimbradas() {
     this.auth.getTodasTimbradas().subscribe((res: any) => {
       for (let i = 0; i < res.timbrada.length; i++) {
@@ -35,6 +38,7 @@ export class InformesComponent implements OnInit {
       this.tableData1.dataRows = res.timbrada;
     })
   }
+
   HorasTrabajadas(item, i, tipo) {
 
     let valor1 = 0;
@@ -183,12 +187,23 @@ export class InformesComponent implements OnInit {
 
     return true;
   }
+
   generarPdf() {
     const data = [];
     data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4'])
-    for (let i = 0; i < this.tableData1.dataRows.length; i++) {
-      // tslint:disable-next-line:max-line-length
-      data.push([this.tableData1.dataRows[i].nombre, this.tableData1.dataRows[i].fecha.split('T')[0], this.tableData1.dataRows[i].entrada, this.tableData1.dataRows[i].almuerzo, this.tableData1.dataRows[i].regresoAlmuerzo, this.tableData1.dataRows[i].salida])
+    if (this.filtro != '') {
+      for (const post of this.tableData1.dataRows) {
+        if (post.nombre.indexOf(this.filtro.toUpperCase()) > -1) {
+
+          data.push([post.nombre, post.fecha.split('T')[0], post.entrada, post.almuerzo, post.regresoAlmuerzo, post.salida]);
+        }
+      }
+
+    } else {
+      for (let i = 0; i < this.tableData1.dataRows.length; i++) {
+        // tslint:disable-next-line:max-line-length
+        data.push([this.tableData1.dataRows[i].nombre, this.tableData1.dataRows[i].fecha.split('T')[0], this.tableData1.dataRows[i].entrada, this.tableData1.dataRows[i].almuerzo, this.tableData1.dataRows[i].regresoAlmuerzo, this.tableData1.dataRows[i].salida])
+      }
     }
     PdfMakeWrapper.setFonts(pdfFonts);
     const pdf = new PdfMakeWrapper();
@@ -212,5 +227,6 @@ export class InformesComponent implements OnInit {
     );
     pdf.pageSize('A4');
     pdf.create().open()
+
   }
 }
