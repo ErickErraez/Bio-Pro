@@ -145,6 +145,8 @@ export class HomeComponent implements OnInit {
         }
       }
       this.tableData1.dataRows = res.timbrada;
+      this.filtro = '';
+      this.file = null;
     })
   }
 
@@ -231,11 +233,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  cargarArchivos() {
-    if (this.opcion === 'PDF') {
-      this.generarPdf();
-    }
-  }
 
   loadOtherFormat() {
     const datos = [];
@@ -605,34 +602,34 @@ export class HomeComponent implements OnInit {
     this.loadFile();
   }
 
-  generarPdf() {
-    const data = [];
-    data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4'])
-    for (let i = 0; i < this.tableData1.dataRows.length; i++) {
-      // tslint:disable-next-line:max-line-length
-      data.push([this.tableData1.dataRows[i].nombre, this.tableData1.dataRows[i].fecha.split('T')[0], this.tableData1.dataRows[i].entrada, this.tableData1.dataRows[i].almuerzo, this.tableData1.dataRows[i].regresoAlmuerzo, this.tableData1.dataRows[i].salida])
-    }
-    PdfMakeWrapper.setFonts(pdfFonts);
-    const pdf = new PdfMakeWrapper();
-
-    pdf.add(
-      new Txt('INSTITUTO TECNOLÓGICO SUPERIOR "YAVIRAC"').alignment('center').italics().color('red').end
-    );
-    pdf.add(
-      pdf.ln(1)
-    );
-    pdf.add(
-      new Txt('Listado de docentes del Instituto Tecnológico Superior "Yavirac" con sus respectivas timbradas.').alignment('left').color('blue').end
-    );
-    pdf.add(
-      pdf.ln(1)
-    );
-    pdf.add(
-      new Table(
-        data,
-      ).color('black').layout('lightHorizontalLines').end
-    );
-    pdf.pageSize('A4');
-    pdf.create().open()
-  }
+  // generarPdf() {
+  //   const data = [];
+  //   data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4'])
+  //   for (let i = 0; i < this.tableData1.dataRows.length; i++) {
+  //     // tslint:disable-next-line:max-line-length
+  //     data.push([this.tableData1.dataRows[i].nombre, this.tableData1.dataRows[i].fecha.split('T')[0], this.tableData1.dataRows[i].entrada, this.tableData1.dataRows[i].almuerzo, this.tableData1.dataRows[i].regresoAlmuerzo, this.tableData1.dataRows[i].salida])
+  //   }
+  //   PdfMakeWrapper.setFonts(pdfFonts);
+  //   const pdf = new PdfMakeWrapper();
+  //
+  //   pdf.add(
+  //     new Txt('INSTITUTO TECNOLÓGICO SUPERIOR "YAVIRAC"').alignment('center').italics().color('red').end
+  //   );
+  //   pdf.add(
+  //     pdf.ln(1)
+  //   );
+  //   pdf.add(
+  //     new Txt('Listado de docentes del Instituto Tecnológico Superior "Yavirac" con sus respectivas timbradas.').alignment('left').color('blue').end
+  //   );
+  //   pdf.add(
+  //     pdf.ln(1)
+  //   );
+  //   pdf.add(
+  //     new Table(
+  //       data,
+  //     ).color('black').layout('lightHorizontalLines').end
+  //   );
+  //   pdf.pageSize('A4');
+  //   pdf.create().open()
+  // }
 }

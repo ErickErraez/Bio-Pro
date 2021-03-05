@@ -1,0 +1,67 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="content table-responsive table-full-width">
+
+
+                <div class="row">
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-danger btn-fill" (click)="generarPdf()">
+                      GENERAR PDF
+                    </button>
+                  </div>
+                  <div class="col-md-8">
+
+                  </div>
+                  <div class="col-md-2">
+                    <input [(ngModel)]="filtro" name="filtro" type="search" class="form-control input-sm"
+                           placeholder="Buscar Registros"
+                           aria-controls="datatables">
+                  </div>
+                </div>
+                <br>
+                <table class="table table-hover">
+
+                  <thead>
+                  <tr>
+                    <th *ngFor="let cell of tableData1.headerRow">{{ cell }}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr
+                    *ngFor="let item of this.tableData1.dataRows | filter: filtro | paginate:{itemsPerPage:paginas,currentPage:pageActual} let i =index;"
+                    [ngClass]="HorasTrabajadas(item,i,'clase')?'color1':'' ">
+                    <ng-container *ngIf="HorasTrabajadas(item,i,'hora')">
+                      <td>{{item.idTimbradas}}</td>
+                      <td>{{item.nombre}}</td>
+                      <td>{{item.fecha | date:'dd/MM/yyyy'}}</td>
+                      <td>{{item.entrada}}</td>
+                      <td>{{item.almuerzo}}</td>
+                      <td>{{item.regresoAlmuerzo}}</td>
+                      <td>{{item.salida}}</td>
+                      <td>{{item.total | date:'h:mm'}}</td>
+                      <td *ngIf="HorasTrabajadas(item,i,'clase') && item.justificacion">
+                      </td>
+                    </ng-container>
+                  </tr>
+                  <ng-container>
+                    <tr *ngFor="let row of tableData1.dataRows">
+                      <td *ngFor="let cell of row">{{cell}}</td>
+                    </tr>
+                  </ng-container>
+                  </tbody>
+                </table>
+                <pagination-controls *ngIf="paginador ==='true'"
+                                     (pageChange)="pageActual = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
