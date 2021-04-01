@@ -4,6 +4,8 @@ import {Rol} from '../../Models/Rol';
 import {UserService} from '../../services/user.service';
 import {Usuario} from '../../Models/Usuario';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from "../../services/auth.service";
+
 
 @Component({
   selector: 'app-add-users',
@@ -11,6 +13,14 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./add-users.component.css']
 })
 export class AddUsersComponent implements OnInit {
+  public tableData1;
+  user: Usuario = new Usuario();
+  pageActual = 1;
+  paginador = 'true';
+  paginas = 5;
+  filtro = '';
+  marked = false;
+  theCheckbox = false;
   newUSer: Usuario = new Usuario();
   contactForm: FormGroup;
   private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -25,11 +35,29 @@ export class AddUsersComponent implements OnInit {
     });
   }
 
-  constructor(private alert: AlertService, private userService: UserService) {
+  constructor(private alert: AlertService, private userService: UserService, private auth: AuthService) {
     this.contactForm = this.createFormGroup();
+    this.user = auth.validarToken();
+    this.tableData1 = {
+      headerRow: ['', 'ID', 'Nombre', 'Correo', 'Rol'],
+    };
   }
 
   ngOnInit(): void {
+    this.auth.getUser().subscribe((res: any) => {
+      this.tableData1.dataRows = res.users;
+    });
+
+  }
+
+  updateUser(usuario: Usuario) {
+    const roles: any = new Rol();
+    roles.idRoles = usuario.rol;
+    usuario.rol = roles;
+    this.auth.actualizarUsuarioFoto(usuario).subscribe((res: any) => {
+      usuario.rol = res.response.rol;
+      this.alert.showNotification('success', 'pe-7s-bell', res.message);
+    });
 
   }
 
@@ -37,6 +65,9 @@ export class AddUsersComponent implements OnInit {
     e.value = e.value.toUpperCase();
   }
 
+  toggleVisibility(e) {
+    this.marked = e.target.checked;
+  }
 
   addUser() {
     this.newUSer.newpassword = '0';
@@ -44,7 +75,7 @@ export class AddUsersComponent implements OnInit {
     this.newUSer.foto.idAdjuntos = 1;
     if (this.contactForm.valid) {
       // @ts-ignore
-      if (this.cedulaEcuatoriana(this.newUSer.cedula)) {
+      if (this.marked === true) {
         this.userService.addUser(this.newUSer).subscribe((res: any) => {
           this.alert.showNotification('success', 'pe-7s-bell', res.message);
           this.resetForm();
@@ -56,10 +87,23 @@ export class AddUsersComponent implements OnInit {
           }
         });
       } else {
-        this.alert.showNotification('warning', 'pe-7s-bell', 'CEDULA INCORRECTA');
+        if (this.cedulaEcuatoriana(this.newUSer.cedula)) {
+          this.userService.addUser(this.newUSer).subscribe((res: any) => {
+            this.alert.showNotification('success', 'pe-7s-bell', res.message);
+            this.resetForm();
+          }, err => {
+            if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
+              this.alert.showNotification('danger', 'pe-7s-bell', 'Error en el servidor');
+            } else {
+              this.alert.showNotification('danger', 'pe-7s-bell', err.error.message);
+            }
+          });
+        } else {
+          this.alert.showNotification('warning', 'pe-7s-bell', 'CEDULA INCORRECTA');
+        }
       }
     } else {
-      this.alert.showNotification('warning', 'pe-7s-bell', 'NO VÁLIDO');
+      this.alert.showNotification('warning', 'pe-7s-bell', 'EXISTEN CAMPOS VACÍOS');
     }
   }
 
@@ -170,6 +214,7 @@ export class AddUsersComponent implements OnInit {
       console.log('la cedula tiene mas o menos de 10 digitos');
       return false;
     }
-
   }
+
+
 }

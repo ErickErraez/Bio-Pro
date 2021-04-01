@@ -354,7 +354,7 @@ export class HomeComponent implements OnInit {
   }
 
   validarHora(hora) {
-
+//
     if (hora.split(':')[0] <= 10) {
       return 'entrada';
     }
@@ -372,7 +372,9 @@ export class HomeComponent implements OnInit {
     }
 
   }
-
+//usuario de mediotiempo  hora entrada y salida
+// tiempo completo pero sin almuerzo entran a las 12 y salen de noche
+// api usuario,cedula,todos los datos de usuario. fecha , sede(donde timbró) y todos los datos de la tabla timbradas
   guardar() {
 
     for (let i = 0; i < this.dataUser.length; i++) {

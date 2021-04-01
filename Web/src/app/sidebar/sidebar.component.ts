@@ -16,8 +16,7 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
   {path: 'principal', title: 'Principal', icon: 'pe-7s-graph', class: '', permiso: 'ALL'},
   {path: 'configuracion', title: 'Administración', icon: 'pe-7s-config', class: '', permiso: 'ALL'},
-  {path: 'roles', title: 'Asignar Rol', icon: 'pe-7s-config', class: '', permiso: 'SUPERADMINISTRADOR'},
-  {path: 'addUsers', title: 'Usuarios Nuevos', icon: 'pe-7s-user', class: '', permiso: 'ADMINISTRADOR'},
+  {path: 'addUsers', title: 'Agregar / Editar Usuarios', icon: 'pe-7s-user', class: '', permiso: 'ADMINISTRADOR'},
   {path: 'informes', title: 'Informes', icon: 'pe-7s-folder', class: '', permiso: 'ADMINISTRADOR'}
 ];
 

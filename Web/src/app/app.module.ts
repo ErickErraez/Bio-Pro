@@ -19,21 +19,23 @@ import {RolesComponent} from './layouts/roles/roles.component';
 import {FilterPipe} from './services/filter.pipe';
 import {AddUsersComponent} from './layouts/add-users/add-users.component';
 import {ForgotpassComponent} from './forgotpass/forgotpass.component';
+import {AdminLayoutModule} from "./layouts/admin-layout/admin-layout.module";
 
 
 @NgModule({
-  imports: [
-    BrowserAnimationsModule,
-    FormsModule,
-    RouterModule,
-    HttpClientModule,
-    NavbarModule,
-    FooterModule,
-    SidebarModule,
-    AppRoutingModule,
-    NgxPaginationModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        BrowserAnimationsModule,
+        FormsModule,
+        RouterModule,
+        HttpClientModule,
+        NavbarModule,
+        FooterModule,
+        SidebarModule,
+        AppRoutingModule,
+        NgxPaginationModule,
+        ReactiveFormsModule,
+        AdminLayoutModule
+    ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,

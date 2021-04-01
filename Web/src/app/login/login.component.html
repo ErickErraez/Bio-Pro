@@ -17,7 +17,12 @@
 
         <div class="wrap-input100 validate-input">
           <input [(ngModel)]="pass" class="input100" type="password" name="pass" placeholder="Ingrese su password">
+          <i *ngIf="tipoInput == 'pass'" (click)="mostrarContrasena(tipoInput)"
+             class="far fa-eye fa-2x arreglo"></i>
+          <i *ngIf="tipoInput == 'text'" (click)="mostrarContrasena(tipoInput)"
+             class="far fa-eye-slash fa-2x arreglo"></i>
           <span class="focus-input100"></span>
+
         </div>
 
         <div class="text-center ">
@@ -40,7 +45,7 @@
 					</span>
         <br>
         <span class="login100-form-title p-b-34 p-t-27">
-						Actualizar Nueva Contrasena
+						Actualizar Nueva Contraseña
 					</span>
         <br>
         <div class="wrap-input100 validate-input">
@@ -53,6 +58,7 @@
           <input [(ngModel)]="repPass" class="input100" type="password" name="repPass"
                  placeholder="Repita su nueva contrasena">
           <span class="focus-input100"></span>
+
         </div>
 
 

@@ -13,7 +13,7 @@ import {Usuario} from '../Models/Usuario';
 
 export class LoginComponent implements OnInit {
 
-
+  tipoInput: any = 'pass';
   changePass = {
     oldPassword: '',
     newPassword: '',
@@ -84,6 +84,14 @@ export class LoginComponent implements OnInit {
       }
     } else {
       this.alert.showNotification('warning', 'pe-7s-bell', 'Existen campos vacíos');
+    }
+  }
+  mostrarContrasena(item) {
+    if (item === 'pass') {
+      this.tipoInput = 'text';
+    }
+    if (item === 'text') {
+      this.tipoInput = 'pass';
     }
   }
 }
