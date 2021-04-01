@@ -5,6 +5,7 @@ import {UserService} from '../../services/user.service';
 import {Usuario} from '../../Models/Usuario';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from "../../services/auth.service";
+import * as $ from 'jquery';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class AddUsersComponent implements OnInit {
   user: Usuario = new Usuario();
   pageActual = 1;
   paginador = 'true';
-  paginas = 5;
+  deletedId = '';
+  paginas = 10;
   filtro = '';
   marked = false;
   theCheckbox = false;
@@ -32,6 +34,7 @@ export class AddUsersComponent implements OnInit {
       cedula: new FormControl('', Validators.required),
       correo: new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]),
       idRoles: new FormControl('', Validators.required),
+      tipocontrato: new FormControl('', Validators.required),
     });
   }
 
@@ -39,16 +42,47 @@ export class AddUsersComponent implements OnInit {
     this.contactForm = this.createFormGroup();
     this.user = auth.validarToken();
     this.tableData1 = {
-      headerRow: ['', 'ID', 'Nombre', 'Correo', 'Rol'],
+      headerRow: ['ID', 'Nombre', 'Correo', 'Rol', ''],
     };
   }
 
+  //pe-7s-trash   pe-7s-pen
+
+  saludar(value) {
+    $('#tablausuarios tbody tr').each(function () {
+      if ($(this).attr('id') == 'mostrar' + value) {
+        $('#evento' + value).css("display", "block");
+      }
+    })
+  }
+
+  ocultar(value) {
+    $('#evento' + value).css("display", "none")
+  }
+
+  loadUser(id) {
+    this.userService.getUserById(id).subscribe((res: any) => {
+      this.newUSer.idUsuarios = res.user.idUsuarios;
+      this.newUSer.idBio = res.user.idBio;
+      this.newUSer.cedula = res.user.cedula;
+      this.newUSer.nombre = res.user.nombre;
+      this.newUSer.correo = res.user.correo;
+      this.newUSer.rol.idRoles = res.user.rol.idRoles;
+      this.newUSer.tipocontrato = res.user.tipocontrato;
+
+    });
+  }
+
   ngOnInit(): void {
+    this.loadUsers();
+  }
+
+  loadUsers() {
     this.auth.getUser().subscribe((res: any) => {
       this.tableData1.dataRows = res.users;
     });
-
   }
+
 
   updateUser(usuario: Usuario) {
     const roles: any = new Rol();
@@ -69,7 +103,9 @@ export class AddUsersComponent implements OnInit {
     this.marked = e.target.checked;
   }
 
+
   addUser() {
+    this.tableData1.dataRows = [];
     this.newUSer.newpassword = '0';
     this.newUSer.password = '$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey';
     this.newUSer.foto.idAdjuntos = 1;
@@ -105,7 +141,58 @@ export class AddUsersComponent implements OnInit {
     } else {
       this.alert.showNotification('warning', 'pe-7s-bell', 'EXISTEN CAMPOS VACÍOS');
     }
+    this.loadUsers();
   }
+
+  actualizar() {
+    this.tableData1.dataRows = [];
+    if (this.contactForm.valid) {
+      // @ts-ignore
+      if (this.marked === true) {
+        this.userService.updateUser(this.newUSer).subscribe((res: any) => {
+          this.alert.showNotification('success', 'pe-7s-bell', res.message);
+          this.resetForm();
+        }, err => {
+          if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
+            this.alert.showNotification('danger', 'pe-7s-bell', 'Error en el servidor');
+          } else {
+            this.alert.showNotification('danger', 'pe-7s-bell', err.error.message);
+          }
+        });
+      } else {
+        if (this.cedulaEcuatoriana(this.newUSer.cedula)) {
+          this.userService.updateUser(this.newUSer).subscribe((res: any) => {
+            this.alert.showNotification('success', 'pe-7s-bell', res.message);
+            this.resetForm();
+          }, err => {
+            if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
+              this.alert.showNotification('danger', 'pe-7s-bell', 'Error en el servidor');
+            } else {
+              this.alert.showNotification('danger', 'pe-7s-bell', err.error.message);
+            }
+          });
+        } else {
+          this.alert.showNotification('warning', 'pe-7s-bell', 'CEDULA INCORRECTA');
+        }
+      }
+    } else {
+      this.alert.showNotification('warning', 'pe-7s-bell', 'EXISTEN CAMPOS VACÍOS');
+    }
+    this.loadUsers();
+  }
+
+  deleteUser() {
+    this.tableData1.dataRows = [];
+
+    this.userService.deleteUser(this.deletedId).subscribe((res: any) => {
+      this.alert.showNotification('success', 'pe-7s-bell', res.message);
+    }, err => {
+      this.alert.showNotification('danger', 'pe-7s-bell', err.error.message);
+    });
+
+    this.loadUsers();
+  }
+
 
   resetForm() {
     this.contactForm.reset();
@@ -129,6 +216,10 @@ export class AddUsersComponent implements OnInit {
 
   get idRoles() {
     return this.contactForm.get('idRoles')
+  }
+
+  limpiar() {
+    this.newUSer = new Usuario();
   }
 
   cedulaEcuatoriana(cedula: string) {
@@ -197,21 +288,17 @@ export class AddUsersComponent implements OnInit {
 
         // Validamos que el digito validador sea igual al de la cedula
         if (digitoValidador === ultimoDigito) {
-          console.log('cedula correcta');
           return true;
         } else {
-          console.log('cedula incorrecta');
           return false;
         }
 
       } else {
         // imprimimos en consola si la region no pertenece
-        console.log('la region no pertenece');
         return false;
       }
     } else {
       // Imprimimos en consola si la cedula tiene mas o menos de 10 digitos
-      console.log('la cedula tiene mas o menos de 10 digitos');
       return false;
     }
   }

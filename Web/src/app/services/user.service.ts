@@ -13,7 +13,6 @@ export class UserService {
   url = environment.url + 'user/';
 
   constructor(private http: HttpClient) {
-    console.log('hola')
   }
 
   actualizarFoto(image: Adjuntos) {
@@ -36,13 +35,28 @@ export class UserService {
     return this.http.post(this.url + 'addUSer', usuario);
   }
 
+  updateUser(usuario: Usuario) {
+    return this.http.post(this.url + 'updateUser', usuario);
+  }
+
+
   getUserAdmin(idRoles) {
     return this.http.get(this.url + `getAdmin/${idRoles}`)
+  }
+
+  deleteUser(idRoles) {
+    return this.http.get(this.url + `deleteUser/${idRoles}`)
   }
 
   getUserByEmail(email) {
     return this.http.get(this.url + 'getUserEmail/' + email)
   }
+
+
+  getUserById(id) {
+    return this.http.get(this.url + `getUser/${id}`);
+  }
+
 
   actualizarPassword(usuario: Usuario) {
     return this.http.post(this.url + 'userPassword', usuario);

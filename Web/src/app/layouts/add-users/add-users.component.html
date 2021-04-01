@@ -18,8 +18,7 @@
                 </select>
               </div>
               <div class="col-md-8">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-backdrop="false"  data-target="#addUSers" >AGREGAR NUEVOS USUARIOS</button>
-              </div>
+                 </div>
               <div class="col-md-2">
                 <input [(ngModel)]="filtro" type="search" class="form-control input-sm" name="filtro"
                        placeholder="Buscar Registros"
@@ -29,28 +28,41 @@
 
             <div class="row">
               <div class="col-md-12">
+                <br>
+                <button (click)="limpiar()" type="button" class="btn btn-primary" data-toggle="modal" data-backdrop="false"  data-target="#addUSers" >Nuevo Usuario</button>
+
+
                 <div class="content table-responsive table-full-width">
 
-                  <table class="table table-hover table-striped">
+                  <table id="tablausuarios" class="table table-hover table-striped">
                     <thead>
                     <tr>
                       <th *ngFor="let cell of tableData1.headerRow">{{ cell }}</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr
-                      *ngFor="let item of this.tableData1.dataRows|  filter:filtro  | paginate:{itemsPerPage:paginas,currentPage:pageActual} ">
-                      <ng-container *ngIf="user.idUsuarios !== item.idUsuarios">
-                        <td><button type="button" class="btn btn-success">Editar</button></td>
+                    <tr id="mostrar{{item.idUsuarios}}" *ngFor="let item of this.tableData1.dataRows|  filter:filtro  | paginate:{itemsPerPage:paginas,currentPage:pageActual} " (mouseenter)="saludar(item.idUsuarios)" (mouseleave)="ocultar(item.idUsuarios)">
+                      <ng-container>
                         <td>{{item.idUsuarios}}</td>
                         <td>{{item.nombre}}</td>
                         <td>{{item.correo}}</td>
                         <td>
-                          <select class="form-control" [(ngModel)]="item.rol" name="rol" (change)="updateUser(item)">
+                          <select class="form-control" [(ngModel)]="item.rol" name="rol"  (change)="updateUser(item)">
                             <option value="1">SUPERADMINISTRADOR</option>
                             <option value="2">ADMINISTRADOR</option>
                             <option value="3">USUARIO</option>
                           </select>
+                        </td>
+                        <td  style="width: 6.5%">
+                          <div style="display:none;" id="evento{{item.idUsuarios}}">
+                          <span data-toggle="modal" data-backdrop="false"  data-target="#addUSers" (click)="loadUser(item.idUsuarios)" style="color: Dodgerblue;">
+                          <i class="fa fa-2x fa-user-edit"></i>
+                          </span>
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          <span hidden data-toggle="modal" data-backdrop="false"  data-target="#delete" (click)="deletedId = item.idUsuarios" style="color: Tomato;">
+                           <i class="fas fa-2x fa-user-times"></i>
+                          </span>
+                          </div>
                         </td>
                       </ng-container>
                     </tr>
@@ -69,12 +81,33 @@
   </div>
 </div>
 
+<div class="modal fade" style="background-color: rgba(0,0,0,0.7);" id="delete" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">USUARIO</h4>
+      </div>
+      <div class="modal-body">
+        <label  class="col-form-label">ESTA SEGURO DE QUE DESEA ELIMINAR EL USUARIO?</label>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="deleteUser()">ELIMINAR</button>
+        <button type="button" class="btn btn-secondary btn-fill" data-dismiss="modal">CANCELAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!--AGREGAR USUARIOS NUEVOS-->
 <div class="modal fade" style="background-color: rgba(0,0,0,0.7);" id="addUSers"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">NUEVO USUARIO</h5>
+        <h5 class="modal-title" id="exampleModalLabel">USUARIO</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -116,7 +149,7 @@
               <div class="text-danger">el nombre es requerido</div>
             </div>
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-12">
             <label class="col-form-label">EMAIL</label>
             <input type="email" name="correo" class="form-control" formControlName="correo"
                    [(ngModel)]="newUSer.correo"
@@ -131,7 +164,7 @@
           <div class="form-group col-md-6">
             <label>SELECCIONE EL ROL<label class="text-danger">*</label></label>
             <select class="form-control" formControlName="idRoles" name="idRoles"
-                    [(ngModel)]="newUSer.rol.idRoles">
+                    [(ngModel)]="newUSer.rol.idRoles" >
               <option value="1">SUPERADMINISTRADOR</option>
               <option value="2">ADMINISTRADOR</option>
               <option value="3">USUARIO</option>
@@ -140,12 +173,25 @@
               <div class="text-danger">El rol es requerido</div>
             </div>
           </div>
+            <div class="form-group col-md-6">
+              <label>SELECCIONE CONTRATO<label class="text-danger">*</label></label>
+              <select class="form-control" formControlName="tipocontrato" name="tipocontrato"
+                      [(ngModel)]="newUSer.tipocontrato">
+                <option value="1">TIEMPO COMPLETO</option>
+                <option value="2">MEDIO TIEMPO</option>
+                <option value="3">TIEMPO COMPLETO SIN ALMUERZO</option>
+              </select>
+              <div *ngIf="idRoles.invalid &&(idRoles.dirty || idRoles.touched)">
+                <div class="text-danger">El rol es requerido</div>
+              </div>
+            </div>
           </div>
         </form>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-fill"  (click)="addUser()">AGREGAR</button>
+        <button *ngIf="!newUSer.nombre" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="addUser()">CREAR</button>
+        <button *ngIf="newUSer.nombre" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="actualizar()">ACTUALIZAR</button>
         <button type="button" class="btn btn-secondary btn-fill" data-dismiss="modal">CANCELAR</button>
       </div>
     </div>

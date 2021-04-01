@@ -8,8 +8,8 @@ exports.up = function (knex, Promise) {
         table.string('password');
         table.string('newpassword');
         table.string('tipocontrato');
-        table.integer('rol').unsigned().references('idRoles').inTable('Bio-Roles');
-        table.integer('foto').unsigned().references('idAdjuntos').inTable('Bio-Adjuntos');
+        table.integer('rol').unsigned().references('idRoles').inTable('Bio-Roles').onDelete('CASCADE');
+        table.integer('foto').unsigned().references('idAdjuntos').inTable('Bio-Adjuntos').onDelete('CASCADE');
         table.timestamps();
     });
 };

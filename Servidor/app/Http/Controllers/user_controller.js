@@ -22,10 +22,10 @@ let getUserById = (req, res) => {
     Usuario.query({
         where: {idUsuarios: id}
     }).fetch({withRelated: ['rol']})
-        .then(response => {
+        .then(user => {
             return res.status(200).json({
                 ok: true,
-                response
+                user
             })
         }).catch(err => {
         return res.status(500).json({
@@ -159,6 +159,34 @@ let updateUser = (req, res) => {
     });
 
 }
+
+let updateUserData = (req, res) => {
+
+    if (req.body.rol) {
+        idRol = req.body.foto.idAdjuntos;
+        delete req.body.foto;
+        delete req.body.rol;
+        req.body.rol = idRol;
+    }
+
+    new Usuario(req.body).save().then(response => {
+        return res.status(200).json({
+            ok: true,
+            message: 'USUARIO ACTUALIZADO CON EXITO',
+            response
+        })
+    }).catch(err => {
+        console.log(err)
+        return res.status(500).json({
+            ok: false,
+            message: 'OCURRIO UN ERROR AL ACTUALIZAR',
+            err
+        })
+
+    });
+
+}
+
 let updateUserForgot = (req, res) => {
     if (req.body.foto) {
         idFoto = req.body.foto.idAdjuntos;
@@ -220,6 +248,25 @@ let getUserByEmail = (req, res) => {
     });
 }
 
+let deleteUser = (req, res) => {
+    let idUsuarios = req.params.id;
+
+   Usuario.forge({idUsuarios:idUsuarios}).destroy().then(resp => {
+        return res.status(200).json({
+            ok: true,
+            message: 'USUARIO ELIMINADO CON EXITO',
+            resp
+        })
+    }).catch(err => {
+        return res.status(500).json({
+            ok: false,
+            message: 'OCURRIO UN ERROR AL ELIMINAR EL USUARIO',
+            err
+        })
+
+    });
+}
+
 
 module.exports = {
     welcome,
@@ -231,5 +278,7 @@ module.exports = {
     getAdmin,
     updateUserForgot,
     userJustification,
-    updateTimbrada
+    updateTimbrada,
+    updateUserData,
+    deleteUser
 };
