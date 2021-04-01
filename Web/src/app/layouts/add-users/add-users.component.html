@@ -46,7 +46,7 @@
                         <td>{{item.nombre}}</td>
                         <td>{{item.correo}}</td>
                         <td>
-                          <select class="form-control" [(ngModel)]="item.rol" (change)="updateUser(item)">
+                          <select class="form-control" [(ngModel)]="item.rol" name="rol" (change)="updateUser(item)">
                             <option value="1">SUPERADMINISTRADOR</option>
                             <option value="2">ADMINISTRADOR</option>
                             <option value="3">USUARIO</option>
@@ -70,7 +70,7 @@
 </div>
 
 <!--AGREGAR USUARIOS NUEVOS-->
-<div class="modal fade" id="addUSers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
+<div class="modal fade" style="background-color: rgba(0,0,0,0.7);" id="addUSers"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -81,16 +81,17 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="contactForm" (ngSubmit)="addUser()">
+          <div class="row">
           <div class="form-group col-md-3">
-          <div  class="checkbox"><input name="theCheckbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" id="checkbox1" type="checkbox"><label  for="checkbox1"></label></div>
-          <span class="checkmark"></span>
-          <span *ngIf="marked">Es extranjero</span><span *ngIf="!marked">No es extranjero</span>
-      </div>
+            <div  class="checkbox"><input name="theCheckbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" id="checkbox1" type="checkbox"><label  for="checkbox1"></label></div>
+            <span class="checkmark"></span>
+            <span *ngIf="marked">Es extranjero</span><span *ngIf="!marked">No es extranjero</span>
+          </div>
           <div class="form-group col-md-4" >
             <label  class="col-form-label">ID BIOMÉTRICO</label>
             <input type="text" minlength="" maxlength="4"
                    onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;"
-                   name="idUsuarios" class="form-control" formControlName="idUsuarios" [(ngModel)]="newUSer.idBio"
+                   name="idBio" class="form-control" formControlName="idUsuarios" [(ngModel)]="newUSer.idBio"
                    placeholder="ID">
             <div *ngIf="idUsuarios.invalid &&(idUsuarios.dirty || idUsuarios.touched)">
               <div class="text-danger">el Id es requerido</div>
@@ -139,7 +140,9 @@
               <div class="text-danger">El rol es requerido</div>
             </div>
           </div>
+          </div>
         </form>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary btn-fill"  (click)="addUser()">AGREGAR</button>
@@ -148,3 +151,4 @@
     </div>
   </div>
 </div>
+

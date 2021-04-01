@@ -23,19 +23,19 @@ import {AdminLayoutModule} from "./layouts/admin-layout/admin-layout.module";
 
 
 @NgModule({
-    imports: [
-        BrowserAnimationsModule,
-        FormsModule,
-        RouterModule,
-        HttpClientModule,
-        NavbarModule,
-        FooterModule,
-        SidebarModule,
-        AppRoutingModule,
-        NgxPaginationModule,
-        ReactiveFormsModule,
-        AdminLayoutModule
-    ],
+  imports: [
+    BrowserAnimationsModule,
+    FormsModule,
+    RouterModule,
+    HttpClientModule,
+    NavbarModule,
+    FooterModule,
+    SidebarModule,
+    AppRoutingModule,
+    NgxPaginationModule,
+    ReactiveFormsModule,
+    AdminLayoutModule
+  ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,

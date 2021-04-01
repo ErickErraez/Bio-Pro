@@ -245,17 +245,17 @@ export class HomeComponent implements OnInit {
       objetoArchivo.usuario.nombre = this.dataList[i].Nombre;
 
       if (this.dataList[i].hasOwnProperty('Entrada')) {
-        objetoArchivo.entrada = this.dataList[i].Entrada;
+        objetoArchivo.entrada = this.dataList[i].Entrada + ':02';
       }
       if (this.dataList[i].hasOwnProperty('Salida')) {
-        objetoArchivo.almuerzo = this.dataList[i].Salida;
+        objetoArchivo.almuerzo = this.dataList[i].Salida+ ':02';
       }
       if (this.dataList[i].hasOwnProperty('Entrada_1')) {
-        objetoArchivo.regresoAlmuerzo = this.dataList[i].Entrada_1;
+        objetoArchivo.regresoAlmuerzo = this.dataList[i].Entrada_1+ ':02';
 
       }
       if (this.dataList[i].hasOwnProperty('Salida_1')) {
-        objetoArchivo.salida = this.dataList[i].Salida_1;
+        objetoArchivo.salida = this.dataList[i].Salida_1+ ':02';
       }
       datos.push([objetoArchivo.usuario.idBio, objetoArchivo.usuario.nombre, objetoArchivo.fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
 
@@ -293,16 +293,16 @@ export class HomeComponent implements OnInit {
         const x = this.validarHora(this.dataList[i].hora);
         switch (x) {
           case 'entrada':
-            objetoArchivo.entrada = this.dataList[i].hora;
+            objetoArchivo.entrada = this.dataList[i].hora + ':01' ;
             break;
           case 'almuerzo':
-            objetoArchivo.almuerzo = this.dataList[i].hora;
+            objetoArchivo.almuerzo = this.dataList[i].hora + ':01';
             break;
           case 'finalmuerzo':
-            objetoArchivo.regresoAlmuerzo = this.dataList[i].hora;
+            objetoArchivo.regresoAlmuerzo = this.dataList[i].hora + ':01';
             break;
           case 'salida':
-            objetoArchivo.salida = this.dataList[i].hora;
+            objetoArchivo.salida = this.dataList[i].hora + ':01';
             break;
         }
 
@@ -311,16 +311,16 @@ export class HomeComponent implements OnInit {
             const y = this.validarHora(this.dataList[i + 1].hora);
             switch (y) {
               case 'entrada':
-                objetoArchivo.entrada = this.dataList[i + 1].hora;
+                objetoArchivo.entrada = this.dataList[i + 1].hora + ':01';
                 break;
               case 'almuerzo':
-                objetoArchivo.almuerzo = this.dataList[i + 1].hora;
+                objetoArchivo.almuerzo = this.dataList[i + 1].hora + ':01';
                 break;
               case 'finalmuerzo':
-                objetoArchivo.regresoAlmuerzo = this.dataList[i + 1].hora;
+                objetoArchivo.regresoAlmuerzo = this.dataList[i + 1].hora + ':01';
                 break;
               case 'salida':
-                objetoArchivo.salida = this.dataList[i + 1].hora;
+                objetoArchivo.salida = this.dataList[i + 1].hora + ':01';
                 break;
             }
             delete this.dataList[i + 1];
@@ -329,16 +329,16 @@ export class HomeComponent implements OnInit {
           const y = this.validarHora(this.dataList[i].hora);
           switch (y) {
             case 'entrada':
-              objetoArchivo.entrada = this.dataList[i].hora;
+              objetoArchivo.entrada = this.dataList[i].hora + ':01';
               break;
             case 'almuerzo':
-              objetoArchivo.almuerzo = this.dataList[i].hora;
+              objetoArchivo.almuerzo = this.dataList[i].hora + ':01';
               break;
             case 'finalmuerzo':
-              objetoArchivo.regresoAlmuerzo = this.dataList[i].hora;
+              objetoArchivo.regresoAlmuerzo = this.dataList[i].hora + ':01';
               break;
             case 'salida':
-              objetoArchivo.salida = this.dataList[i].hora;
+              objetoArchivo.salida = this.dataList[i].hora + ':01';
               break;
           }
         }

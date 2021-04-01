@@ -77,10 +77,10 @@
                                       <ng-container *ngIf="HorasTrabajadas(item,i,'hora')">
                                         <td>{{item.idTimbradas}}</td>
                                         <td>{{item.fecha | date:'dd/MM/yyyy'}}</td>
-                                        <td>{{item.entrada}}</td>
-                                        <td>{{item.almuerzo}}</td>
-                                        <td>{{item.regresoAlmuerzo}}</td>
-                                        <td>{{item.salida}}</td>
+                                        <td>{{item.entrada| hora}}</td>
+                                        <td>{{item.almuerzo| hora}}</td>
+                                        <td>{{item.regresoAlmuerzo| hora}}</td>
+                                        <td>{{item.salida| hora}}</td>
                                         <td>{{item.total | date:'h:mm'}}</td>
                                         <td *ngIf="HorasTrabajadas(item,i,'clase') && !item.justificacion">
                                           <button (click)="uploadJustificacion(item)" type="button"
@@ -174,10 +174,10 @@
                               <td>{{item.idTimbradas}}</td>
                               <td>{{item.nombre}}</td>
                               <td>{{item.fecha | date:'dd/MM/yyyy'}}</td>
-                              <td>{{item.entrada}}</td>
-                              <td>{{item.almuerzo}}</td>
-                              <td>{{item.regresoAlmuerzo}}</td>
-                              <td>{{item.salida}}</td>
+                              <td>{{item.entrada | hora}}</td>
+                              <td>{{item.almuerzo| hora}}</td>
+                              <td>{{item.regresoAlmuerzo| hora}}</td>
+                              <td>{{item.salida| hora}}</td>
                               <td>{{item.total | date:'h:mm'}}</td>
                               <td *ngIf="HorasTrabajadas(item,i,'clase') && item.justificacion">
                                 <button (click)="loadJustificacion(item)" type="button"

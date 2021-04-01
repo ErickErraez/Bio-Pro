@@ -12,6 +12,7 @@ import {ConfigComponent} from '../config/config.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {FilterPipe} from '../../services/filter.pipe';
 import {InformesComponent} from '../informes/informes.component';
+import {HoraPipe} from "../../services/hora.pipe";
 
 
 @NgModule({
@@ -23,13 +24,15 @@ import {InformesComponent} from '../informes/informes.component';
   ],
   exports: [
     HomeComponent,
-    FilterPipe
+    FilterPipe,
+    HoraPipe,
   ],
   declarations: [
     HomeComponent,
     ConfigComponent,
     InformesComponent,
     FilterPipe,
+    HoraPipe
   ]
 })
 
