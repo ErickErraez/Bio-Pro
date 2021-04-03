@@ -39,7 +39,7 @@
         </div>
 
       </form>
-      <form *ngIf="!showLogin" class="login100-form validate-form">
+      <form  *ngIf="!showLogin" class="login100-form validate-form">
 					<span class="login100-form-logo">
 						<i class="fas fa-users"></i>
 					</span>
@@ -49,9 +49,16 @@
 					</span>
         <br>
         <div class="wrap-input100 validate-input">
-          <input [(ngModel)]="changePass.newPassword" name="pass" class="input100" type="text"
-                 placeholder="Ingrese su nueva contrasena">
-          <span class="focus-input100"></span>
+          <input formControlName="newPassword" class="form-control" name="newPassword"
+                 type="text" placeholder="Ingrese su nueva contrasena"  [(ngModel)]="changePass.newPassword">
+
+
+          <div *ngIf="newPassword.invalid &&(newPassword.dirty || newPassword.touched)">
+            <div class="text-danger">el password es requerido</div>
+          </div>
+          <div *ngIf="(newPassword.dirty || newPassword.touched) && newPassword.invalid && newPassword.errors.pattern">
+            <div class="text-danger">la PAsswoed no es correcto</div>
+          </div>
         </div>
 
         <div class="wrap-input100 validate-input">

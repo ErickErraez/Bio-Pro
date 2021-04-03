@@ -3,6 +3,7 @@ import {AuthService} from '../services/auth.service';
 import {AlertService} from '../services/alert.service';
 import {Router} from '@angular/router';
 import {Usuario} from '../Models/Usuario';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -20,19 +21,26 @@ export class LoginComponent implements OnInit {
     idUsuarios: 0,
   };
   usuario: Usuario = new Usuario();
-
   pass = '';
   email = '';
   showLogin = true;
   repPass = '';
+  contactForm: FormGroup;
+  private passwordPattern: any = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+
+  createFormGroup() {
+    return new FormGroup({
+      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern)]),
+    });
+  }
 
   constructor(private auth: AuthService, private alert: AlertService, private router: Router) {
+    this.contactForm = this.createFormGroup();
   }
 
   ngOnInit(): void {
 
   }
-
   login() {
     if (this.pass !== '' && this.email !== '') {
       const data = {pass: this.pass, email: this.email};
@@ -86,6 +94,7 @@ export class LoginComponent implements OnInit {
       this.alert.showNotification('warning', 'pe-7s-bell', 'Existen campos vacíos');
     }
   }
+
   mostrarContrasena(item) {
     if (item === 'pass') {
       this.tipoInput = 'text';
@@ -93,5 +102,8 @@ export class LoginComponent implements OnInit {
     if (item === 'text') {
       this.tipoInput = 'pass';
     }
+  }
+  get newPassword() {
+    return this.contactForm.get('newPassword')
   }
 }
