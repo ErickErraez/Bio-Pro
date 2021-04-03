@@ -7,6 +7,11 @@ middlewares = require('../../app/Http/Middelware/jwt_middleware');
 
 //GET METHODS
 api.get('/', userController.welcome);
+
+api.get('/data', userController.dataApi);
+
+
+
 api.get('/getUser/:id', userController.getUserById);
 api.get('/getUserEmail/:email', userController.getUserByEmail);
 api.get('/getAdmin/:idRoles', userController.getAdmin)

@@ -4,7 +4,7 @@ exports.seed = function(knex, Promise) {
   return knex('Bio-Usuarios').del()
     .then(function () {
       return knex('Bio-Usuarios').insert([
-          {idBio:500,cedula:'1725875296',nombre: 'ERICK DANIEL ERRAEZ GUAMAN',correo: 'erickerraez2@gmail.com',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0', tipocontrato: 1, rol:1,foto:1},
+          {idBio:500,cedula:'1725875296',nombre: 'ERICK DANIEL ERRAEZ GUAMAN',correo: 'edg.erraez@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0', tipocontrato: 1, rol:1,foto:1},
           {idBio:501,cedula:'1725875299',nombre: 'ALEJANDRO DANIEL CORONEL FABARA',correo: 'adf.coronel@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0', tipocontrato: 1, rol:2,},
           {idBio:2,cedula:'1707440754',nombre: 'BAQUERO ANGEL EDUARDO',correo: 'abaquero@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0', tipocontrato: 1, rol:3,},
           {idBio:3,cedula:'1714727540',nombre: 'CARRERA ZURITA RAFAEL FERNANDO',correo: 'rcarrera@yavirac.edu.ec',password:'$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey',newpassword:'0', tipocontrato: 1, rol:3,},

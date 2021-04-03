@@ -10,20 +10,34 @@
 						Iniciar Sesion
 					</span>
         <br>
-        <div class="wrap-input100 validate-input">
-          <input [(ngModel)]="email" name="email" class="input100" type="email" placeholder="Ingrese su email">
-          <span class="focus-input100"></span>
-        </div>
 
-        <div class="wrap-input100 validate-input">
-          <input [(ngModel)]="pass" class="input100" type="password" name="pass" placeholder="Ingrese su password">
-          <i *ngIf="tipoInput == 'pass'" (click)="mostrarContrasena(tipoInput)"
+        <div class="col-md-6">
+          <div class="wrap-input100 validate-input">
+            <input [(ngModel)]="email" name="email" class="input100" type="email" placeholder="Ingrese su usuario">
+            <span class="focus-input100"></span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="wrap-input100 validate-input">
+            <input disabled class="input100" placeholder="@yavirac.edu.ec">
+
+          </div>
+        </div>
+        <div class="col-md-11">
+          <div class="wrap-input100 validate-input">
+            <input [(ngModel)]="pass" class="input100" [type]="tipoInput" name="pass" placeholder="Ingrese su password">
+            <span class="focus-input100"></span>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <span style="color: #fff;">
+          <i *ngIf="tipoInput == 'password'" (click)="mostrarContrasena(tipoInput)"
              class="far fa-eye fa-2x arreglo"></i>
           <i *ngIf="tipoInput == 'text'" (click)="mostrarContrasena(tipoInput)"
              class="far fa-eye-slash fa-2x arreglo"></i>
-          <span class="focus-input100"></span>
-
+            </span>
         </div>
+
 
         <div class="text-center ">
           <a class="forgotpass" [routerLink]="['/login/identity']"> ¿Olvidaste tu contraseña?</a>
@@ -48,17 +62,28 @@
 						Actualizar Nueva Contraseña
 					</span>
         <br>
-        <div class="wrap-input100 validate-input">
-          <input [(ngModel)]="changePass.newPassword" name="pass" class="input100" type="text"
-                 placeholder="Ingrese su nueva contrasena">
-          <span class="focus-input100"></span>
+        <div class="col-md-11">
+          <div class="wrap-input100 validate-input">
+            <input [(ngModel)]="changePass.newPassword" name="pass" class="input100" [type]="tipoInput"
+                   placeholder="Ingrese su nueva contrasena">
+            <span class="focus-input100"></span>
+          </div>
         </div>
+        <div class="col-md-1">
+          <span style="color: #fff;">
+          <i *ngIf="tipoInput == 'password'" (click)="mostrarContrasena(tipoInput)"
+             class="far fa-eye fa-2x arreglo"></i>
+          <i *ngIf="tipoInput == 'text'" (click)="mostrarContrasena(tipoInput)"
+             class="far fa-eye-slash fa-2x arreglo"></i>
+            </span>
+        </div>
+        <div class="col-md-11">
+          <div class="wrap-input100 validate-input">
+            <input [(ngModel)]="repPass" class="input100" [type]="tipoInput" name="repPass"
+                   placeholder="Repita su nueva contrasena">
+            <span class="focus-input100"></span>
 
-        <div class="wrap-input100 validate-input">
-          <input [(ngModel)]="repPass" class="input100" type="password" name="repPass"
-                 placeholder="Repita su nueva contrasena">
-          <span class="focus-input100"></span>
-
+          </div>
         </div>
 
 

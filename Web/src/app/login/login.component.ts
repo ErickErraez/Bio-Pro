@@ -13,7 +13,7 @@ import {Usuario} from '../Models/Usuario';
 
 export class LoginComponent implements OnInit {
 
-  tipoInput: any = 'pass';
+  tipoInput: any = 'password';
   changePass = {
     oldPassword: '',
     newPassword: '',
@@ -34,6 +34,10 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.email = this.email.toLocaleLowerCase();
+    if (this.email.search('@') === -1) {
+      this.email = this.email + '@yavirac.edu.ec';
+    }
     if (this.pass !== '' && this.email !== '') {
       const data = {pass: this.pass, email: this.email};
       this.auth.login(data).subscribe(res => {
@@ -86,12 +90,13 @@ export class LoginComponent implements OnInit {
       this.alert.showNotification('warning', 'pe-7s-bell', 'Existen campos vacíos');
     }
   }
+
   mostrarContrasena(item) {
-    if (item === 'pass') {
+    if (item === 'password') {
       this.tipoInput = 'text';
     }
     if (item === 'text') {
-      this.tipoInput = 'pass';
+      this.tipoInput = 'password';
     }
   }
 }
