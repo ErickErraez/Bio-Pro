@@ -53,7 +53,7 @@
         </div>
 
       </form>
-      <form *ngIf="!showLogin" class="login100-form validate-form">
+      <form [formGroup]="contactForm" *ngIf="!showLogin" class="login100-form validate-form">
 					<span class="login100-form-logo">
 						<i class="fas fa-users"></i>
 					</span>
@@ -64,8 +64,15 @@
         <br>
         <div class="col-md-11">
           <div class="wrap-input100 validate-input">
-            <input [(ngModel)]="changePass.newPassword" name="pass" class="input100" [type]="tipoInput"
+            <input formControlName="newPassword" class="input100" name="newPassword"
+                   [(ngModel)]="changePass.newPassword"  [type]="tipoInput"
                    placeholder="Ingrese su nueva contrasena">
+            <div *ngIf="newPassword.invalid &&(newPassword.dirty || newPassword.touched)">
+              <div class="text-danger">La contraseña es requerida </div>
+            </div>
+            <div *ngIf="(newPassword.dirty || newPassword.touched) && newPassword.invalid && newPassword.errors.pattern">
+              <div class="text-danger">LA contraseña debe de tener una mayuscula y un número</div>
+            </div>
             <span class="focus-input100"></span>
           </div>
         </div>
@@ -79,10 +86,9 @@
         </div>
         <div class="col-md-11">
           <div class="wrap-input100 validate-input">
-            <input [(ngModel)]="repPass" class="input100" [type]="tipoInput" name="repPass"
+            <input  formControlName="repPasss" [(ngModel)]="repPass" class="input100" [type]="tipoInput" name="repPass"
                    placeholder="Repita su nueva contrasena">
             <span class="focus-input100"></span>
-
           </div>
         </div>
 

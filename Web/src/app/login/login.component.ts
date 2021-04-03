@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   tipoInput: any = 'password';
   changePass = {
-    oldPassword: '',
+    oldPassword: 'yavirac2020',
     newPassword: '',
     idUsuarios: 0,
   };
@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
   createFormGroup() {
     return new FormGroup({
       newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern)]),
+      repPasss: new FormControl('', [Validators.required]),
     });
   }
 
@@ -41,6 +42,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
 
   }
+
   login() {
     this.email = this.email.toLocaleLowerCase();
     if (this.email.search('@') === -1) {
@@ -76,6 +78,7 @@ export class LoginComponent implements OnInit {
 
 
   updatePass() {
+    console.log(this.changePass.oldPassword, this.changePass.newPassword, this.repPass);
     if (this.changePass.oldPassword !== '' && this.changePass.newPassword !== '' && this.repPass !== '') {
       if (this.changePass.newPassword === this.repPass) {
         this.auth.actualizarPassword(this.changePass).subscribe((res: any) => {
@@ -107,7 +110,12 @@ export class LoginComponent implements OnInit {
       this.tipoInput = 'password';
     }
   }
+
   get newPassword() {
     return this.contactForm.get('newPassword')
+  }
+
+  get repPasss() {
+    return this.contactForm.get('repPasss')
   }
 }
