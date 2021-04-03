@@ -9,6 +9,7 @@ export class Usuario {
   correo?: string;
   password?: string;
   newpassword?: string;
+  tipocontrato?:string;
   rol: Rol = new Rol();
   foto: Adjuntos = new Adjuntos();
 }

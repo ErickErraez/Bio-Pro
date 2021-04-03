@@ -6,6 +6,7 @@ const db = require('knex')(config['development']);
 const Usuario = require('../../Models/Usuarios').User;
 const Image = require('../../Models/Adjunto').Adjunto;
 const Timbrada = require('../../Models/Timbradas').Timbrada;
+const Timbradas = require('../../Models/Timbradas').Timbradas;
 const Rol = require('../../Models/Roles').Rol;
 const Usuarios = require('../../Models/Usuarios').Users;
 
@@ -17,15 +18,80 @@ let welcome = (req, res) => {
     })
 };
 
+
+let dataApi = (req, res) => {
+
+    new Timbradas().fetch({withRelated: ['usuario']}).then(function (user) {
+        const data = JSON.stringify(user);
+        const response = JSON.parse(data);
+        for (var i = 0; i < response.length; i++) {
+            delete response[i].usuario.password;
+            delete response[i].usuario.newpassword;
+            delete response[i].usuario.rol;
+            delete response[i].usuario.created_at;
+            delete response[i].usuario.updated_at;
+            delete response[i].created_at;
+            delete response[i].updated_at;
+            delete response[i].usuario.foto;
+            delete response[i].usuario.tipocontrato;
+            delete response[i].justificacion;
+            response[i].fecha = response[i].fecha.split('T')[0];
+
+            if (response[i].entrada) {
+                if (response[i].entrada.split(':')[2] == '01') {
+                    response[i].entrada = response[i].entrada.split(':')[0] + ":" + response[i].entrada.split(':')[1] + '-Yavirac'
+                }
+                if (response[i].entrada.split(':')[2] == '02') {
+                    response[i].entrada = response[i].entrada.split(':')[0] + ":" + response[i].entrada.split(':')[1] + '-Cenepa'
+                }
+            }
+            if (response[i].almuerzo) {
+                if (response[i].almuerzo.split(':')[2] == '01') {
+                    response[i].almuerzo = response[i].almuerzo.split(':')[0] + ":" + response[i].almuerzo.split(':')[1] + '-Yavirac'
+                }
+                if (response[i].almuerzo.split(':')[2] == '02') {
+                    response[i].almuerzo = response[i].almuerzo.split(':')[0] + ":" + response[i].almuerzo.split(':')[1] + '-Cenepa'
+                }
+            }
+            if (response[i].regresoAlmuerzo) {
+                if (response[i].regresoAlmuerzo.split(':')[2] == '01') {
+                    response[i].regresoAlmuerzo = response[i].regresoAlmuerzo.split(':')[0] + ":" + response[i].regresoAlmuerzo.split(':')[1] + '-Yavirac'
+                }
+                if (response[i].regresoAlmuerzo.split(':')[2] == '02') {
+                    response[i].regresoAlmuerzo = response[i].regresoAlmuerzo.split(':')[0] + ":" + response[i].regresoAlmuerzo.split(':')[1] + '-Cenepa'
+                }
+            }
+            if (response[i].salida) {
+                if (response[i].salida.split(':')[2] == '01') {
+                    response[i].salida = response[i].salida.split(':')[0] + ":" + response[i].salida.split(':')[1] + '-Yavirac'
+                }
+                if (response[i].salida.split(':')[2] == '02') {
+                    response[i].salida = response[i].salida.split(':')[0] + ":" + response[i].salida.split(':')[1] + '-Cenepa'
+                }
+            }
+        }
+        return res.status(200).json({
+            ok: true,
+            response
+        })
+    }).catch(function (err) {
+        return res.status(500).json({
+            ok: false,
+            err
+        })
+    });
+};
+
+
 let getUserById = (req, res) => {
     let id = req.params.id;
     Usuario.query({
         where: {idUsuarios: id}
     }).fetch({withRelated: ['rol']})
-        .then(response => {
+        .then(user => {
             return res.status(200).json({
                 ok: true,
-                response
+                user
             })
         }).catch(err => {
         return res.status(500).json({
@@ -159,6 +225,34 @@ let updateUser = (req, res) => {
     });
 
 }
+
+let updateUserData = (req, res) => {
+
+    if (req.body.rol) {
+        idRol = req.body.foto.idAdjuntos;
+        delete req.body.foto;
+        delete req.body.rol;
+        req.body.rol = idRol;
+    }
+
+    new Usuario(req.body).save().then(response => {
+        return res.status(200).json({
+            ok: true,
+            message: 'USUARIO ACTUALIZADO CON EXITO',
+            response
+        })
+    }).catch(err => {
+        console.log(err)
+        return res.status(500).json({
+            ok: false,
+            message: 'OCURRIO UN ERROR AL ACTUALIZAR',
+            err
+        })
+
+    });
+
+}
+
 let updateUserForgot = (req, res) => {
     if (req.body.foto) {
         idFoto = req.body.foto.idAdjuntos;
@@ -220,6 +314,25 @@ let getUserByEmail = (req, res) => {
     });
 }
 
+let deleteUser = (req, res) => {
+    let idUsuarios = req.params.id;
+
+    Usuario.forge({idUsuarios: idUsuarios}).destroy().then(resp => {
+        return res.status(200).json({
+            ok: true,
+            message: 'USUARIO ELIMINADO CON EXITO',
+            resp
+        })
+    }).catch(err => {
+        return res.status(500).json({
+            ok: false,
+            message: 'OCURRIO UN ERROR AL ELIMINAR EL USUARIO',
+            err
+        })
+
+    });
+}
+
 
 module.exports = {
     welcome,
@@ -231,5 +344,8 @@ module.exports = {
     getAdmin,
     updateUserForgot,
     userJustification,
-    updateTimbrada
+    updateTimbrada,
+    updateUserData,
+    deleteUser,
+    dataApi
 };
