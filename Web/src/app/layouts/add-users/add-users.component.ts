@@ -95,8 +95,8 @@ export class AddUsersComponent implements OnInit {
 
   }
 
-  mayus(e) {
-    e.value = e.value.toUpperCase();
+  mayus() {
+    this.newUSer.nombre = this.newUSer.nombre.toUpperCase();
   }
 
   toggleVisibility(e) {
@@ -106,6 +106,7 @@ export class AddUsersComponent implements OnInit {
 
   addUser() {
     this.tableData1.dataRows = [];
+    this.newUSer.nombre.toUpperCase();
     this.newUSer.newpassword = '0';
     this.newUSer.password = '$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey';
     this.newUSer.foto.idAdjuntos = 1;
@@ -115,6 +116,7 @@ export class AddUsersComponent implements OnInit {
         this.userService.addUser(this.newUSer).subscribe((res: any) => {
           this.alert.showNotification('success', 'pe-7s-bell', res.message);
           this.resetForm();
+          this.loadUsers();
         }, err => {
           if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
             this.alert.showNotification('danger', 'pe-7s-bell', 'Error en el servidor');
@@ -127,6 +129,7 @@ export class AddUsersComponent implements OnInit {
           this.userService.addUser(this.newUSer).subscribe((res: any) => {
             this.alert.showNotification('success', 'pe-7s-bell', res.message);
             this.resetForm();
+            this.loadUsers();
           }, err => {
             if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
               this.alert.showNotification('danger', 'pe-7s-bell', 'Error en el servidor');
@@ -141,17 +144,19 @@ export class AddUsersComponent implements OnInit {
     } else {
       this.alert.showNotification('warning', 'pe-7s-bell', 'EXISTEN CAMPOS VACÍOS');
     }
-    this.loadUsers();
   }
 
   actualizar() {
+
     this.tableData1.dataRows = [];
     if (this.contactForm.valid) {
+      this.newUSer.nombre.toLocaleUpperCase();
       // @ts-ignore
       if (this.marked === true) {
         this.userService.updateUser(this.newUSer).subscribe((res: any) => {
           this.alert.showNotification('success', 'pe-7s-bell', res.message);
           this.resetForm();
+          this.loadUsers();
         }, err => {
           if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
             this.alert.showNotification('danger', 'pe-7s-bell', 'Error en el servidor');
@@ -164,6 +169,7 @@ export class AddUsersComponent implements OnInit {
           this.userService.updateUser(this.newUSer).subscribe((res: any) => {
             this.alert.showNotification('success', 'pe-7s-bell', res.message);
             this.resetForm();
+            this.loadUsers();
           }, err => {
             if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
               this.alert.showNotification('danger', 'pe-7s-bell', 'Error en el servidor');
@@ -178,7 +184,6 @@ export class AddUsersComponent implements OnInit {
     } else {
       this.alert.showNotification('warning', 'pe-7s-bell', 'EXISTEN CAMPOS VACÍOS');
     }
-    this.loadUsers();
   }
 
   deleteUser() {

@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   tipoInput: any = 'password';
   changePass = {
-    oldPassword: '',
+    oldPassword: 'yavirac2020',
     newPassword: '',
     idUsuarios: 0,
   };
