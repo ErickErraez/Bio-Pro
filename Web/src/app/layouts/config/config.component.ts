@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertService} from "../../services/alert.service";
-import {AuthService} from "../../services/auth.service";
-import {Usuario} from "../../Models/Usuario";
-import {Router} from "@angular/router";
+import {AlertService} from '../../services/alert.service';
+import {AuthService} from '../../services/auth.service';
+import {Usuario} from '../../Models/Usuario';
+import {Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-config',
@@ -16,24 +17,36 @@ export class ConfigComponent implements OnInit {
     idUsuarios: 0,
   };
   repPassword: '';
+  tipoInput: any = 'password';
   usuario: Usuario = new Usuario();
+  configForm: FormGroup;
+  private passwordPattern: any = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+
+  createFormGroup() {
+    return new FormGroup({
+      oldPassword: new FormControl('', Validators.required),
+      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern)]),
+      repPass: new FormControl('', Validators.required),
+    });
+  }
 
 
   constructor(private auth: AuthService, private alert: AlertService, private route: Router) {
     this.usuario = auth.validarToken();
+    this.configForm = this.createFormGroup();
   }
 
   ngOnInit(): void {
   }
 
-   actualizarPassword() {
+  actualizarPassword() {
     if (this.changePass.oldPassword !== '' && this.changePass.newPassword !== '' && this.repPassword !== '') {
       if (this.changePass.newPassword === this.repPassword) {
         this.changePass.idUsuarios = this.usuario.idUsuarios;
         this.auth.actualizarPassword(this.changePass).subscribe((res: any) => {
-         // console.log(this.changePass);
-         this.alert.showNotification('success', 'pe-7s-bell', res.mensaje);
-           localStorage.clear();
+          // console.log(this.changePass);
+          this.alert.showNotification('success', 'pe-7s-bell', res.mensaje);
+          localStorage.clear();
           this.route.navigate(['/login']);
         }, err => {
           if (err.error.mensaje === 'Error: CustomError: EmptyResponse') {
@@ -49,5 +62,21 @@ export class ConfigComponent implements OnInit {
       this.alert.showNotification('warning', 'pe-7s-bell', 'Existen campos vacíos');
     }
   }
-
+  get oldPassword() {
+    return this.configForm.get('oldPassword')
+  }
+  get newPassword() {
+    return this.configForm.get('newPassword')
+  }
+  get repPass() {
+    return this.configForm.get('repPass')
+  }
+  mostrarContrasena(item) {
+    if (item === 'password') {
+      this.tipoInput = 'text';
+    }
+    if (item === 'text') {
+      this.tipoInput = 'password';
+    }
+  }
 }

@@ -3,6 +3,7 @@ import {AuthService} from '../services/auth.service';
 import {AlertService} from '../services/alert.service';
 import {Router} from '@angular/router';
 import {Usuario} from '../Models/Usuario';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -20,13 +21,22 @@ export class LoginComponent implements OnInit {
     idUsuarios: 0,
   };
   usuario: Usuario = new Usuario();
-
   pass = '';
   email = '';
   showLogin = true;
   repPass = '';
+  contactForm: FormGroup;
+  private passwordPattern: any = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+
+  createFormGroup() {
+    return new FormGroup({
+      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern)]),
+      repPasss: new FormControl('', [Validators.required]),
+    });
+  }
 
   constructor(private auth: AuthService, private alert: AlertService, private router: Router) {
+    this.contactForm = this.createFormGroup();
   }
 
   ngOnInit(): void {
@@ -68,6 +78,7 @@ export class LoginComponent implements OnInit {
 
 
   updatePass() {
+    console.log(this.changePass.oldPassword, this.changePass.newPassword, this.repPass);
     if (this.changePass.oldPassword !== '' && this.changePass.newPassword !== '' && this.repPass !== '') {
       if (this.changePass.newPassword === this.repPass) {
         this.auth.actualizarPassword(this.changePass).subscribe((res: any) => {
@@ -98,5 +109,13 @@ export class LoginComponent implements OnInit {
     if (item === 'text') {
       this.tipoInput = 'password';
     }
+  }
+
+  get newPassword() {
+    return this.contactForm.get('newPassword')
+  }
+
+  get repPasss() {
+    return this.contactForm.get('repPasss')
   }
 }

@@ -116,7 +116,7 @@
         <form [formGroup]="contactForm" (ngSubmit)="addUser()">
           <div class="row">
           <div class="form-group col-md-3">
-            <div  class="checkbox"><input name="theCheckbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" id="checkbox1" type="checkbox"><label  for="checkbox1"></label></div>
+            <div  class="checkbox"><input name="theCheckbox" formControlName="check" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" id="checkbox1" type="checkbox"><label  for="checkbox1"></label></div>
             <span class="checkmark"></span>
             <span *ngIf="marked">Es extranjero</span><span *ngIf="!marked">No es extranjero</span>
           </div>
@@ -144,7 +144,7 @@
             <label class="col-form-label">NOMBRES COMPLETOS</label>
             <input type="text" (keyup)="mayus()"
                    name="nombre" class="form-control" formControlName="nombre" [(ngModel)]="newUSer.nombre"
-                   placeholder="SUAREZ SANCHEZ JUAN AGUSTIN">
+                   placeholder="SANTIAGO JAVIER SANCHEZ MENDOZA">
             <div *ngIf="nombre.invalid &&(nombre.dirty || nombre.touched)">
               <div class="text-danger">el nombre es requerido</div>
             </div>
@@ -153,7 +153,7 @@
             <label class="col-form-label">EMAIL</label>
             <input type="email" name="correo" class="form-control" formControlName="correo"
                    [(ngModel)]="newUSer.correo"
-                   placeholder="adf.coronel@yavirac.edu.ec">
+                   placeholder="ssanchez@yavirac.edu.ec">
             <div *ngIf="correo.invalid &&(correo.dirty || correo.touched)">
               <div class="text-danger">el correo es requerido</div>
             </div>
@@ -181,7 +181,7 @@
                 <option value="2">MEDIO TIEMPO</option>
                 <option value="3">TIEMPO COMPLETO SIN ALMUERZO</option>
               </select>
-              <div *ngIf="idRoles.invalid &&(idRoles.dirty || idRoles.touched)">
+              <div *ngIf="tipocontrato.invalid &&(tipocontrato.dirty || tipocontrato.touched)">
                 <div class="text-danger">El rol es requerido</div>
               </div>
             </div>

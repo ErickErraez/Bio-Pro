@@ -16,12 +16,13 @@ import {HoraPipe} from "../../services/hora.pipe";
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AdminLayoutRoutes),
-    FormsModule,
-    NgxPaginationModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        FormsModule,
+        NgxPaginationModule,
+        ReactiveFormsModule,
+    ],
   exports: [
     HomeComponent,
     FilterPipe,

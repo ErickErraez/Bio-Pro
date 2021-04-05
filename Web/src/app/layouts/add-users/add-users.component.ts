@@ -35,6 +35,7 @@ export class AddUsersComponent implements OnInit {
       correo: new FormControl('', [Validators.required, Validators.pattern(this.emailPattern)]),
       idRoles: new FormControl('', Validators.required),
       tipocontrato: new FormControl('', Validators.required),
+      check: new FormControl('', []),
     });
   }
 
@@ -221,6 +222,14 @@ export class AddUsersComponent implements OnInit {
 
   get idRoles() {
     return this.contactForm.get('idRoles')
+  }
+
+  get tipocontrato() {
+    return this.contactForm.get('tipocontrato')
+  }
+
+  get check() {
+    return this.contactForm.get('check');
   }
 
   limpiar() {
