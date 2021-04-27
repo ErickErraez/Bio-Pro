@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   createFormGroup() {
     return new FormGroup({
-      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern)]),
+      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern) , Validators.minLength(8)]),
       repPasss: new FormControl('', [Validators.required]),
     });
   }

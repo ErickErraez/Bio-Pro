@@ -25,7 +25,8 @@ export class ConfigComponent implements OnInit {
   createFormGroup() {
     return new FormGroup({
       oldPassword: new FormControl('', Validators.required),
-      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern)]),
+      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern),
+        Validators.minLength(8)]),
       repPass: new FormControl('', Validators.required),
     });
   }
@@ -62,15 +63,19 @@ export class ConfigComponent implements OnInit {
       this.alert.showNotification('warning', 'pe-7s-bell', 'Existen campos vacíos');
     }
   }
+
   get oldPassword() {
     return this.configForm.get('oldPassword')
   }
+
   get newPassword() {
     return this.configForm.get('newPassword')
   }
+
   get repPass() {
     return this.configForm.get('repPass')
   }
+
   mostrarContrasena(item) {
     if (item === 'password') {
       this.tipoInput = 'text';

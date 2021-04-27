@@ -13,10 +13,11 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Contraseña Actual</label>
-                    <input formControlName="oldPassword" [(ngModel)]="changePass.oldPassword" type="password" name="oldPassword" class="form-control" placeholder="Contraseña Actual">
+                    <input formControlName="oldPassword" [(ngModel)]="changePass.oldPassword" type="password"
+                           name="oldPassword" class="form-control" placeholder="Contraseña Actual">
                   </div>
                   <div *ngIf="oldPassword.invalid &&(oldPassword.dirty || oldPassword.touched)">
-                    <div class="text-danger">La Antigua contraseña es requerida </div>
+                    <div class="text-danger">La Antigua contraseña es requerida</div>
                   </div>
                 </div>
               </div>
@@ -24,12 +25,18 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Nueva Contraseña </label>
-                    <input  formControlName="newPassword" [(ngModel)]="changePass.newPassword" type="password" name="newPassword" class="form-control" placeholder="Nueva contraseña">
+                    <input formControlName="newPassword" [(ngModel)]="changePass.newPassword" type="password" maxlength="15"
+                           name="newPassword" class="form-control" placeholder="Nueva contraseña">
                   </div>
                   <div *ngIf="newPassword.invalid &&(newPassword.dirty || newPassword.touched)">
-                    <div class="text-danger">La Nueva contraseña es requerida </div>
+                    <div class="text-danger">La Nueva contraseña es requerida</div>
                   </div>
-                  <div *ngIf="(newPassword.dirty || newPassword.touched) && newPassword.invalid && newPassword.errors.pattern">
+                  <div *ngIf="newPassword.errors.minlength">
+                    <div class="text-danger">La contraseña debe ser máximo de 8</div>
+                  </div>
+
+                  <div
+                    *ngIf="(newPassword.dirty || newPassword.touched) && newPassword.invalid && newPassword.errors.pattern">
                     <div class="text-danger">La contraseña debe de tener al menos una mayúscula y un número</div>
                   </div>
                 </div>
@@ -39,14 +46,17 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Repetir Contraseña</label>
-                    <input formControlName="repPass" [(ngModel)]="repPassword" type="password" name="repPassword" class="form-control" placeholder="Repetir contraseña">
+                    <input formControlName="repPass" [(ngModel)]="repPassword" type="password" name="repPassword"
+                           class="form-control" placeholder="Repetir contraseña">
                   </div>
                   <div *ngIf="repPass.invalid &&(repPass.dirty || repPass.touched)">
-                    <div class="text-danger">Repetir contraseña  es requerida </div>
+                    <div class="text-danger">Repetir contraseña es requerida</div>
                   </div>
                 </div>
               </div>
-              <button type="submit" (click)="actualizarPassword()" class="btn btn-info btn-fill pull-left">ACTUALIZAR CONTRASEÑA</button>
+              <button type="submit" (click)="actualizarPassword()" class="btn btn-info btn-fill pull-left">ACTUALIZAR
+                CONTRASEÑA
+              </button>
               <div class="clearfix"></div>
             </form>
           </div>
