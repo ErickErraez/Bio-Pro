@@ -64,11 +64,14 @@
         <br>
         <div class="col-md-11">
           <div class="wrap-input100 validate-input">
-            <input formControlName="newPassword" class="input100" name="newPassword"
+            <input formControlName="newPassword" class="input100" name="newPassword" maxlength="15"
                    [(ngModel)]="changePass.newPassword"  [type]="tipoInput"
                    placeholder="Ingrese su nueva contrasena">
             <div *ngIf="newPassword.invalid &&(newPassword.dirty || newPassword.touched)">
               <div class="text-danger">La contraseña es requerida </div>
+            </div>
+            <div *ngIf="newPassword.errors.minlength">
+              <div class="text-danger">La contraseña debe ser máximo de 8</div>
             </div>
             <div *ngIf="(newPassword.dirty || newPassword.touched) && newPassword.invalid && newPassword.errors.pattern">
               <div class="text-danger">LA contraseña debe de tener una mayuscula y un número</div>
@@ -86,7 +89,7 @@
         </div>
         <div class="col-md-11">
           <div class="wrap-input100 validate-input">
-            <input  formControlName="repPasss" [(ngModel)]="repPass" class="input100" [type]="tipoInput" name="repPass"
+            <input  formControlName="repPasss" [(ngModel)]="repPass" class="input100" [type]="tipoInput" name="repPass"  maxlength="15"
                    placeholder="Repita su nueva contrasena">
             <span class="focus-input100"></span>
           </div>
@@ -95,7 +98,7 @@
 
         <div class="container-login100-form-btn">
           <button class="login100-form-btn" (click)="updatePass()">
-            Actualizar Contrasena
+            Actualizar Contraseña
           </button>
         </div>
 
