@@ -3,15 +3,20 @@
 ## Si no tienes instalado NodeJs
 ### [NodeJs](https://nodejs.org/es/)
 
-## Instalacion Servidor 
+## Instalar Knex en consola como administrador
+```bash
+npm install knex --save
+```
+
+## Instalacion dentro de la carpeta Servidor 
 ```bash
 npm install
 ```
-## Para Iniciar
+## Para Iniciar el Servidor
 ```bash
 npm start
 ```
-Con Nodemon
+Iniciar el Servidor Con Nodemon
 ```bash
 npm nodemon
 ```
@@ -31,9 +36,7 @@ CREATE DATABASE "bio_pro";
 knex seed:run
 ```
 
-
-
-## Instalacion Aplicacion
+## Instalacion dentro de la carpeta Web
 ```bash
 npm install
 ```
