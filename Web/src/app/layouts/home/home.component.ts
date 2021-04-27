@@ -248,14 +248,14 @@ export class HomeComponent implements OnInit {
         objetoArchivo.entrada = this.dataList[i].Entrada + ':02';
       }
       if (this.dataList[i].hasOwnProperty('Salida')) {
-        objetoArchivo.almuerzo = this.dataList[i].Salida+ ':02';
+        objetoArchivo.almuerzo = this.dataList[i].Salida + ':02';
       }
       if (this.dataList[i].hasOwnProperty('Entrada_1')) {
-        objetoArchivo.regresoAlmuerzo = this.dataList[i].Entrada_1+ ':02';
+        objetoArchivo.regresoAlmuerzo = this.dataList[i].Entrada_1 + ':02';
 
       }
       if (this.dataList[i].hasOwnProperty('Salida_1')) {
-        objetoArchivo.salida = this.dataList[i].Salida_1+ ':02';
+        objetoArchivo.salida = this.dataList[i].Salida_1 + ':02';
       }
       datos.push([objetoArchivo.usuario.idBio, objetoArchivo.usuario.nombre, objetoArchivo.fecha, objetoArchivo.entrada, objetoArchivo.almuerzo, objetoArchivo.regresoAlmuerzo, objetoArchivo.salida]);
 
@@ -293,7 +293,7 @@ export class HomeComponent implements OnInit {
         const x = this.validarHora(this.dataList[i].hora);
         switch (x) {
           case 'entrada':
-            objetoArchivo.entrada = this.dataList[i].hora + ':01' ;
+            objetoArchivo.entrada = this.dataList[i].hora + ':01';
             break;
           case 'almuerzo':
             objetoArchivo.almuerzo = this.dataList[i].hora + ':01';
@@ -372,11 +372,12 @@ export class HomeComponent implements OnInit {
     }
 
   }
+
 //usuario de mediotiempo  hora entrada y salida
 // tiempo completo pero sin almuerzo entran a las 12 y salen de noche
 // api usuario,cedula,todos los datos de usuario. fecha , sede(donde timbró) y todos los datos de la tabla timbradas
   guardar() {
-
+    this.tableData1.dataRows = [];
     for (let i = 0; i < this.dataUser.length; i++) {
       this.auth.getData(this.dataUser[i]).subscribe((res: any) => {
         if (res.ok) {
@@ -404,7 +405,6 @@ export class HomeComponent implements OnInit {
       //   this.alert.showNotification('success', 'pe-7s-bell', 'Se Terminado de cargar los Datos');
       // }
     }
-
   }
 
   guardarDatos(data, i) {
