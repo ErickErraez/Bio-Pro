@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Usuario} from '../../Models/Usuario';
 import {AuthService} from '../../services/auth.service';
 import {Adjuntos} from '../../Models/Adjuntos';
@@ -25,9 +25,12 @@ export class HomeComponent implements OnInit {
   showBar = true;
   showFile = true;
   paginas = 10;
+  existeArchivo = false;
   PageActual = 1;
   filtro = '';
+  esconder = false;
   test = 'width:0%'
+  habilitarBoton = false;
   public tableData1;
   public tableData2;
   email: Email = new Email();
@@ -49,6 +52,8 @@ export class HomeComponent implements OnInit {
   dataList: any[];
   dataUser: any[] = [];
   paginador = 'true';
+  @ViewChild('uploads')
+  myInputVariable: ElementRef;
 
 
   constructor(private mail: MailerService, private auth: AuthService, private userServices: UserService, private alert: AlertService) {
@@ -197,40 +202,53 @@ export class HomeComponent implements OnInit {
     this.file = files;
     this.archivo.idTimbradas = this.file[0].idTimbradas;
     if (files[0] && this.campus === 'Yavirac') {
-      Papa.parse(files[0], {
-        header: true,
-        skipEmptyLines: true,
-        complete: (result, file) => {
-          this.dataList = result.data;
-        }
-      });
+      if (files[0].type === 'text/csv') {
+        Papa.parse(files[0], {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result, file) => {
+            this.dataList = result.data;
+          }
+        });
+        this.esconder = false;
+      } else {
+        this.esconder = true;
+        this.alert.showNotification('danger', 'pe-7s-bell', 'El archivo no corresponde al Campus seleccionado');
+      }
     } else {
-      let workBook = null;
-      let jsonData = null;
-      const reader = new FileReader();
-      const file = files[0];
-      reader.onload = event => {
-        const data = reader.result;
-        workBook = XLSX.read(data, {type: 'binary'});
-        jsonData = workBook.SheetNames.reduce((initial, name) => {
-          const sheet = workBook.Sheets[name];
-          initial[name] = XLSX.utils.sheet_to_json(sheet);
-          return initial;
-        }, {});
-        this.dataList = jsonData.Hoja1;
-      };
-      reader.readAsBinaryString(file);
+      if (files[0].type.includes('sheet')) {
+        let workBook = null;
+        let jsonData = null;
+        const reader = new FileReader();
+        const file = files[0];
+        reader.onload = event => {
+          const data = reader.result;
+          workBook = XLSX.read(data, {type: 'binary'});
+          jsonData = workBook.SheetNames.reduce((initial, name) => {
+            const sheet = workBook.Sheets[name];
+            initial[name] = XLSX.utils.sheet_to_json(sheet);
+            return initial;
+          }, {});
+          this.dataList = jsonData.Hoja1;
+          this.esconder = false;
+        };
+        reader.readAsBinaryString(file);
+      } else {
+        this.esconder = true;
+        this.alert.showNotification('danger', 'pe-7s-bell', 'El archivo no corresponde al Campus seleccionado');
+      }
     }
-
   }
 
   saveChange() {
+    this.existeArchivo = true;
     if (this.campus === 'Yavirac') {
       this.loadYaviracData();
     } else {
       this.loadOtherFormat();
     }
-
+    this.myInputVariable.nativeElement.value = '';
+    this.filtro = '';
   }
 
 
@@ -377,6 +395,7 @@ export class HomeComponent implements OnInit {
 // tiempo completo pero sin almuerzo entran a las 12 y salen de noche
 // api usuario,cedula,todos los datos de usuario. fecha , sede(donde timbró) y todos los datos de la tabla timbradas
   guardar() {
+    this.habilitarBoton = true;
     this.tableData1.dataRows = [];
     for (let i = 0; i < this.dataUser.length; i++) {
       this.auth.getData(this.dataUser[i]).subscribe((res: any) => {
@@ -414,6 +433,8 @@ export class HomeComponent implements OnInit {
         this.alert.showNotification('success', 'pe-7s-bell', 'Se Terminado de cargar los Datos');
         this.obtenerTodasTimbradas();
         this.newFile = false;
+        this.habilitarBoton = false;
+        this.existeArchivo = false;
       }
     }, err => {
       // console.log(err);
