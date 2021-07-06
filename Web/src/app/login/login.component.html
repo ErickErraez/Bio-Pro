@@ -53,7 +53,7 @@
         </div>
 
       </form>
-      <form [formGroup]="contactForm" *ngIf="!showLogin" class="login100-form validate-form">
+      <form [formGroup]="passForm" (ngSubmit)="updatePass()" *ngIf="!showLogin" class="login100-form validate-form">
 					<span class="login100-form-logo">
 						<i class="fas fa-users"></i>
 					</span>
@@ -64,19 +64,19 @@
         <br>
         <div class="col-md-11">
           <div class="wrap-input100 validate-input">
-            <input formControlName="newPassword" class="input100" name="newPassword" maxlength="15"
+            <input formControlName="newPassword" class="input100" name="newPassword"
                    [(ngModel)]="changePass.newPassword"  [type]="tipoInput"
-                   placeholder="Ingrese su nueva contrasena">
-            <div *ngIf="newPassword.invalid &&(newPassword.dirty || newPassword.touched)">
-              <div class="text-danger">La contraseña es requerida </div>
+                   placeholder="Ingrese su nueva contraseña">
+            <br>
+            <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)"
+                 class="alert-danger">
+              <div *ngIf="newPassword.errors?.required">
+                La contraseña es requerida
+              </div>
+              <div *ngIf="newPassword.errors?.pattern">
+                La contraseña debe tener al menos una mayúsculas y un número
+              </div>
             </div>
-            <div *ngIf="newPassword.errors.minlength">
-              <div class="text-danger">La contraseña debe ser máximo de 8</div>
-            </div>
-            <div *ngIf="(newPassword.dirty || newPassword.touched) && newPassword.invalid && newPassword.errors.pattern">
-              <div class="text-danger">LA contraseña debe de tener una mayuscula y un número</div>
-            </div>
-            <span class="focus-input100"></span>
           </div>
         </div>
         <div class="col-md-1">
@@ -91,13 +91,16 @@
           <div class="wrap-input100 validate-input">
             <input  formControlName="repPasss" [(ngModel)]="repPass" class="input100" [type]="tipoInput" name="repPass"  maxlength="15"
                    placeholder="Repita su nueva contrasena">
-            <span class="focus-input100"></span>
+            <div *ngIf="repPasss.invalid && (repPasss.dirty || repPasss.touched)"
+                 class="alert-danger">
+              <div *ngIf="repPasss.errors?.required">
+               El campo es requerido
+              </div>
+            </div>
           </div>
         </div>
-
-
         <div class="container-login100-form-btn">
-          <button class="login100-form-btn" (click)="updatePass()">
+          <button type="submit" [disabled]="passForm.invalid"  class="login100-form-btn" (click)="updatePass()">
             Actualizar Contraseña
           </button>
         </div>

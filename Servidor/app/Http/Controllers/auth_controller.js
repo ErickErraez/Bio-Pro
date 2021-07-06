@@ -89,8 +89,12 @@ let changePassword = (req, res) => {
                     bcrypt.hash(newPassword, 10, function (err, hash) {
                         usuario.attributes.password = hash;
                         new Usuario(usuario.attributes).save().then(result => {
+                            let token;
+                            token = jwt.sign({result}, 'my-secret-token');
+                            delete result.attributes.password;
                             return res.status(200).json({
                                 ok: true,
+                                session_id: token,
                                 mensaje: `CONTRASEÑA ACTUALIZADA CON EXITO`
                             })
                         }).catch(error => {
@@ -134,8 +138,11 @@ let updateUser = (req, res) => {
     }
 
     new Usuario(req.body).save().then(response => {
+        let token;
+        token = jwt.sign({response}, 'my-secret-token');
         return res.status(200).json({
             ok: true,
+            session_id: token,
             message: 'USUARIO ACTUALIZADO CON EXITO',
             response
         })

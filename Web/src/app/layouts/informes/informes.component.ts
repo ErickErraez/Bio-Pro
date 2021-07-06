@@ -11,6 +11,8 @@ import * as XLSX from 'xlsx';
 })
 export class InformesComponent implements OnInit {
   public tableData1;
+  existePdf = false;
+  habilitarBoton = true;
   paginas = 10;
   pageActual = 1;
   filtro = '';
@@ -189,6 +191,7 @@ export class InformesComponent implements OnInit {
   }
 
   generarPdf() {
+    this.habilitarBoton = false;
     const data = [];
     data.push(['Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4'])
     if (this.filtro != '') {
