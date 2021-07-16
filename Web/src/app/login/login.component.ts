@@ -25,18 +25,18 @@ export class LoginComponent implements OnInit {
   email = '';
   showLogin = true;
   repPass = '';
-  contactForm: FormGroup;
-  private passwordPattern: any = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+  passForm: FormGroup;
+  private passwordPattern: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
   createFormGroup() {
     return new FormGroup({
-      newPassword: new FormControl('', [Validators.required, Validators.pattern(this.passwordPattern) , Validators.minLength(8)]),
-      repPasss: new FormControl('', [Validators.required]),
+      newPassword: new FormControl('', [Validators.required, Validators.minLength(8),  Validators.pattern(this.passwordPattern)]),
+      repPasss: new FormControl('', [Validators.required, Validators.minLength(8)]),
     });
   }
 
   constructor(private auth: AuthService, private alert: AlertService, private router: Router) {
-    this.contactForm = this.createFormGroup();
+    this.passForm = this.createFormGroup();
   }
 
   ngOnInit(): void {
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.alert.showNotification('danger', 'pe-7s-bell', err.error.mensaje);
         }
-        sessionStorage.clear();
+        localStorage.clear();
       });
     } else {
       this.alert.showNotification('warning', 'pe-7s-bell', 'DATOS INCOMPLETOS');
@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
       if (this.changePass.newPassword === this.repPass) {
         this.auth.actualizarPassword(this.changePass).subscribe((res: any) => {
           this.usuario.newpassword = '1';
-          this.auth.actualizarUsuarioFoto(this.usuario).subscribe((usuario: Usuario) => {
+          this.auth.actualizarUsuarioFoto(this.usuario).subscribe((usuario: any) => {
             this.alert.showNotification('success', 'pe-7s-bell', res.mensaje);
             this.router.navigate(['/']);
           });
@@ -112,10 +112,10 @@ export class LoginComponent implements OnInit {
   }
 
   get newPassword() {
-    return this.contactForm.get('newPassword')
+    return this.passForm.get('newPassword')
   }
 
   get repPasss() {
-    return this.contactForm.get('repPasss')
+    return this.passForm.get('repPasss')
   }
 }

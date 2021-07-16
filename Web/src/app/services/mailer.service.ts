@@ -23,7 +23,7 @@ export class MailerService {
 
 
   emailTemplate(mail: Email, titulo?: string) {
-    return `<table width="100%" height="100%" style="min-width:348px; padding-left: 450px"  border="0" cellspacing="0" cellpadding="0" lang="en">
+    return `<table width="100%" height="100%" style="min-width:348px; padding-left: 100px"  border="0" cellspacing="0" cellpadding="0" lang="en">
   <tbody>
   <tr height="32" style="height:32px">
     <td></td>

@@ -20,7 +20,7 @@ export class ConfigComponent implements OnInit {
   tipoInput: any = 'password';
   usuario: Usuario = new Usuario();
   configForm: FormGroup;
-  private passwordPattern: any = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+  private passwordPattern: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
   createFormGroup() {
     return new FormGroup({
