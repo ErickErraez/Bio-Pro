@@ -202,7 +202,7 @@ export class HomeComponent implements OnInit {
     this.file = files;
     this.archivo.idTimbradas = this.file[0].idTimbradas;
     if (files[0] && this.campus === 'Yavirac') {
-      if (files[0].type === 'text/csv') {
+      if (files[0].type === 'text/csv' || files[0].type.includes('vnd.ms-excel')) {
         Papa.parse(files[0], {
           header: true,
           skipEmptyLines: true,
