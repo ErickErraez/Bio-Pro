@@ -69,10 +69,10 @@ let login = (req, res) => {
                     }
                 })
             }
-        }).catch(err => {
+        }).catch(erro => {
             return res.status(500).json({
                 ok: false,
-                mensaje: `Error: ${err}`
+                mensaje: `Error: ${erro}`
             })
         })
 

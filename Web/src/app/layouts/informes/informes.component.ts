@@ -41,6 +41,14 @@ export class InformesComponent implements OnInit {
     })
   }
 
+  bloquearBoton() {
+    if (this.tableData1.dataRows.length > 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   HorasTrabajadas(item, i, tipo) {
 
     let valor1 = 0;

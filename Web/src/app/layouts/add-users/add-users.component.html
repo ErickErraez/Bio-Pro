@@ -190,8 +190,8 @@
 
       </div>
       <div class="modal-footer">
-        <button *ngIf="!newUSer.nombre" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="addUser()">CREAR</button>
-        <button *ngIf="newUSer.nombre" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="actualizar()">ACTUALIZAR</button>
+        <button *ngIf="!newUSer.idUsuarios" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="addUser()">CREAR</button>
+        <button *ngIf="newUSer.idUsuarios" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="actualizar()">ACTUALIZAR</button>
         <button type="button" class="btn btn-secondary btn-fill" data-dismiss="modal">CANCELAR</button>
       </div>
     </div>
