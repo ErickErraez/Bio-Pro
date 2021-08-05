@@ -23,7 +23,8 @@ export class InformesComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableData1 = {
-      headerRow: ['ID', 'Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria', '']
+      headerRow: ['ID', 'Nombre', 'Fecha', 'Timbrada 1', 'Timbrada 2', 'Timbrada 3', 'Timbrada 4', 'Hora Diaria', ''],
+      dataRows: []
     };
     this.obtenerTodasTimbradas();
   }

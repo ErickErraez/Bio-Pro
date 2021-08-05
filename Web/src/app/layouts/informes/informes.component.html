@@ -10,7 +10,8 @@
 
                 <div class="row">
                   <div class="col-md-2">
-                    <button type="button"  [disabled]="bloquearBoton()" class="btn btn-danger btn-fill" (click)="generarPdf()">
+                    <button type="button" [disabled]="bloquearBoton()" class="btn btn-danger btn-fill"
+                            (click)="generarPdf()">
                       GENERAR PDF
                     </button>
                   </div>
@@ -32,6 +33,8 @@
                   </tr>
                   </thead>
                   <tbody>
+
+
                   <tr
                     *ngFor="let item of this.tableData1.dataRows | filter: filtro | paginate:{itemsPerPage:paginas,currentPage:pageActual} let i =index;"
                     [ngClass]="HorasTrabajadas(item,i,'clase')?'color1':'' ">
