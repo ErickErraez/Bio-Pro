@@ -145,13 +145,15 @@
                 <div class="row">
                   <br>
                   <div class="col-md-1">
-                    <button [disabled]="habilitarBoton" type="button" class="btn btn-success btn-fill" data-toggle="modal" data-backdrop="false"
+                    <button [disabled]="habilitarBoton" type="button" class="btn btn-success btn-fill"
+                            data-toggle="modal" data-backdrop="false"
                             data-target="#myModal">
                       Cargar Archivo
                     </button>
                   </div>
                   <div class="col-md-1">
-                    <button type="button" *ngIf="existeArchivo" [disabled]="habilitarBoton" class="btn btn-success btn-fill" data-toggle="modal" data-backdrop="false"
+                    <button type="button" *ngIf="existeArchivo" [disabled]="habilitarBoton"
+                            class="btn btn-success btn-fill" data-toggle="modal" data-backdrop="false"
                             (click)="guardar()">
                       Guardar Datos
                     </button>
@@ -236,18 +238,21 @@
             <li><a (click)="valor('Seleccione un campus')">Seleccione un campus</a></li>
             <li><a (click)="valor('Yavirac')">Yavirac</a></li>
             <li><a (click)="valor('Cenepa')">Cenepa</a></li>
-            <li><a (click)="valor('Colon')">Colon</a></li>
+            <!--            <li><a (click)="valor('Colon')">Colon</a></li>-->
           </div>
         </div>
         <br>
-        <input (click)="esconder=true" hidden type="file" *ngIf="campus !== 'Seleccione un campus'" name="files" class="form-control"
+        <input (click)="esconder=true" hidden type="file" *ngIf="campus !== 'Seleccione un campus'" name="files"
+               class="form-control"
                #uploads (change)="onChange(uploads.files)"
                multiplec xclkvsdlk
                value="process"/>
       </div>
       <div class="modal-footer">
         <button type="button" [disabled]="esconder" class="btn btn-default btn-fill" data-dismiss="modal">Close</button>
-        <button type="button" [disabled]="esconder" class="btn btn-primary btn-fill" data-dismiss="modal" (click)="saveChange()">Save changes</button>
+        <button type="button" [disabled]="esconder" class="btn btn-primary btn-fill" data-dismiss="modal"
+                (click)="saveChange()">Save changes
+        </button>
       </div>
     </div>
   </div>
@@ -273,7 +278,7 @@
                role="progressbar" [style]="test"></div>
         </div>
 
-        <img *ngIf="!showFile" class="avatar" src="{{showFoto}}" width="25%"
+        <img *ngIf="!showFile" class="avatar" src="{{loadFile()}}" width="25%"
              height="130px"
              alt="..."/>
         <br>
@@ -290,7 +295,7 @@
       <div class="modal-footer" *ngIf="usuario.rol.descripcion ==='ADMINISTRADOR'">
         <button type="button" class="btn btn-default btn-fill" data-dismiss="modal">Cancelar</button>
         <a class="btn btn-primary btn-fill" *ngIf="idSelected" data-dismiss="modal" download="{{getDowloadName()}}"
-           href="{{showFoto}}">Download</a>
+           (click)="downloadFile()">Download</a>
       </div>
     </div>
   </div>

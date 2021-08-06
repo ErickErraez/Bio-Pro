@@ -113,7 +113,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form [formGroup]="contactForm" (ngSubmit)="addUser()">
+        <form [formGroup]="contactForm">
           <div class="row">
           <div class="form-group col-md-3">
             <div  class="checkbox"><input name="theCheckbox" formControlName="check" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" id="checkbox1" type="checkbox"><label  for="checkbox1"></label></div>
@@ -190,9 +190,9 @@
 
       </div>
       <div class="modal-footer">
-        <button *ngIf="!newUSer.idUsuarios" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="addUser()">CREAR</button>
-        <button *ngIf="newUSer.idUsuarios" type="button" class="btn btn-primary btn-fill"  data-dismiss="modal" (click)="actualizar()">ACTUALIZAR</button>
-        <button type="button" class="btn btn-secondary btn-fill" data-dismiss="modal">CANCELAR</button>
+        <button *ngIf="!newUSer.idUsuarios" type="button" class="btn btn-primary btn-fill"  (click)="addUser()">CREAR</button>
+        <button *ngIf="newUSer.idUsuarios" type="button" class="btn btn-primary btn-fill" data-dismiss="modal" (click)="actualizar()">ACTUALIZAR</button>
+        <button type="button" class="btn btn-secondary btn-fill" data-dismiss="modal">CERRAR</button>
       </div>
     </div>
   </div>

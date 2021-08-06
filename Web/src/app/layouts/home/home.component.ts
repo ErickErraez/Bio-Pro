@@ -194,11 +194,17 @@ export class HomeComponent implements OnInit {
   }
 
   loadFile() {
-    this.showFoto = 'data:' + this.idSelected.justificacion.tipo + ';base64,' + this.idSelected.justificacion.contenido;
+    return 'data:' + this.idSelected.justificacion.tipo + ';base64,' + this.idSelected.justificacion.contenido;
+  }
+
+  downloadFile() {
+    const a = document.createElement("a"); //Create <a>
+    a.href = 'data:' + this.idSelected.justificacion.tipo + ';base64,' + this.idSelected.justificacion.contenido; //Image Base64 Goes here
+    a.download = "Image.png"; //File name Here
+    a.click();
   }
 
   onChange(files: File[]) {
-
     this.users = [];
     this.file = files;
     this.archivo.idTimbradas = this.file[0].idTimbradas;

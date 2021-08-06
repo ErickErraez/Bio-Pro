@@ -106,12 +106,13 @@ export class AddUsersComponent implements OnInit {
 
 
   addUser() {
-    this.tableData1.dataRows = [];
-    this.newUSer.nombre.toUpperCase();
-    this.newUSer.newpassword = '0';
-    this.newUSer.password = '$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey';
-    this.newUSer.foto.idAdjuntos = 1;
+
     if (this.contactForm.valid) {
+      this.tableData1.dataRows = [];
+      this.newUSer.nombre.toUpperCase();
+      this.newUSer.newpassword = '0';
+      this.newUSer.password = '$2b$10$wN9wjB53XhvTFtYPSyBD.uOqb4GHFmMFWNKvwEi35ofFcBsmKEiey';
+      this.newUSer.foto.idAdjuntos = 1;
       // @ts-ignore
       if (this.marked === true) {
         this.userService.addUser(this.newUSer).subscribe((res: any) => {
